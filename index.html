@@ -3,214 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة FiveM - البنفسجي والفخامة</title>
+    <title>لوحة قوانين سيرفر Nova</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* الألوان الأساسية */
+        /* المتغيرات الأساسية للألوان */
         :root {
-            --primary-purple: #8e44ad; /* بنفسجي غامق جذاب */
-            --secondary-purple: #9b59b6; /* بنفسجي أفتح للتظليل */
-            --bg-dark: #1a1a2e; /* خلفية سوداء-بنفسجية عميقة */
-            --card-bg: #2c2c44; /* خلفية الكارد */
-            --text-light: #ecf0f1; /* نص فاتح */
-            --border-color: #3f3f5a; /* لون الحدود */
+            --primary-purple: #a246f0; /* بنفسجي مشع */
+            --bg-dark: #0d0d12; /* أسود عميق */
+            --card-bg: #161625; /* لون الكاردات */
+            --text-color: #e0e0e0;
+            --glow-shadow: 0 0 15px rgba(162, 70, 240, 0.6);
         }
-
-        /* الخطوط */
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
 
         body {
             font-family: 'Cairo', sans-serif;
             background-color: var(--bg-dark);
-            color: var(--text-light);
+            color: var(--text-color);
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            overflow-x: hidden; /* لمنع ظهور شريط التمرير الأفقي */
-            position: relative; /* لجعل الخلفية تعمل بشكل صحيح */
         }
 
-        /* خلفية الصفحة مع تأثير التعتيم */
-        .background-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://i.imgur.com/your-fivem-background-image.jpg') no-repeat center center / cover; /* ضع رابط الصورة هنا */
-            filter: blur(5px) brightness(0.4); /* تعتيم وتظليل الصورة */
-            z-index: -1;
-        }
-
-        /* حاوية الزر والقائمة المنسدلة */
+        /* حاوية الزر والقائمة (ثابتة في الزاوية) */
         .navigation-container {
-            position: relative;
-            width: 90%;
-            max-width: 600px;
-            margin-top: 50px; /* لإبعادها عن أعلى الصفحة */
-            margin-bottom: 30px;
-            z-index: 10; /* لجعلها فوق الخلفية */
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
         }
 
-        /* زر اختيار الصفحة */
+        /* زر المنيو الدائري الصغير */
         .menu-btn {
-            width: 100%;
+            width: 55px;
+            height: 55px;
             background-color: var(--primary-purple);
             color: white;
             border: none;
-            padding: 18px 25px;
-            font-size: 20px;
-            font-weight: bold;
-            border-radius: 12px;
+            border-radius: 50%;
             cursor: pointer;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            box-shadow: 0 6px 20px rgba(142, 68, 173, 0.4);
+            box-shadow: var(--glow-shadow);
             transition: all 0.3s ease;
+            font-size: 22px;
         }
+
         .menu-btn:hover {
-            background-color: var(--secondary-purple);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(142, 68, 173, 0.6);
-        }
-        .menu-btn i {
-            margin-right: 10px; /* مسافة بين الأيقونة والنص */
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 0 25px var(--primary-purple);
         }
 
-
-        /* قائمة الصفحات المنسدلة */
+        /* القائمة المنسدلة */
         .dropdown-content {
             display: none;
             position: absolute;
-            top: 75px; /* مسافة من الزر */
-            width: 100%;
+            top: 65px;
+            right: 0;
+            width: 220px;
             background-color: var(--card-bg);
             border: 1px solid var(--primary-purple);
             border-radius: 12px;
-            z-index: 100;
             overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
         .dropdown-content.show {
             display: block;
-            animation: slideDown 0.3s ease-out forwards;
+            animation: slideIn 0.3s ease-out;
         }
 
         .dropdown-content div {
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--border-color);
+            padding: 15px;
+            border-bottom: 1px solid #252535;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: 0.3s;
             display: flex;
             align-items: center;
-            gap: 15px;
-            font-size: 17px;
-        }
-        .dropdown-content div:last-child { border-bottom: none; }
-        .dropdown-content div:hover {
-            background-color: var(--secondary-purple);
-            color: white;
-            padding-right: 25px; /* تأثير بسيط عند التمرير */
+            gap: 12px;
         }
 
-        /* تصميم المحتوى الرئيسي */
+        .dropdown-content div:hover {
+            background-color: var(--primary-purple);
+            color: white;
+        }
+
+        /* المحتوى الرئيسي */
         .content-box {
             width: 90%;
-            max-width: 900px;
-            background-color: rgba(44, 44, 68, 0.8); /* خلفية شفافة قليلاً */
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-            margin-bottom: 50px;
-            z-index: 5;
+            max-width: 800px;
+            margin-top: 100px; /* مسافة للزر */
+            padding-bottom: 50px;
         }
 
         .section { display: none; }
-        .section.active { display: block; animation: fadeIn 0.6s ease-in-out; }
+        .section.active { display: block; animation: fadeIn 0.5s ease-in; }
 
         h2.section-title {
             color: var(--primary-purple);
             text-align: center;
-            margin-bottom: 30px;
-            font-size: 32px;
-            border-bottom: 3px solid var(--secondary-purple);
-            padding-bottom: 15px;
-            text-shadow: 0 0 10px rgba(142, 68, 173, 0.5);
+            font-size: 28px;
+            text-shadow: var(--glow-shadow);
+            margin-bottom: 40px;
         }
 
         .card {
             background: var(--card-bg);
-            padding: 25px;
-            border-radius: 12px;
+            padding: 20px;
+            border-radius: 15px;
             margin-bottom: 20px;
-            border-left: 5px solid var(--primary-purple); /* Border-left بدلاً من right */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-right: 4px solid var(--primary-purple);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: 0.3s;
         }
+
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(142, 68, 173, 0.3);
+            border-right-width: 8px;
         }
 
-        h3 {
-            color: var(--secondary-purple);
-            margin-top: 0;
-            font-size: 22px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        h3 i { color: var(--primary-purple); }
+        h3 { color: var(--primary-purple); margin-top: 0; display: flex; align-items: center; gap: 10px; }
+        p { line-height: 1.8; opacity: 0.9; }
 
-        p { line-height: 1.8; color: var(--text-light); font-size: 16px; }
-
-        /* تأثيرات التحريك */
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px); }
+        /* الأنميشن */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        /* التجاوبية مع الشاشات الصغيرة */
-        @media (max-width: 768px) {
-            .navigation-container, .content-box {
-                width: 95%;
-            }
-            .menu-btn { font-size: 16px; padding: 15px 20px; }
-            .dropdown-content div { font-size: 15px; padding: 12px 15px; }
-            h2.section-title { font-size: 26px; }
-            h3 { font-size: 20px; }
-            p { font-size: 15px; }
-            .content-box { padding: 20px; }
+        @media (max-width: 600px) {
+            .content-box { margin-top: 80px; }
+            h2.section-title { font-size: 22px; }
         }
     </style>
 </head>
 <body>
-    <div class="background-overlay"></div>
 
     <div class="navigation-container">
-        <button class="menu-btn" onclick="toggleMenu()">
+        <button class="menu-btn" onclick="toggleMenu()" title="القائمة">
             <i class="fas fa-bars"></i>
-            <span id="current-page-name">اختر القسم</span>
-            <i class="fas fa-chevron-down"></i>
         </button>
         
         <div class="dropdown-content" id="myDropdown">
             <div onclick="selectPage('rules', 'قوانين السيرفر')"><i class="fas fa-gavel"></i> قوانين السيرفر</div>
-            <div onclick="selectPage('updates', 'آخر التحديثات')"><i class="fas fa-scroll"></i> آخر التحديثات</div>
-            <div onclick="selectPage('jobs', 'نظام الوظائف')"><i class="fas fa-briefcase"></i> نظام الوظائف</div>
-            <div onclick="selectPage('staff', 'طاقم الإدارة')"><i class="fas fa-users-cog"></i> طاقم الإدارة</div>
+            <div onclick="selectPage('updates', 'التحديثات')"><i class="fas fa-sync"></i> التحديثات</div>
+            <div onclick="selectPage('staff', 'الإدارة')"><i class="fas fa-user-shield"></i> طاقم الإدارة</div>
         </div>
     </div>
 
@@ -219,75 +166,67 @@
         <section id="rules" class="section active">
             <h2 class="section-title">قوانين السيرفر الأساسية</h2>
             <div class="card">
-                <h3><i class="fas fa-shield-alt"></i> القوانين العامة</h3>
-                <p>1. احترام جميع اللاعبين والإدارة دون استثناء.</p>
-                <p>2. يمنع استخدام أي برامج خارجية (Hacks / Cheats) تؤثر على اللعب.</p>
-                <p>3. يمنع استغلال الثغرات البرمجية (Bugs) ويجب الإبلاغ عنها فوراً.</p>
+                <h3><i class="fas fa-exclamation-circle"></i> قوانين عامة</h3>
+                <p>1. يمنع السب أو القذف بجميع أشكاله.</p>
+                <p>2. احترام الطاقم الإداري والالتزام بتعليماتهم.</p>
+                <p>3. يمنع الـ RDM و الـ VDM منعاً باتاً.</p>
             </div>
             <div class="card">
-                <h3><i class="fas fa-car-crash"></i> قوانين الحياة الواقعية (RP)</h3>
-                <p>1. الالتزام بالتقمص التام للشخصية وعدم الخروج عن الـ RP.</p>
-                <p>2. يمنع الـ RDM (القتل بدون سبب) و الـ VDM (الدهس بالسيارة بدون سبب).</p>
-                <p>3. يجب تقبل الخسارة (FearRP) وعدم مقاومة مصيرك.</p>
+                <h3><i class="fas fa-microphone"></i> قوانين الـ RP</h3>
+                <p>• يجب الالتزام بتمثيل الشخصية في كل الأوقات.</p>
+                <p>• يمنع الخروج عن التقمص (OOC) داخل اللعبة.</p>
             </div>
         </section>
 
         <section id="updates" class="section">
-            <h2 class="section-title">آخر التحديثات والإصلاحات</h2>
+            <h2 class="section-title">آخر التحديثات</h2>
             <div id="updates-list">
                 </div>
         </section>
 
-        <section id="jobs" class="section">
-            <h2 class="section-title">شرح أنظمة الوظائف</h2>
-            <div class="card">
-                <h3><i class="fas fa-police-car"></i> وظيفة الشرطة (LSPD)</h3>
-                <p>• مسؤولياتك: حفظ الأمن، القبض على المجرمين، التحقيق في الجرائم.</p>
-                <p>• المتطلبات: تقمص دور الشرطي بشكل كامل، الالتزام بالقوانين.</p>
-            </div>
-            <div class="card">
-                <h3><i class="fas fa-hospital"></i> وظيفة الإسعاف (EMS)</h3>
-                <p>• مسؤولياتك: علاج المصابين، إنقاذ الأرواح، تقديم الإسعافات الأولية.</p>
-                <p>• المتطلبات: سرعة الاستجابة، مهارات التفاوض في المواقف الحرجة.</p>
-            </div>
-        </section>
-
         <section id="staff" class="section">
-            <h2 class="section-title">فريق إدارة السيرفر</h2>
+            <h2 class="section-title">طاقم الإدارة</h2>
             <div class="card">
-                <h3><i class="fas fa-crown"></i> المؤسس: [اسمك هنا]</h3>
-                <p>المسؤول الرئيسي عن السيرفر والتطوير الشامل.</p>
-            </div>
-            <div class="card">
-                <h3><i class="fas fa-user-tie"></i> المدير: [اسم المدير]</h3>
-                <p>مسؤول عن الإشراف على الإدارة وحل المشاكل اليومية.</p>
+                <h3>المؤسس</h3>
+                <p>صاحب السيرفر والمسؤول عن التطوير.</p>
             </div>
         </section>
 
     </div>
 
     <script>
-        // دالة لفتح وإغلاق القائمة المنسدلة
+        // دالة فتح وإغلاق المنيو
         function toggleMenu() {
             document.getElementById("myDropdown").classList.toggle("show");
         }
 
-        // دالة لاختيار الصفحة وتحديث المحتوى
+        // دالة اختيار الصفحة
         function selectPage(pageId, pageName) {
-            // إخفاء كل الأقسام
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            
-            // إظهار القسم المطلوب
             document.getElementById(pageId).classList.add('active');
             
-            // تحديث نص الزر باسم الصفحة المختارة
-            document.getElementById('current-page-name').innerText = pageName;
-            
-            // إغلاق القائمة المنسدلة
+            // إغلاق المنيو بعد الاختيار
             toggleMenu();
+            
+            // سكرول للأعلى عند تغيير الصفحة
+            window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
-        // إغلاق القائمة إذا ضغط المستخدم خارجها
+        // إضافة بيانات التحديثات تلقائياً
+        const updates = [
+            { title: "تحديث النظام البرمجي", date: "2026-01-23", desc: "تم تحسين سرعة الاستجابة وإضافة سيارات جديدة." },
+            { title: "إصلاحات عامة", date: "2026-01-20", desc: "حل مشكلة القائمة الجانبية في الجوال." }
+        ];
+
+        const updatesList = document.getElementById('updates-list');
+        updates.forEach(upd => {
+            const div = document.createElement('div');
+            div.className = 'card';
+            div.innerHTML = `<h3>${upd.title} <small style="font-size:12px; color:#888;">${upd.date}</small></h3><p>${upd.desc}</p>`;
+            updatesList.appendChild(div);
+        });
+
+        // إغلاق المنيو عند الضغط في أي مكان خارجها
         window.onclick = function(event) {
             if (!event.target.matches('.menu-btn') && !event.target.closest('.menu-btn')) {
                 var dropdowns = document.getElementsByClassName("dropdown-content");
@@ -299,30 +238,6 @@
                 }
             }
         }
-
-        // بيانات التحديثات (يمكنك تعديلها وإضافتها)
-        const updatesData = [
-            { title: "تحديث الموسم الثالث", date: "23/01/2026", desc: "إضافة مناطق جديدة، سيارات حصرية، ونظام عصابات مطور." },
-            { title: "تحسينات الأداء", date: "15/01/2026", desc: "تم تقليل مشاكل التأخير (Lag) وتحسين استقرار السيرفر بشكل عام." },
-            { title: "إصلاحات أمنية", date: "10/01/2026", desc: "تم سد بعض الثغرات الأمنية لضمان تجربة لعب آمنة." }
-        ];
-
-        const updatesContainer = document.getElementById('updates-list');
-        updatesData.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-                <h3><i class="fas fa-calendar-alt"></i> ${item.title} <span style="font-size: 14px; color: #bbb; margin-right: 10px;">(${item.date})</span></h3>
-                <p>${item.desc}</p>
-            `;
-            updatesContainer.appendChild(card);
-        });
-
-        // تشغيل أول قسم عند تحميل الصفحة لأول مرة
-        document.addEventListener('DOMContentLoaded', () => {
-            selectPage('rules', 'قوانين السيرفر');
-        });
-
     </script>
 </body>
 </html>
