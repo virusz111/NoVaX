@@ -251,44 +251,27 @@
     };
 
     window.toggleApply = async function(val) {
-    localStorage.setItem('noVaX_isOpen', val);
-
-    // --- 1. محاولة حذف الرسالة السابقة إذا كانت مخزنة ---
-    const oldMsgId = localStorage.getItem('last_status_msg_id');
-    if (oldMsgId) {
-        try {
-            // نحذف ?wait=true من الرابط عند الحذف لأنه غير مطلوب في الـ DELETE
-            const deleteUrl = WEB_ADMIN.split('?')[0] + "/messages/" + oldMsgId;
-            await fetch(deleteUrl, { method: 'DELETE' });
-        } catch (e) {
-            console.log("الرسالة القديمة محذوفة بالفعل أو غير موجودة.");
+        localStorage.setItem('noVaX_isOpen', val);
+        const oldId = localStorage.getItem('last_status_msg_id');
+        if (oldId) {
+            try { await fetch(WEB_ADMIN.split('?')[0] + "/messages/" + oldId, { method: 'DELETE' }); } catch(e){}
         }
-    }
-
-    // --- 2. بناء الـ Embed المنسق ---
-    const embedPayload = {
-        embeds: [{
-            title: val ? "✅ تم فتح باب التقديم" : "❌ تم إغلاق باب التقديم",
-            description: val 
-                ? "||@everyone - @here||\nيسر إدارة **NoVaX** إعلان فتح باب التقديم للحصول على التفعيل! يمكنك الآن الدخول للموقع وتقديم طلبك." 
-                : "||@everyone - @here||\nتم إغلاق التقديم حالياً من قبل الإدارة. يرجى انتظار المواعيد القادمة.",
-            color: val ? 3066993 : 15158332,
-            fields: [
-                { name: "الحالة الآن", value: val ? "مفتوح (Open)" : "مغلق (Closed)", inline: true },
-                { name: "المسؤول", value: `<@${currentUser.id}>`, inline: true }
-            ],
-            footer: { text: "NoVaX Systems" },
-            timestamp: new Date()
-        }]
-    };
-
-    // --- 3. إرسال الـ Embed الجديد وحفظ الـ ID ---
-    try {
-        const response = await fetch(WEB_ADMIN, {
+        const res = await fetch(WEB_ADMIN, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(embedPayload)
+            body: JSON.stringify({
+                embeds: [{
+                    title: val ? "✅ التقديم مفتوح" : "❌ التقديم مغلق",
+                    description: `بواسطة <@${currentUser.id}>`,
+                    color: val ? 3066993 : 15158332
+                }]
+            })
         });
+        const json = await res.json();
+        if(json.id) localStorage.setItem('last_status_msg_id', json.id);
+        checkApply();
+        alert("تم تحديث الحالة!");
+    };
 
     window.sendAnn = async function() {
         const msg = document.getElementById('ann_text').value;
