@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NoVaX RP | Grand Project</title>
+    <title>NoVaX RP | Admin Control</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -18,20 +18,14 @@
         .container { max-width: 1100px; margin: 20px auto; padding: 20px; }
         .page-content { display: none; animation: fadeIn 0.6s ease; }
         .page-content.active { display: block; }
-        .welcome-section { text-align: center; padding: 60px 20px; background: linear-gradient(to bottom, rgba(162, 70, 240, 0.1), transparent); border-radius: 40px; margin-bottom: 40px; border: 1px solid rgba(162, 70, 240, 0.2); }
-        .discord-btn { background: var(--discord); color: white; padding: 15px 35px; border-radius: 15px; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; font-weight: bold; transition: 0.3s; margin-top: 20px; border: none; cursor: pointer; }
-        .staff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 30px; }
-        .card, .store-card, .staff-card { background: var(--card-bg); padding: 25px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; text-align: center; }
-        .store-card:hover, .staff-card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 10px 20px rgba(162, 70, 240, 0.2); }
-        .item-img { width: 100%; height: 180px; object-fit: cover; border-radius: 15px; border: 1px solid var(--primary); margin-bottom: 15px; }
-        .staff-img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary); margin-bottom: 15px; object-fit: cover; }
-        .staff-rank { font-size: 13px; padding: 4px 12px; border-radius: 20px; background: rgba(162, 70, 240, 0.2); color: var(--primary); font-weight: bold; border: 1px solid var(--primary); }
-        .rank-owner { color: #ff4d4d; border-color: #ff4d4d; background: rgba(255, 77, 77, 0.1); }
-        .price-tag { font-size: 22px; color: var(--success); font-weight: bold; margin: 10px 0; }
-        .btn { padding: 12px 25px; border-radius: 12px; cursor: pointer; font-weight: bold; border: none; transition: 0.3s; font-family: 'Cairo'; width: 100%; }
+        .card, .store-card { background: var(--card-bg); padding: 25px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px; text-align: center; }
+        .item-img { width: 100%; height: 200px; object-fit: cover; border-radius: 15px; border: 1px solid var(--primary); margin-bottom: 15px; }
+        .btn { padding: 12px 20px; border-radius: 12px; cursor: pointer; font-weight: bold; border: none; transition: 0.3s; font-family: 'Cairo'; width: 100%; display: block; margin-top: 10px; }
         .btn-primary { background: var(--primary); color: white; }
-        .btn-admin { background: var(--admin-red); color: white; margin-top: 10px; }
-        input, textarea { width: 100%; padding: 14px; margin-top: 15px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 12px; color: white; font-family: 'Cairo'; box-sizing: border-box; }
+        .btn-admin { background: var(--admin-red); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        input, textarea { width: 100%; padding: 12px; margin-top: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 10px; color: white; font-family: 'Cairo'; box-sizing: border-box; }
+        .staff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .hidden { display: none !important; }
     </style>
@@ -46,7 +40,7 @@
 <header>
     <div style="font-size: 26px; font-weight: bold; color: var(--primary);">NoVaX</div>
     <div id="auth-zone">
-        <button id="loginBtn" class="btn" style="background:var(--discord); color:white; width: auto;" onclick="login()">دخول بالديسكورد</button>
+        <button id="loginBtn" class="btn" style="background:var(--discord); color:white; width: auto; margin:0;" onclick="login()">دخول بالديسكورد</button>
         <div id="userProfile" class="hidden" style="display:flex; align-items:center; gap:12px;">
             <span id="displayUserName"></span>
             <img id="userAvatar" src="" style="width:35px; border-radius:50%; border:1px solid var(--primary);">
@@ -57,7 +51,6 @@
 
 <div class="nav-tabs">
     <div class="tab-btn active" onclick="switchMainTab('home-page', this)">الرئيسية</div>
-    <div class="tab-btn" onclick="switchMainTab('rules-page', this)">القوانين</div>
     <div class="tab-btn" onclick="switchMainTab('store-page', this)">المتجر</div>
     <div id="applyTab" class="tab-btn hidden" onclick="switchMainTab('apply-page', this)">التقديم</div>
     <div id="adminTab" class="tab-btn hidden" onclick="switchMainTab('admin-page', this)" style="color:var(--admin-red);">لوحة الإدارة</div>
@@ -65,96 +58,120 @@
 
 <div class="container">
     <section id="home-page" class="page-content active">
-        <div class="welcome-section">
-            <h1>أهلاً بك في مدينة NoVaX</h1>
-            <p>واقعية، هيبة، ومتعة بلا حدود</p>
-            <a href="https://discord.gg/HZFb5BZ8dZ" target="_blank" class="discord-btn" style="width:auto;"><i class="fab fa-discord"></i> انضم للديسكورد</a>
-        </div>
-        <h2 style="text-align: center;">طاقم الإدارة</h2>
-        <div class="staff-grid" id="staff-container"></div>
-    </section>
-
-    <section id="rules-page" class="page-content">
         <div class="card">
-            <h2 style="color:var(--primary);">📜 قوانين المدينة</h2>
-            <p>1. يمنع الـ VDM والـ RDM نهائياً.</p>
-            <p>2. الالتزام بالواقعية التامة داخل المدينة.</p>
-            <p>3. احترام جميع اللاعبين وطاقم الإدارة.</p>
+            <h1>أهلاً بك في مدينة NoVaX</h1>
+            <p>سيرفر واقعية احترافي</p>
+            <a href="https://discord.gg/HZFb5BZ8dZ" target="_blank" class="btn btn-primary" style="width:200px; margin: 20px auto;">انضم إلينا</a>
         </div>
     </section>
 
     <section id="store-page" class="page-content">
-        <h2 style="text-align: center; color: var(--primary);">🛒 متجر المدينة</h2>
-        <div class="staff-grid" id="store-container">
-            </div>
+        <h2 style="text-align:center;">🛒 المتجر</h2>
+        <div class="staff-grid" id="store-container"></div>
     </section>
 
     <section id="apply-page" class="page-content">
         <div class="card">
-            <div id="apply-steps">
-                <div class="step active" id="step0"><h2>تقديم تفعيل</h2><button class="btn btn-primary" onclick="nextSlide(1)">ابدأ الآن</button></div>
-                <div class="step" id="step1" style="display:none;"><h3>الاسم والعمر؟</h3><input type="text" id="ans1"><button class="btn btn-primary" onclick="nextSlide(2)">التالي</button></div>
-                <div class="step" id="step2" style="display:none;"><h3>الآيدي ID؟</h3><input type="number" id="ans2"><button class="btn btn-primary" onclick="nextSlide(3)">التالي</button></div>
-                <div class="step" id="step3" style="display:none;"><h3>شرح VDM و RDM؟</h3><textarea id="ans3"></textarea><button class="btn btn-primary" onclick="finishApply()">إرسال الطلب</button></div>
-                <div class="step" id="step-final" style="display:none;"><h2 style="color:var(--success);">✅ تم الإرسال!</h2></div>
+            <h2>تقديم تفعيل</h2>
+            <div id="apply-form">
+                <input type="text" id="ans1" placeholder="الاسم والعمر">
+                <input type="number" id="ans2" placeholder="الآيدي (ID)">
+                <textarea id="ans3" placeholder="شرح قوانين VDM/RDM"></textarea>
+                <button class="btn btn-success" onclick="finishApply()">إرسال الطلب</button>
             </div>
         </div>
     </section>
 
     <section id="admin-page" class="page-content">
-        <div class="card">
-            <h3>📢 إعلان عام</h3>
-            <textarea id="annContent" placeholder="محتوى الإعلان..."></textarea>
-            <button class="btn btn-admin" onclick="sendAdminAction('announcement')">نشر الإعلان</button>
+        <h2 style="text-align:center; color:var(--admin-red);">⚙️ لوحة تحكم الإدارة</h2>
+        
+        <div class="staff-grid">
+            <div class="card">
+                <h3>📢 نشر إعلان</h3>
+                <textarea id="annContent" placeholder="اكتب محتوى الإعلان هنا..."></textarea>
+                <button class="btn btn-admin" onclick="sendAdminAction('announcement')">إرسال إعلان (@everyone)</button>
+            </div>
+
+            <div class="card">
+                <h3>🛍️ إضافة منتج للمتجر</h3>
+                <input type="text" id="newItemName" placeholder="اسم المنتج">
+                <input type="text" id="newItemPrice" placeholder="السعر (مثال: 50,000 $)">
+                <input type="text" id="newItemImg" placeholder="رابط الصورة المباشر">
+                <textarea id="newItemDesc" placeholder="وصف المنتج"></textarea>
+                <button class="btn btn-success" onclick="addItemToStore()">إضافة للمتجر فوراً</button>
+            </div>
+
+            <div class="card">
+                <h3>📝 حالة التقديم</h3>
+                <button class="btn btn-success" onclick="sendAdminAction('open_apply')">فتح التقديم بالديسكورد</button>
+                <button class="btn btn-admin" onclick="sendAdminAction('close_apply')">إغلاق التقديم بالديسكورد</button>
+            </div>
         </div>
     </section>
 </div>
 
 <script>
     const MY_PERSONAL_ID = "1221794986203418704";
-    const DISCORD_INVITE = "https://discord.gg/HZFb5BZ8dZ";
     const APPLY_WEBHOOK = "https://discord.com/api/webhooks/1466173783537750201/Dbm7MYHeWnFUHMhRoV0g-66Nfyni6kB3XXENjUL9aUEZWDGgjOjrGb0YtvOkOwOwwPaJ";
     const ANN_WEBHOOK = "https://discord.com/api/webhooks/1466228663962832959/HndTSLUdCtqJk7Sa8iRwDudzt-LmOi5i_x2MrL4yJ_2MTFjaPXM18XuM01z4sJp7MzsJ";
+    const CONTROL_WEBHOOK = "https://discord.com/api/webhooks/1466229554908762307/u1EvYzI2ScPHlZetO_qpo_s6aRM6hMTn3e-VC_-S3982aHNRuzaz9-EsQruD1uNAP-w-";
 
-    // بيانات الإدارة
-    const staffList = [
-        { id: "https://cdn.discordapp.com/attachments/1441771278649266286/1466239958397227029/file_0000000069c071f492d3d90ddf9eae10.png?ex=697c05df&is=697ab45f&hm=1da7d9b947c2bb1901090c69a55598efeda798e32ecf86aa2b5d6e9ebec300f5&", name: "BA95", rank: "Owner", class: "rank-owner" },
-        { id: "1221794986203418704", name: "NoVaX", rank: "Manager", class: "" }
+    let storeItems = JSON.parse(localStorage.getItem('novax_store')) || [
+        { name: "جي كلاس 2024", price: "50,000 $", img: "https://رابط_صورة_السيارة", desc: "سيارة الهيبة." },
+        { name: "فيلا VIP", price: "150,000 $", img: "https://رابط_صورة_القصر", desc: "منزل فخم مع كراج." }
     ];
-
-    // بيانات المتجر
-    const storeItems = [
-        { name: "حزمة الجي كلاس", price: "50,000 $", img: "https://رابط_صورة_السيارة.png", desc: "هيبة وقوة في شوارع المدينة." },
-        { name: "قصر فيلا VIP", price: "100,000 $", img: "https://رابط_صورة_القصر.png", desc: "موقع استراتيجي مع كراج خاص." }
-    ];
-
-    function loadStaff() {
-        const container = document.getElementById('staff-container');
-        container.innerHTML = "";
-        staffList.forEach(m => {
-            let img = m.id.startsWith('http') ? m.id : `https://img.v-rp.io/u/${m.id}`;
-            container.innerHTML += `<div class="staff-card">
-                <img src="${img}" class="staff-img" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=${m.name}'">
-                <div style="font-weight:bold;">${m.name}</div>
-                <span class="staff-rank ${m.class}">${m.rank}</span>
-            </div>`;
-        });
-    }
 
     function loadStore() {
         const container = document.getElementById('store-container');
+        if(!container) return;
         container.innerHTML = "";
-        storeItems.forEach(item => {
-            container.innerHTML += `<div class="store-card">
-                <img src="${item.img}" class="item-img" onerror="this.src='https://api.dicebear.com/7.x/identicon/svg?seed=${item.name}'">
-                <h3 style="color:var(--primary);">${item.name}</h3>
-                <p>${item.desc}</p>
-                <div class="price-tag">${item.price}</div>
-                <button class="btn btn-primary" onclick="buyItem('${item.name}')">شراء عبر التكت</button>
-            </div>`;
+        storeItems.forEach((item, index) => {
+            container.innerHTML += `
+                <div class="store-card">
+                    <img src="${item.img}" class="item-img" onerror="this.src='https://api.dicebear.com/7.x/identicon/svg?seed=${index}'">
+                    <h3 style="color:var(--primary);">${item.name}</h3>
+                    <p>${item.desc}</p>
+                    <div style="font-weight:bold; color:var(--success); font-size:20px;">${item.price}</div>
+                    <button class="btn btn-primary" onclick="buyItem('${item.name}')">شراء عبر التكت</button>
+                    ${currentUser && currentUser.id === MY_PERSONAL_ID ? `<button class="btn-admin" style="padding:5px; font-size:12px;" onclick="removeItem(${index})">حذف المنتج 🗑️</button>` : ''}
+                </div>`;
         });
     }
 
+    function addItemToStore() {
+        const name = document.getElementById('newItemName').value;
+        const price = document.getElementById('newItemPrice').value;
+        const img = document.getElementById('newItemImg').value;
+        const desc = document.getElementById('newItemDesc').value;
+        if(!name || !price || !img) return alert("يرجى ملء كافة الحقول!");
+        storeItems.push({name, price, img, desc});
+        localStorage.setItem('novax_store', JSON.stringify(storeItems));
+        loadStore();
+        alert("تمت الإضافة بنجاح!");
+    }
+
+    function removeItem(index) {
+        if(confirm("هل أنت متأكد من الحذف؟")) {
+            storeItems.splice(index, 1);
+            localStorage.setItem('novax_store', JSON.stringify(storeItems));
+            loadStore();
+        }
+    }
+
+    async function sendAdminAction(action) {
+        let content = "";
+        let webhook = CONTROL_WEBHOOK;
+        if(action === 'announcement') {
+            content = "@everyone\n" + document.getElementById('annContent').value;
+            webhook = ANN_WEBHOOK;
+        } else if(action === 'open_apply') content = "✅ تم فتح التقديم الآن!";
+        else if(action === 'close_apply') content = "❌ تم إغلاق التقديم!";
+        
+        await fetch(webhook, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ content: content }) });
+        alert("تم تنفيذ الأمر!");
+    }
+
+    // وظائف أساسية
     function switchMainTab(p, b) {
         document.querySelectorAll('.page-content').forEach(x => x.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
@@ -162,43 +179,28 @@
         b.classList.add('active');
     }
 
-    function nextSlide(s) {
-        document.querySelectorAll('.step').forEach(x => x.style.display = 'none');
-        document.getElementById('step' + s).style.display = 'block';
-    }
-
-    function buyItem(name) {
-        alert("لشراء " + name + " توجه للديسكورد وافتح تكت.");
-        window.open(DISCORD_INVITE, '_blank');
-    }
+    function buyItem(n) { alert("لشراء " + n + " افتح تكت بالديسكورد."); window.open("https://discord.gg/HZFb5BZ8dZ"); }
 
     const CLIENT_ID = "1444065204051906610";
-    const REDIRECT_URI = "https://virusz111.github.io/NoVaX/";
+    const REDIRECT_URI = window.location.origin + window.location.pathname;
     let currentUser = null;
 
     function login() { window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`; }
     function logout() { window.location.href = REDIRECT_URI; }
 
     async function finishApply() {
-        if(!currentUser) return alert("سجل دخول أولاً!");
+        if(!currentUser) return alert("سجل دخول بالديسكورد أولاً!");
         const data = { embeds: [{ title: "📩 تقديم جديد", fields: [
-            { name: "👤 العضو", value: `<@${currentUser.id}>` },
-            { name: "🆔 ID", value: document.getElementById('ans2').value },
-            { name: "📝 معلومات", value: document.getElementById('ans1').value },
-            { name: "📖 القوانين", value: document.getElementById('ans3').value }
+            { name: "العضو", value: `<@${currentUser.id}>` },
+            { name: "الآيدي", value: document.getElementById('ans2').value },
+            { name: "المعلومات", value: document.getElementById('ans1').value },
+            { name: "الإجابات", value: document.getElementById('ans3').value }
         ]}]};
         await fetch(APPLY_WEBHOOK, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
-        nextSlide('-final');
-    }
-
-    async function sendAdminAction(action) {
-        const content = document.getElementById('annContent').value;
-        await fetch(ANN_WEBHOOK, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ content: "@everyone\n" + content }) });
-        alert("تم النشر!");
+        alert("تم إرسال تقديمك بنجاح!");
     }
 
     window.onload = () => {
-        loadStaff();
         loadStore();
         const params = new URLSearchParams(window.location.hash.substring(1));
         const token = params.get('access_token');
@@ -211,7 +213,10 @@
                 document.getElementById('displayUserName').innerText = user.username;
                 document.getElementById('userAvatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
                 document.getElementById('applyTab').classList.remove('hidden');
-                if(user.id === MY_PERSONAL_ID) document.getElementById('adminTab').classList.remove('hidden');
+                if(user.id === MY_PERSONAL_ID) {
+                    document.getElementById('adminTab').classList.remove('hidden');
+                    loadStore();
+                }
             });
         }
     };
