@@ -15,17 +15,14 @@
         .tab-btn { cursor: pointer; padding: 10px 20px; border-radius: 10px; font-weight: bold; transition: 0.3s; opacity: 0.6; color: white; border: 1px solid transparent; }
         .tab-btn.active { opacity: 1; background: rgba(162, 70, 240, 0.2); border-color: var(--primary); color: var(--primary); }
         .container { max-width: 1200px; margin: 30px auto; padding: 20px; }
-        .page-content { display: none; } /* الأقسام مخفية افتراضياً */
+        .page-content { display: none; }
         .page-content.active { display: block !important; animation: fadeIn 0.5s ease; }
         .card { background: var(--card-bg); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); text-align: center; margin-bottom: 20px; }
-        
-        /* المتجر */
         .store-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 25px; }
         .product-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(162, 70, 240, 0.2); border-radius: 20px; padding: 20px; transition: 0.4s; }
         .product-card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 10px 30px rgba(162, 70, 240, 0.2); }
         .product-img { width: 100%; height: 200px; object-fit: cover; border-radius: 15px; }
         .price-tag { font-size: 26px; font-weight: 900; color: var(--success); margin: 15px 0; }
-        
         .btn { padding: 12px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; border: none; font-family: 'Cairo'; color: white; display: block; width: 100%; margin-top: 10px; text-align: center; text-decoration: none; }
         .btn-primary { background: var(--primary); }
         .btn-success { background: var(--success); }
@@ -89,37 +86,28 @@
         </div>
     </section>
 
-<section id="apply-page" class="page-content">
-    <div class="card">
-        <div id="apply-form">
-            <h2>📝 اختبار قوانين المدينة (التقديم)</h2>
-            
-            <input type="text" id="ans_name" placeholder="الاسم الحقيقي والعمر">
-            <input type="text" id="ans_char_name" placeholder="اسم الشخصية الرباعي (داخل اللعبة)">
-
-            <textarea id="ans_vdm" rows="3" placeholder="ماذا يعني مصطلح (VDM)؟ وأعطِ مثالاً عليه؟"></textarea>
-            
-            <textarea id="ans_rdm" rows="3" placeholder="ماذا يعني مصطلح (RDM)؟ وما هي شروط القتل؟"></textarea>
-            
-            <textarea id="ans_failrp" rows="3" placeholder="اشرح مصطلح (Fail RP) بأسلوبك؟"></textarea>
-            
-            <textarea id="ans_story" rows="3" placeholder="اكتب نبذة عن قصة دخول شخصيتك للمدينة؟"></textarea>
-
-            <button class="btn btn-success" onclick="submitApp()">إرسال التقديم للمراجعة</button>
+    <section id="apply-page" class="page-content">
+        <div class="card">
+            <div id="apply-form">
+                <h2>📝 اختبار قوانين المدينة (التقديم)</h2>
+                <input type="text" id="ans_name" placeholder="الاسم الحقيقي والعمر">
+                <input type="text" id="ans_char_name" placeholder="اسم الشخصية الرباعي (داخل اللعبة)">
+                <textarea id="ans_vdm" rows="3" placeholder="ماذا يعني مصطلح (VDM)؟ وأعطِ مثالاً عليه؟"></textarea>
+                <textarea id="ans_rdm" rows="3" placeholder="ماذا يعني مصطلح (RDM)؟ وما هي شروط القتل؟"></textarea>
+                <textarea id="ans_failrp" rows="3" placeholder="اشرح مصطلح (Fail RP) بأسلوبك؟"></textarea>
+                <textarea id="ans_story" rows="3" placeholder="اكتب نبذة عن قصة دخول شخصيتك للمدينة؟"></textarea>
+                <button class="btn btn-success" onclick="submitApp()">إرسال التقديم للمراجعة</button>
+            </div>
+            <div id="already-applied" class="hidden text-center">
+                <h2 style="color: #ffc107; margin-bottom: 15px;">⚠️ حالة التقديم</h2>
+                <p id="applied-msg-text" style="color: #ffffff; font-size: 1.1em;"></p>
+            </div>
+            <div id="apply-closed" class="hidden text-center">
+                <h2 style="color:var(--danger);">❌ نعتذر، التقديم مغلق حالياً</h2>
+                <p>تابع قناة الإعلانات في الديسكورد لمعرفة موعد الفتح القادم.</p>
+            </div>
         </div>
-
-        <div id="already-applied" class="hidden text-center">
-            <h2 style="color: #ffc107; margin-bottom: 15px;">⚠️ تم استلام طلبك مسبقاً</h2>
-            <p style="color: #ffffff; font-size: 1.1em;">لقد قمت بإرسال نموذج التقديم الخاص بك بنجاح.</p>
-            <p style="color: #aaaaaa; font-size: 0.9em; margin-top: 10px;">يرجى انتظار رد الإدارة في الديسكورد، لا يمكنك التقديم مرة أخرى في الوقت الحالي.</p>
-        </div>
-        
-        <div id="apply-closed" class="hidden text-center">
-            <h2 style="color:var(--danger);">❌ نعتذر، التقديم مغلق حالياً</h2>
-            <p>تابع قناة الإعلانات في الديسكورد لمعرفة موعد الفتح القادم.</p>
-        </div>
-    </div>
-</section>
+    </section>
 
     <section id="admin-page" class="page-content">
         <div class="card">
@@ -140,17 +128,143 @@
 
 <script>
     const MY_ID = "1221794986203418704";
+    const ROLE_MEMBER_ID = "1443982445455343650";
     const WEB_ADMIN = "https://discord.com/api/webhooks/1466229554908762307/u1EvYzI2ScPHlZetO_qpo_s6aRM6hMTn3e-VC_-S3982aHNRuzaz9-EsQruD1uNAP-w-?wait=true";
     const WEB_APPLY = "https://discord.com/api/webhooks/1466173783537750201/Dbm7MYHeWnFUHMhRoV0g-66Nfyni6kB3XXENjUL9aUEZWDGgjOjrGb0YtvOkOwOwwPaJ";
     const WEB_ANNOUNCEMENT = "https://discord.com/api/webhooks/1466228663962832959/HndTSLUdCtqJk7Sa8iRwDudzt-LmOi5i_x2MrL4yJ_2MTFjaPXM18XuM01z4sJp7MzsJ";
     
+    let currentUser = null;
+
+    window.login = () => {
+        const url = "https://discord.com/oauth2/authorize?client_id=1444065204051906610&response_type=token&redirect_uri=https%3A%2F%2Fvirusz111.github.io%2FNoVaX%2F&scope=identify+guilds+guilds.members.read";
+        window.location.href = url;
+    };
+
+    window.logout = () => {
+        localStorage.clear(); 
+        window.location.href = window.location.origin + window.location.pathname;
+    };
+
     window.switchPage = function(id, btn) {
         document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         btn.classList.add('active');
         checkApply();
+    };
+
+    function checkApply() {
+        const isOpen = localStorage.getItem('noVaX_isOpen') !== 'false';
+        const hasAppliedLocal = localStorage.getItem('noVaX_applied') === 'true';
+        const isMember = currentUser && currentUser.roles && currentUser.roles.includes(ROLE_MEMBER_ID);
+        const isAdmin = currentUser && currentUser.id === MY_ID;
+
+        const form = document.getElementById('apply-form');
+        const closedMsg = document.getElementById('apply-closed');
+        const alreadyMsg = document.getElementById('already-applied');
+        const msgText = document.getElementById('applied-msg-text');
+
+        if(form) form.classList.add('hidden');
+        if(closedMsg) closedMsg.classList.add('hidden');
+        if(alreadyMsg) alreadyMsg.classList.add('hidden');
+
+        if (isMember || isAdmin) {
+            msgText.innerText = isAdmin ? "أنت الإدارة، التقديم متاح للاعبين فقط." : "أنت عضو مفعل بالفعل في المدينة ✅";
+            alreadyMsg.classList.remove('hidden');
+        } else if (hasAppliedLocal) {
+            msgText.innerText = "لقد قمت بإرسال طلبك مسبقاً، يرجى انتظار رد الإدارة ⏳";
+            alreadyMsg.classList.remove('hidden');
+        } else if (!isOpen) {
+            closedMsg.classList.remove('hidden');
+        } else {
+            form.classList.remove('hidden');
+        }
+
+        const statusText = document.getElementById('current-status');
+        if(statusText) statusText.innerText = "الحالة الحالية: " + (isOpen ? "مفتوح ✅" : "مغلق ❌");
     }
+
+    window.submitApp = async function() {
+        if(!currentUser) return alert("سجل دخولك بالديسكورد أولاً!");
+
+        // نظام التحذير الجديد
+        const hasAppliedLocal = localStorage.getItem('noVaX_applied') === 'true';
+        const isMember = currentUser.roles && currentUser.roles.includes(ROLE_MEMBER_ID);
+        if (isMember || hasAppliedLocal || currentUser.id === MY_ID) {
+            return alert("⚠️ تنبيه: نظام NoVaX رصد أنك تمتلك التفعيل بالفعل أو قدمت طلباً مسبقاً!");
+        }
+
+        const data = {
+            name: document.getElementById('ans_name').value,
+            char: document.getElementById('ans_char_name').value,
+            vdm: document.getElementById('ans_vdm').value,
+            rdm: document.getElementById('ans_rdm').value,
+            fail: document.getElementById('ans_failrp').value,
+            story: document.getElementById('ans_story').value
+        };
+
+        if (Object.values(data).some(v => !v)) return alert("أكمل جميع الإجابات أولاً!");
+
+        try {
+            await fetch(WEB_APPLY, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    embeds: [{
+                        title: "📂 طلب تفعيل جديد",
+                        color: 3447003,
+                        fields: [
+                            { name: "👤 العضو", value: `<@${currentUser.id}>` },
+                            { name: "📝 الاسم", value: data.name },
+                            { name: "🎮 الشخصية", value: data.char },
+                            { name: "VDM", value: data.vdm },
+                            { name: "RDM", value: data.rdm },
+                            { name: "FailRP", value: data.fail },
+                            { name: "Story", value: data.story }
+                        ]
+                    }]
+                })
+            });
+            localStorage.setItem('noVaX_applied', 'true');
+            alert("تم إرسال طلبك بنجاح! 🚀");
+            checkApply();
+        } catch (e) { alert("فشل في الإرسال."); }
+    };
+
+    window.toggleApply = async function(val) {
+        localStorage.setItem('noVaX_isOpen', val);
+        const oldId = localStorage.getItem('last_status_msg_id');
+        if (oldId) {
+            try { await fetch(WEB_ADMIN.split('?')[0] + "/messages/" + oldId, { method: 'DELETE' }); } catch(e){}
+        }
+        const res = await fetch(WEB_ADMIN, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                embeds: [{
+                    title: val ? "✅ التقديم مفتوح" : "❌ التقديم مغلق",
+                    description: `بواسطة <@${currentUser.id}>`,
+                    color: val ? 3066993 : 15158332
+                }]
+            })
+        });
+        const json = await res.json();
+        if(json.id) localStorage.setItem('last_status_msg_id', json.id);
+        checkApply();
+        alert("تم تحديث الحالة!");
+    };
+
+    window.sendAnn = async function() {
+        const msg = document.getElementById('ann_text').value;
+        if(!msg) return alert("اكتب الإعلان أولاً!");
+        await fetch(WEB_ANNOUNCEMENT, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ content: "@everyone", embeds: [{ title: "📢 إعلان", description: msg, color: 10634992 }] })
+        });
+        alert("تم النشر!");
+        document.getElementById('ann_text').value = "";
+    };
 
     window.buyItem = async function(item) {
         if(!currentUser) return alert("سجل دخولك!");
@@ -159,261 +273,32 @@
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ content: `🛒 **طلب شراء**\nالعضو: <@${currentUser.id}>\nالمنتج: ${item}` })
         });
-        alert("تم إرسال طلبك للإدارة!");
-    }
-
-        // وظيفة التحكم بالتقديم مع إرسال Embed احترافية
-window.toggleApply = async function(val) {
-    localStorage.setItem('noVaX_isOpen', val);
-
-    // --- 1. محاولة حذف الرسالة السابقة إذا كانت مخزنة ---
-    const oldMsgId = localStorage.getItem('last_status_msg_id');
-    if (oldMsgId) {
-        try {
-            // نحذف ?wait=true من الرابط عند الحذف لأنه غير مطلوب في الـ DELETE
-            const deleteUrl = WEB_ADMIN.split('?')[0] + "/messages/" + oldMsgId;
-            await fetch(deleteUrl, { method: 'DELETE' });
-        } catch (e) {
-            console.log("الرسالة القديمة محذوفة بالفعل أو غير موجودة.");
-        }
-    }
-
-    // --- 2. بناء الـ Embed المنسق ---
-    const embedPayload = {
-        embeds: [{
-            title: val ? "✅ تم فتح باب التقديم" : "❌ تم إغلاق باب التقديم",
-            description: val 
-                ? "||@everyone - @here||\nيسر إدارة **NoVaX** إعلان فتح باب التقديم للحصول على التفعيل! يمكنك الآن الدخول للموقع وتقديم طلبك." 
-                : "||@everyone - @here||\nتم إغلاق التقديم حالياً من قبل الإدارة. يرجى انتظار المواعيد القادمة.",
-            color: val ? 3066993 : 15158332,
-            fields: [
-                { name: "الحالة الآن", value: val ? "مفتوح (Open)" : "مغلق (Closed)", inline: true },
-                { name: "المسؤول", value: `<@${currentUser.id}>`, inline: true }
-            ],
-            footer: { text: "NoVaX Systems" },
-            timestamp: new Date()
-        }]
+        alert("تم إرسال طلبك!");
     };
 
-    // --- 3. إرسال الـ Embed الجديد وحفظ الـ ID ---
-    try {
-        const response = await fetch(WEB_ADMIN, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(embedPayload)
-        });
-
-        const result = await response.json();
-        if (result.id) {
-            // تخزين الـ ID الجديد للرسالة لاستخدامه في المرة القادمة
-            localStorage.setItem('last_status_msg_id', result.id);
-        }
-
-        checkApply();
-        alert(val ? "تم فتح التقديم وحذف الإشعار السابق!" : "تم إغلاق التقديم وحذف الإشعار السابق!");
-    } catch (error) {
-        console.error("خطأ في الإرسال:", error);
-        alert("حدث خطأ أثناء الاتصال بالديسكورد.");
-    }
-}
-
-// حط آيدي رتبة "مفعل" هنا (جيبه من إعدادات السيرفر عندك)
-const ROLE_MEMBER_ID = "1443982445455343650"; // آيدي رتبة مفعل
-
-function checkApply() {
-    const isOpen = localStorage.getItem('noVaX_isOpen') !== 'false';
-    const lastSubmit = localStorage.getItem('last_submit_time');
-    const cooldown = 60 * 60 * 1000; // ساعة واحدة بالملي ثانية
-    
-    // فحص وقت الانتظار: هل مرت ساعة؟
-    const isWaiting = lastSubmit && (Date.now() - lastSubmit < cooldown);
-    
-    // فحص هل اللاعب عنده رتبة مفعل؟
-    const isMember = currentUser && currentUser.roles && currentUser.roles.includes(ROLE_MEMBER_ID);
-
-    const form = document.getElementById('apply-form');
-    const closedMsg = document.getElementById('apply-closed');
-    const alreadyAppliedMsg = document.getElementById('already-applied');
-
-    if(form) form.classList.add('hidden');
-    if(closedMsg) closedMsg.classList.add('hidden');
-    if(alreadyAppliedMsg) alreadyAppliedMsg.classList.add('hidden');
-
-    if (isMember) {
-        // حالة 1: اللاعب مفعل أصلاً (يختفي التقديم للأبد)
-        alreadyAppliedMsg.innerHTML = `<h2 style="color:var(--success);">✅ أنت عضو مفعل</h2><p>حسابك يمتلك رتبة التفعيل بالفعل، لا داعي للتقديم مجدداً.</p>`;
-        alreadyAppliedMsg.classList.remove('hidden');
-    } 
-    else if (isWaiting) {
-        // حالة 2: اللاعب قدم ولسه ما مرت ساعة (رسالة الانتظار)
-        alreadyAppliedMsg.innerHTML = `<h2 style="color:var(--warning);">⏳ يرجى الانتظار</h2><p>لقد قدمت طلباً مؤخراً. يمكنك التقديم مرة أخرى بعد مرور ساعة إذا لم يتم تفعيلك.</p>`;
-        alreadyAppliedMsg.classList.remove('hidden');
-    }
-    else if (!isOpen) {
-        // حالة 3: التقديم مغلق من الإدارة
-        if(closedMsg) closedMsg.classList.remove('hidden');
-    } 
-    else {
-        // حالة 4: مسموح له يقدم
-        if(form) form.classList.remove('hidden');
-    }
-
-    // تحديث نص الحالة في لوحة الإدارة (داخل حدود الدالة الآن)
-    const statusText = document.getElementById('current-status');
-    if(statusText) {
-        statusText.innerText = "الحالة الحالية: " + (isOpen ? "مفتوح ✅" : "مغلق ❌");
-    }
-} // القوس النهائي الوحيد للدال
-window.submitApp = async function() {
-    // 1. فحص هل سجل دخول أصلاً؟
-    if(!currentUser) return alert("يا بطل، لازم تسجل دخولك بالديسكورد أولاً!");
-
-    // 2. التحذير: إذا كان الشخص هو الأدمين أو عنده رتبة مفعل أو قدم سابقاً
-    const hasAppliedLocal = localStorage.getItem('noVaX_applied') === 'true';
-    const isMember = currentUser.roles && currentUser.roles.includes(ROLE_MEMBER_ID);
-
-    if (isMember || hasAppliedLocal || currentUser.id === MY_ID) {
-        alert("⚠️ تنبيه: نظام NoVaX رصد أنك تمتلك التفعيل بالفعل أو قدمت طلباً مسبقاً. لا يمكنك الإرسال مجدداً!");
-        return; // يوقف العملية هنا وما يرسل للديسكورد
-    }
-
-    // 3. جمع البيانات إذا كان الشخص مسموح له يقدم
-    const data_inputs = {
-        name: document.getElementById('ans_name').value,
-        char: document.getElementById('ans_char_name').value,
-        vdm: document.getElementById('ans_vdm').value,
-        rdm: document.getElementById('ans_rdm').value,
-        fail: document.getElementById('ans_failrp').value,
-        story: document.getElementById('ans_story').value
-    };
-
-    // 4. فحص الخانات الفارغة
-    if (Object.values(data_inputs).some(val => !val)) {
-        return alert("لازم تجاوب على كل الأسئلة عشان تنقبل!");
-    }
-
-    // 5. إرسال البيانات للديسكورد (Webhook)
-    const embedData = {
-        embeds: [{
-            title: "📂 طلب تفعيل جديد | NoVaX",
-            color: 0x3498db,
-            fields: [
-                { name: "👤 المعلومات الأساسية", value: `**الاسم:** ${data_inputs.name}\n**اسم الشخصية:** ${data_inputs.char}`, inline: false },
-                { name: "🆔 صاحب الطلب", value: `<@${currentUser.id}>` },
-                { name: "🚫 قوانين وقصة", value: "البيانات موجودة في سجلات الإدارة" } // تبسيط للرسالة
-            ],
-            footer: { text: "NoVaX Recruitment" },
-            timestamp: new Date()
-        }]
-    };
-
-    try {
-        await fetch(WEB_APPLY, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(embedData)
-        });
-
-        localStorage.setItem('noVaX_applied', 'true'); // حفظ حالة التقديم
-        alert("✅ تم إرسال طلبك بنجاح! سيتم مراجعته من قبل الإدارة.");
-    } catch (e) {
-        alert("فشل الإرسال، حاول مرة أخرى.");
-    }
-}
-        
-        checkApply(); // تحديث الصفحة فوراً لإخفاء الفورم
-
-        // تنظيف الخانات
-        Object.keys(data_inputs).forEach(id => {
-            const el = document.getElementById('ans_' + id);
-            if(el) el.value = "";
-        });
-    } catch (e) {
-        alert("فشل الإرسال، تأكد من اتصالك بالإنترنت.");
-    }
-        }
-
-window.sendAnn = async function() {
-    const msg = document.getElementById('ann_text').value;
-    if(!msg) return alert("الخانة فاضية! اكتب شي للأعضاء أولاً.");
-
-    const annEmbed = {
-        content: "||@everyone - @here||", // منشن للكل
-        embeds: [{
-            title: "📢 إعلان إداري جديد",
-            description: msg,
-            color: 0xa246f0, // اللون البنفسجي الخاص بك
-            fields: [
-                { name: "بواسطة:", value: `<@${MY_ID}>`, inline: true }
-            ],
-            footer: { text: "NoVaX" },
-            timestamp: new Date()
-        }]
-    };
-
-    try {
-        await fetch(WEB_ANNOUNCEMENT, { 
-            method: 'POST', 
-            headers: {'Content-Type': 'application/json'}, 
-            body: JSON.stringify(annEmbed) 
-        });
-        alert("🚀 تم نشر الإعلان بنجاح!");
-        document.getElementById('ann_text').value = ""; // تفريغ النص بعد الإرسال
-    } catch (error) {
-        console.error("خطأ في الإرسال:", error);
-        alert("للأسف فشل الإرسال، تأكد من رابط الويبهوك.");
-    }
-}
-
-    const CLIENT_ID = "1444065204051906610";
-    const REDIRECT = encodeURIComponent("https://virusz111.github.io/NoVaX/");
-    let currentUser = null;
-
-window.login = () => {
-    // تأكد أن response_type مكتوب token وليس code
-    const url = "https://discord.com/oauth2/authorize?client_id=1444065204051906610&response_type=token&redirect_uri=https%3A%2F%2Fvirusz111.github.io%2FNoVaX%2F&scope=identify+guilds+guilds.members.read";
-    window.location.href = url;
-}
-
-
-    window.logout = () => {
-        localStorage.clear(); 
-        window.location.href = window.location.origin + window.location.pathname;
-    };
-    
     window.onload = () => {
         const params = new URLSearchParams(window.location.hash.slice(1));
         const token = params.get('access_token');
-        
         if (token) {
-            // 1. جلب بيانات الحساب
             fetch('https://discord.com/api/users/@me', { headers: { authorization: `Bearer ${token}` } })
             .then(r => r.json()).then(user => {
                 currentUser = user;
                 document.getElementById('loginBtn').classList.add('hidden');
-                document.getElementById('userInfo').classList.remove('hidden');
+                const info = document.getElementById('userInfo');
+                info.classList.remove('hidden');
                 document.getElementById('userName').innerText = user.username;
                 document.getElementById('userAvatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
-
-                // 2. فحص الرتب (تأكد أن ID السيرفر صحيح)
-                const SERVER_ID = "1325063245471420498"; 
-                fetch(`https://discord.com/api/users/@me/guilds/${SERVER_ID}/member`, {
-                    headers: { authorization: `Bearer ${token}` }
-                })
-                .then(res => res.json())
-                .then(memberData => {
-                    if (memberData && memberData.roles) {
-                        currentUser.roles = memberData.roles; 
-                    }
-                    checkApply(); 
-                })
-                .catch(() => checkApply());
+                
+                const SERVER_ID = "1325063245471420498";
+                fetch(`https://discord.com/api/users/@me/guilds/${SERVER_ID}/member`, { headers: { authorization: `Bearer ${token}` } })
+                .then(res => res.json()).then(m => {
+                    if(m.roles) currentUser.roles = m.roles;
+                    checkApply();
+                }).catch(() => checkApply());
 
                 if(user.id === MY_ID) document.getElementById('adminTab').classList.remove('hidden');
             });
-        } else {
-            checkApply();
-        }
+        } else { checkApply(); }
     };
 </script>
 </body>
