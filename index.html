@@ -7,40 +7,46 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #a246f0; --bg: #030305; --card-bg: rgba(15, 15, 20, 0.9); }
+        :root { --primary: #a246f0; --bg: #030305; --card-bg: rgba(15, 15, 20, 0.95); }
         body { font-family: 'Cairo', sans-serif; background: var(--bg); color: white; margin: 0; overflow-x: hidden; }
         
-        /* فيديو الخلفية */
-        #video-background { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -2; filter: brightness(0.5) blur(3px); object-fit: cover; }
-        #video-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: -1; }
+        /* فيديو الخلفية النيون */
+        #video-background { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -2; filter: brightness(0.4) blur(2px); object-fit: cover; }
+        #video-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: -1; }
 
-        header { padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.8); border-bottom: 1px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
-        .nav-tabs { display: flex; justify-content: center; gap: 25px; background: rgba(0,0,0,0.6); padding: 10px; border-bottom: 1px solid rgba(162, 70, 240, 0.2); }
-        .tab-btn { cursor: pointer; opacity: 0.6; font-weight: bold; transition: 0.3s; padding: 5px 15px; border-radius: 8px; }
-        .tab-btn.active { opacity: 1; color: var(--primary); background: rgba(162, 70, 240, 0.1); }
+        header { padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.85); border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
+        
+        /* أزرار التنقل العلوي */
+        .nav-tabs { display: flex; justify-content: center; gap: 20px; background: rgba(0,0,0,0.7); padding: 12px; border-bottom: 1px solid rgba(162, 70, 240, 0.2); }
+        .tab-btn { cursor: pointer; opacity: 0.6; font-weight: 700; transition: 0.3s; padding: 6px 18px; border-radius: 10px; }
+        .tab-btn.active { opacity: 1; color: var(--primary); background: rgba(162, 70, 240, 0.15); box-shadow: 0 0 10px rgba(162, 70, 240, 0.2); }
 
-        .container { max-width: 800px; margin: 30px auto; padding: 20px; min-height: 70vh; position: relative; }
+        .container { max-width: 800px; margin: 40px auto; padding: 20px; min-height: 70vh; position: relative; }
 
-        /* ستايل الكروت */
+        /* الأقسام الأساسية */
         .page-content { display: none; animation: fadeIn 0.5s ease; }
         .page-content.active { display: block; }
         
-        .card { background: var(--card-bg); padding: 30px; border-radius: 25px; border: 1px solid rgba(162, 70, 240, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .card { background: var(--card-bg); padding: 35px; border-radius: 30px; border: 1px solid rgba(162, 70, 240, 0.3); box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
 
-        /* نظام السلايدات داخل التقديم */
+        /* نظام السلايدات (كل سؤال كارد) */
         .slide-step { display: none; text-align: center; }
-        .slide-step.active { display: block; animation: slideIn 0.4s ease; }
+        .slide-step.active { display: block; animation: slideIn 0.4s ease-out; }
         
-        input, textarea { width: 100%; padding: 12px; margin-top: 15px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 10px; color: white; font-family: 'Cairo'; }
-        .btn { padding: 10px 25px; border-radius: 10px; cursor: pointer; font-weight: bold; border: none; transition: 0.3s; margin-top: 20px; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-nav { background: #5865F2; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; }
+        input, textarea { width: 100%; padding: 14px; margin-top: 20px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 12px; color: white; font-family: 'Cairo'; font-size: 16px; box-sizing: border-box; }
+        input:focus, textarea:focus { outline: none; box-shadow: 0 0 10px var(--primary); }
 
-        .rule-box { background: rgba(162, 70, 240, 0.1); padding: 15px; border-radius: 12px; margin-bottom: 15px; border-right: 4px solid var(--primary); }
+        .btn { padding: 12px 30px; border-radius: 12px; cursor: pointer; font-weight: bold; border: none; transition: 0.3s; margin-top: 25px; display: inline-block; }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 5px 15px rgba(162, 70, 240, 0.4); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(162, 70, 240, 0.6); }
+        
+        .btn-login { background: #5865F2; color: white; display: flex; align-items: center; gap: 8px; padding: 10px 20px; }
+
+        .rule-box { background: rgba(162, 70, 240, 0.1); padding: 18px; border-radius: 15px; margin-bottom: 15px; border-right: 5px solid var(--primary); text-align: right; }
         
         .hidden { display: none !important; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideIn { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideIn { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
 </head>
 <body>
@@ -51,12 +57,13 @@
 <div id="video-overlay"></div>
 
 <header>
-    <div style="font-size: 24px; font-weight: bold; color: var(--primary); letter-spacing: 2px;">NoVaX</div>
+    <div style="font-size: 26px; font-weight: bold; color: var(--primary); text-shadow: 0 0 15px var(--primary);">NoVaX</div>
     <div id="auth-zone">
-        <button id="loginBtn" class="btn-nav" onclick="login()"><i class="fab fa-discord"></i> دخول</button>
-        <div id="userProfile" class="hidden" style="display:flex; align-items:center; gap:10px;">
-            <img id="userAvatar" src="" style="width:35px; border-radius:50%; border:1px solid var(--primary);">
-            <button onclick="logout()" style="background:none; border:none; color:#ff4d4d; cursor:pointer;"><i class="fas fa-sign-out-alt"></i></button>
+        <button id="loginBtn" class="btn btn-login" onclick="login()"><i class="fab fa-discord"></i> دخول بالديسكورد</button>
+        <div id="userProfile" class="hidden" style="display:flex; align-items:center; gap:12px;">
+            <span id="displayUserName" style="font-weight: bold;"></span>
+            <img id="userAvatar" src="" style="width:38px; border-radius:50%; border:2px solid var(--primary);">
+            <button onclick="logout()" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-size: 18px;"><i class="fas fa-power-off"></i></button>
         </div>
     </div>
 </header>
@@ -71,52 +78,60 @@
     
     <section id="rules-page" class="page-content active">
         <div class="card">
-            <h2 style="color:var(--primary);"><i class="fas fa-scroll"></i> قوانين المدينة</h2>
-            <div class="rule-box"><b>VDM:</b> دهس اللاعبين بالمركبات ممنوع تماماً.</div>
-            <div class="rule-box"><b>RDM:</b> القتل بدون سبب تمثيلي (RP) يعرضك للتبنيد.</div>
-            <div class="rule-box"><b>Power Gaming:</b> فعل أشياء غير واقعية ممنوع.</div>
-            <p style="text-align:center; opacity:0.7;">سجل دخولك لتتمكن من فتح صفحة التقديم</p>
+            <h2 style="color:var(--primary); text-align: center;"><i class="fas fa-scroll"></i> قوانين NoVaX RP</h2>
+            <div class="rule-box"><b>VDM:</b> يمنع منعاً باتاً استخدام المركبة كوسيلة للقتل أو صدم الناس عشوائياً.</div>
+            <div class="rule-box"><b>RDM:</b> يمنع قتل أي لاعب بدون وجود قصة أو سبب تمثيلي واضح.</div>
+            <div class="rule-box"><b>Meta Gaming:</b> يمنع استخدام معلومات عرفتها خارج اللعبة (مثل الديسكورد) داخل اللعبة.</div>
+            <div class="rule-box"><b>Fail RP:</b> يمنع القيام بأفعال غير واقعية لا يمكن فعلها في الحياة الحقيقية.</div>
+            <p style="text-align:center; opacity:0.6; margin-top: 20px;">سجل دخولك الآن لتفتح لك صفحة التقديم تلقائياً.</p>
         </div>
     </section>
 
     <section id="apply-page" class="page-content">
         <div class="card" id="apply-container">
+            
             <div class="slide-step active" id="step0">
-                <h2>جاهز للتقديم؟ 📝</h2>
-                <p>سيتم سؤالك عن القوانين والمعلومات الشخصية.</p>
-                <button class="btn btn-primary" onclick="nextSlide(1)">ابدأ الآن</button>
+                <h2>جاهز للانضمام؟ 📝</h2>
+                <p>سيتم سؤالك بضعة أسئلة للتأكد من فهمك لقوانين السيرفر.</p>
+                <button class="btn btn-primary" onclick="nextSlide(1)">ابدأ التقديم</button>
             </div>
             
             <div class="slide-step" id="step1">
-                <h3>ما هو اسمك وعمرك؟</h3>
-                <input type="text" id="ans1" placeholder="مثال: علي - 19 سنة">
+                <h3>السؤال الأول: الاسم والعمر 👤</h3>
+                <input type="text" id="ans1" placeholder="مثال: أحمد - 20 سنة">
                 <button class="btn btn-primary" onclick="nextSlide(2)">التالي</button>
             </div>
 
             <div class="slide-step" id="step2">
-                <h3>اشرح قانون الـ VDM؟</h3>
-                <textarea id="ans2" rows="3" placeholder="اكتب شرحك هنا..."></textarea>
+                <h3>السؤال الثاني: ما هو الـ VDM؟ 🚗</h3>
+                <textarea id="ans2" rows="3" placeholder="اشرح لنا هذا القانون بأسلوبك..."></textarea>
                 <button class="btn btn-primary" onclick="nextSlide(3)">التالي</button>
             </div>
 
             <div class="slide-step" id="step3">
-                <h3>كلمة أخيرة للإدارة؟</h3>
-                <textarea id="ans3" rows="3"></textarea>
-                <button class="btn btn-primary" onclick="finishApply()">إرسال التقديم</button>
+                <h3>السؤال الثالث: ما هو الـ RDM؟ 🔫</h3>
+                <textarea id="ans3" rows="3" placeholder="اشرح لنا هذا القانون بأسلوبك..."></textarea>
+                <button class="btn btn-primary" onclick="nextSlide(4)">التالي</button>
+            </div>
+
+            <div class="slide-step" id="step4">
+                <h3>كلمة أخيرة للإدارة 💬</h3>
+                <textarea id="ans4" rows="3" placeholder="لماذا تريد الانضمام إلينا؟"></textarea>
+                <button class="btn btn-primary" style="background: #2ecc71;" onclick="finishApply()">إرسال التقديم النهائي</button>
             </div>
 
             <div class="slide-step" id="step-final">
-                <h2 style="color:#2ecc71;">تم الإرسال بنجاح!</h2>
-                <p>راجع الديسكورد للرد على طلبك.</p>
+                <h2 style="color:#2ecc71;">✅ تم إرسال طلبك!</h2>
+                <p>تم إرسال بياناتك وصورة حسابك للإدارة. انتظر الرد في الديسكورد.</p>
             </div>
         </div>
     </section>
 
     <section id="admin-page" class="page-content">
         <div class="card" style="border-color:#ff4d4d;">
-            <h2 style="color:#ff4d4d;">لوحة تحكم المؤسس</h2>
-            <p>أهلاً بك يا مدير. طلبات التقديم تظهر في روم الـ Webhook الخاص بك.</p>
-            <div class="rule-box">عدد التقديمات اليوم: <b>قيد التطوير</b></div>
+            <h2 style="color:#ff4d4d; text-align: center;">لوحة تحكم المؤسس</h2>
+            <p style="text-align: center;">أهلاً بك يا مدير. جميع التقديمات تصلك الآن في الروم المخصص بالديسكورد.</p>
+            <div class="rule-box" style="border-right-color: #ff4d4d;">يصلك في الويبهوك: <b>الاسم، الآيدي، الصورة، وحالة التحقق.</b></div>
         </div>
     </section>
 
@@ -147,21 +162,35 @@
     }
 
     async function finishApply() {
+        if(!currentUser) return alert("خطأ: لم يتم التعرف على بيانات الديسكورد.");
+
+        const isVerified = currentUser.verified ? "✅ موثق" : "❌ غير موثق";
+
         const data = {
             embeds: [{
-                title: "📩 تقديم جديد",
+                title: "🚀 تقديم جديد على NoVaX RP",
                 color: 10634992,
                 thumbnail: { url: `https://cdn.discordapp.com/avatars/${currentUser.id}/${currentUser.avatar}.png` },
                 fields: [
-                    { name: "👤 العضو", value: `<@${currentUser.id}>` },
-                    { name: "📝 المعلومات", value: document.getElementById('ans1').value },
+                    { name: "👤 العضو", value: `<@${currentUser.id}> (**${currentUser.username}**)`, inline: true },
+                    { name: "🆔 آيدي الحساب", value: `\`${currentUser.id}\``, inline: true },
+                    { name: "🛡️ حالة الحساب", value: isVerified, inline: true },
+                    { name: "📝 الاسم والعمر", value: document.getElementById('ans1').value },
                     { name: "🚗 VDM", value: document.getElementById('ans2').value },
-                    { name: "💬 رسالة", value: document.getElementById('ans3').value }
-                ]
+                    { name: "🔫 RDM", value: document.getElementById('ans3').value },
+                    { name: "💬 رسالة إضافية", value: document.getElementById('ans4').value }
+                ],
+                footer: { text: "NoVaX Management System" },
+                timestamp: new Date()
             }]
         };
-        await fetch(WEBHOOK, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
-        nextSlide('-final');
+
+        try {
+            await fetch(WEBHOOK, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
+            nextSlide('-final');
+        } catch(e) {
+            alert("حدث خطأ أثناء الإرسال، تأكد من الاتصال.");
+        }
     }
 
     window.onload = () => {
@@ -173,10 +202,11 @@
                 currentUser = user;
                 document.getElementById('loginBtn').classList.add('hidden');
                 document.getElementById('userProfile').classList.remove('hidden');
+                document.getElementById('displayUserName').innerText = user.username;
                 document.getElementById('userAvatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+                
                 document.getElementById('applyTab').classList.remove('hidden');
                 if(user.id === CLIENT_ID) document.getElementById('adminTab').classList.remove('hidden');
-                alert("مرحباً بك: " + user.username);
             });
         }
     };
