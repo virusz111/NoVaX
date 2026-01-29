@@ -3,184 +3,331 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NoVaX RP | الموقع الرسمي</title>
+    <title>NoVaX RP | Grand Website</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+
     <style>
-        :root { --primary: #a246f0; --bg: #030305; --card-bg: rgba(15, 15, 20, 0.95); --admin-red: #ff4d4d; --discord: #5865F2; --success: #2ecc71; }
-        body { font-family: 'Cairo', sans-serif; background: var(--bg); color: white; margin: 0; overflow-x: hidden; }
-        #video-background { position: fixed; inset: 0; z-index: -2; filter: brightness(0.3) blur(2px); object-fit: cover; width: 100%; height: 100%; }
-        header { padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.9); border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
-        .nav-tabs { display: flex; justify-content: center; gap: 10px; background: rgba(0,0,0,0.8); padding: 10px; }
-        .tab-btn { cursor: pointer; opacity: 0.6; font-weight: 700; transition: 0.3s; padding: 10px 20px; border-radius: 12px; color: white; border: 1px solid transparent; }
-        .tab-btn.active { opacity: 1; color: var(--primary); background: rgba(162, 70, 240, 0.15); border: 1px solid var(--primary); }
-        .container { max-width: 1100px; margin: 20px auto; padding: 20px; }
-        .page-content { display: none; animation: fadeIn 0.5s ease forwards; }
-        .page-content.active { display: block; }
-        .card { background: var(--card-bg); padding: 30px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.05); text-align: center; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .btn { padding: 12px 25px; border-radius: 12px; cursor: pointer; font-weight: bold; border: none; transition: 0.3s; font-family: 'Cairo'; color: white; width: 100%; margin-top: 10px; text-decoration: none; display: block; }
-        .btn-primary { background: var(--primary); }
-        .btn-admin { background: var(--admin-red); }
-        .btn-success { background: var(--success); }
-        input, textarea { width: 100%; padding: 15px; margin-top: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 12px; color: white; box-sizing: border-box; outline: none; }
-        .hidden { display: none !important; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* إعدادات التصميم العام - CSS */
+        :root {
+            --primary-color: #a246f0;
+            --secondary-color: #6a1b9a;
+            --background-dark: #030305;
+            --card-bg: rgba(20, 20, 25, 0.98);
+            --text-white: #ffffff;
+            --danger: #ff4d4d;
+            --success: #2ecc71;
+            --discord-blue: #5865F2;
+        }
+
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--background-dark);
+            color: var(--text-white);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* الخلفية المتحركة */
+        #bg-video {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            filter: brightness(0.2) blur(3px);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 20%, var(--background-dark) 100%);
+            z-index: -1;
+        }
+
+        /* الهيدر */
+        header {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--primary-color);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 32px; font-weight: 800; color: var(--primary-color); text-transform: uppercase; }
+
+        /* القائمة العلوية */
+        nav.main-nav {
+            display: flex;
+            justify-content: center;
+            background: rgba(15, 15, 15, 0.9);
+            padding: 10px 0;
+            gap: 15px;
+        }
+
+        .nav-item {
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 600;
+            border: 1px solid transparent;
+        }
+
+        .nav-item:hover { background: rgba(162, 70, 240, 0.1); border-color: var(--primary-color); }
+        .nav-item.active { background: var(--primary-color); color: white; box-shadow: 0 0 15px var(--primary-color); }
+
+        /* الحاويات والبطاقات */
+        .main-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        
+        .section-box {
+            display: none;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        .section-box.active { display: block; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* الأزرار والفورم */
+        .btn-action {
+            display: inline-block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 12px;
+            border: none;
+            font-family: 'Cairo';
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-save { background: var(--success); color: white; }
+        .btn-delete { background: var(--danger); color: white; }
+        .btn-discord { background: var(--discord-blue); color: white; width: auto; }
+
+        input, textarea {
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--primary-color);
+            border-radius: 10px;
+            color: white;
+            font-family: 'Cairo';
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
 
-<video autoplay muted loop id="video-background">
-    <source src="https://assets.mixkit.co/videos/preview/mixkit-neon-lights-in-a-dark-hallway-4712-large.mp4" type="video/mp4">
-</video>
+    <video autoplay muted loop id="bg-video">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-neon-lights-in-a-dark-hallway-4712-large.mp4" type="video/mp4">
+    </video>
+    <div class="overlay"></div>
 
-<header>
-    <div style="font-size: 28px; font-weight: 800; color: var(--primary);">NoVaX RP</div>
-    <div id="auth-zone">
-        <button id="loginBtn" class="btn btn-primary" style="width:auto; margin:0;" onclick="login()">دخول بالديسكورد</button>
-        <div id="userProfile" class="hidden" style="display:flex; align-items:center; gap:12px;">
-            <span id="displayUserName" style="font-weight:bold;"></span>
-            <img id="userAvatar" src="" style="width:35px; border-radius:50%; border:2px solid var(--primary);">
-            <button onclick="logout()" style="background:none; border:none; color:var(--admin-red); cursor:pointer; font-size:20px;"><i class="fas fa-sign-out-alt"></i></button>
+    <header>
+        <div class="logo">NoVaX RP</div>
+        <div id="discord-auth">
+            <button id="loginBtn" class="btn-action btn-discord" onclick="discordLogin()">تسجيل الدخول</button>
+            <div id="userInfo" class="hidden" style="display:flex; align-items:center; gap:10px;">
+                <img id="avatar" src="" style="width:40px; border-radius:50%;">
+                <span id="username"></span>
+            </div>
         </div>
+    </header>
+
+    <nav class="main-nav">
+        <div class="nav-item active" onclick="changePage('home', this)">الرئيسية</div>
+        <div class="nav-item" onclick="changePage('apply', this)">التقديم</div>
+        <div id="adminTab" class="nav-item hidden" onclick="changePage('admin', this)" style="color:var(--danger)">لوحة التحكم</div>
+    </nav>
+
+    <div class="main-container">
+        <section id="home" class="section-box active">
+            <h1>مرحباً بك في مدينة NoVaX</h1>
+            <p>أفضل مدينة واقعية تعتمد على نظام متطور وادارة محترفة.</p>
+        </section>
+
+        <section id="apply" class="section-box">
+            <div id="apply-status-container">
+                <div id="form-body">
+                    <h2>تقديم طلب تفعيل</h2>
+                    <input type="text" id="app_name" placeholder="الاسم والعمر">
+                    <textarea id="app_reason" rows="5" placeholder="لماذا اخترت سيرفرنا؟"></textarea>
+                    <button class="btn-action btn-save" onclick="submitApplication()">إرسال الطلب الآن</button>
+                </div>
+                <div id="closed-body" style="display:none;">
+                    <h2 style="color:var(--danger)">نعتذر، التقديم مغلق حالياً</h2>
+                    <p>يرجى متابعة الديسكورد للتعرف على مواعيد الفتح القادمة.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="admin" class="section-box">
+            <h2>لوحة إدارة السيرفر</h2>
+            <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px;">
+                <h3>التحكم في التقديم</h3>
+                <div id="current-state" class="status-badge" style="background:var(--success)">الحالة: مفتوح</div>
+                <div style="display:flex; gap:10px;">
+                    <button class="btn-action btn-save" onclick="updateSystemStatus(true)">فتح التقديم</button>
+                    <button class="btn-action btn-delete" onclick="updateSystemStatus(false)">إغلاق التقديم</button>
+                </div>
+            </div>
+
+            <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; margin-top: 20px;">
+                <h3>إرسال إعلان عام (@everyone)</h3>
+                <textarea id="ann_text" placeholder="اكتب نص الإعلان هنا..."></textarea>
+                <button class="btn-action btn-discord" style="width:100%" onclick="postGlobalAnnouncement()">نشر الإعلان</button>
+            </div>
+        </section>
     </div>
-</header>
 
-<nav class="nav-tabs">
-    <div class="tab-btn active" onclick="switchTab('home-page', this)">الرئيسية</div>
-    <div class="tab-btn" onclick="switchTab('apply-page', this)">التقديم</div>
-    <div id="adminTab" class="tab-btn hidden" onclick="switchTab('admin-page', this)" style="color:var(--admin-red);">الإدارة</div>
-</nav>
+    <script>
+        // ثوابت الربط
+        const ADMIN_ID = "1221794986203418704";
+        const WEBHOOK_APPLICATIONS = "https://discord.com/api/webhooks/1466173783537750201/Dbm7MYHeWnFUHMhRoV0g-66Nfyni6kB3XXENjUL9aUEZWDGgjOjrGb0YtvOkOwOwwPaJ";
+        const WEBHOOK_NOTIFICATIONS = "https://discord.com/api/webhooks/1466228663962832959/HndTSLUdCtqJk7Sa8iRwDudzt-LmOi5i_x2MrL4yJ_2MTFjaPXM18XuM01z4sJp7MzsJ";
 
-<main class="container">
-    <section id="home-page" class="page-content active">
-        <div class="card">
-            <h1>NoVaX RP</h1>
-            <p>أهلاً بك في أقوى تجربة واقعية</p>
-            <a href="https://discord.gg/HZFb5BZ8dZ" target="_blank" class="btn btn-primary" style="width:max-content; margin: 20px auto;">سيرفر الديسكورد</a>
-        </div>
-    </section>
+        // وظيفة تحديث الحالة وإرسالها للديسكورد
+        window.updateSystemStatus = async function(isOpen) {
+            localStorage.setItem('noVaX_apply_open', isOpen);
+            
+            // إرسال البيانات للديسكورد (الربط المفقود)
+            const payload = {
+                username: "نظام إدارة NoVaX",
+                embeds: [{
+                    title: isOpen ? "✅ تحديث: فتح التقديم" : "❌ تحديث: إغلاق التقديم",
+                    description: isOpen ? "@everyone الموقع الآن يستقبل طلبات التفعيل!" : "@everyone تم إغلاق التقديم من قبل الإدارة.",
+                    color: isOpen ? 3066993 : 15158332,
+                    timestamp: new Date()
+                }]
+            };
 
-    <section id="apply-page" class="page-content">
-        <div class="card">
-            <div id="form-inner">
-                <h2>📝 تقديم طلب تفعيل</h2>
-                <input type="text" id="p_name" placeholder="الاسم والعمر">
-                <textarea id="p_q" rows="4" placeholder="لماذا تريد الانضمام؟ وما هو مفهوم الـ RP؟"></textarea>
-                <button class="btn btn-success" onclick="sendApply()">إرسال التقديم</button>
-            </div>
-            <div id="closed-inner" class="hidden">
-                <h2 style="color:var(--admin-red);">❌ التقديم مغلق حالياً</h2>
-                <p>تابع قناة الإعلانات لمعرفة موعد الفتح.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="admin-page" class="page-content">
-        <div class="card">
-            <h3>⚙️ التحكم بالتقديم (إرسال للديسكورد)</h3>
-            <div style="display:flex; gap:10px;">
-                <button class="btn btn-success" onclick="controlApply(true)">فتح التقديم ✅</button>
-                <button class="btn btn-admin" onclick="controlApply(false)">إغلاق التقديم ❌</button>
-            </div>
-            <p id="status-now" style="margin-top:20px; font-weight:bold; color:var(--primary);"></p>
-        </div>
-        <div class="card">
-            <h3>📢 نشر إعلان سريع</h3>
-            <textarea id="annMsg" placeholder="محتوى الإعلان..."></textarea>
-            <button class="btn btn-primary" onclick="announce()">نشر الإعلان @everyone</button>
-        </div>
-    </section>
-</main>
-
-<script>
-    const MY_ID = "1221794986203418704";
-    const WEBHOOK_APPLY = "https://discord.com/api/webhooks/1466173783537750201/Dbm7MYHeWnFUHMhRoV0g-66Nfyni6kB3XXENjUL9aUEZWDGgjOjrGb0YtvOkOwOwwPaJ";
-    const WEBHOOK_ANN = "https://discord.com/api/webhooks/1466228663962832959/HndTSLUdCtqJk7Sa8iRwDudzt-LmOi5i_x2MrL4yJ_2MTFjaPXM18XuM01z4sJp7MzsJ";
-
-    // وظيفة الفتح والإغلاق مع الإرسال للديسكورد
-    window.controlApply = async function(isOpen) {
-        localStorage.setItem('noVaX_applyStatus', isOpen ? 'open' : 'closed');
-        
-        // إرسال الإشعار للديسكورد
-        const embed = {
-            embeds: [{
-                title: isOpen ? "✅ تم فتح التقديم" : "❌ تم إغلاق التقديم",
-                description: isOpen ? "@everyone التقديم مفتوح الآن عبر الموقع!" : "@everyone تم إغلاق التقديم حالياً.",
-                color: isOpen ? 0x2ecc71 : 0xff4d4d,
-                timestamp: new Date()
-            }]
-        };
-
-        try {
-            await fetch(WEBHOOK_ANN, {
+            await fetch(WEBHOOK_NOTIFICATIONS, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(embed)
+                body: JSON.stringify(payload)
             });
-            alert("تم تحديث الحالة وإرسال إشعار للديسكورد!");
-        } catch(e) { alert("خطأ في الربط!"); }
-        
-        checkStatus();
-    }
 
-    function checkStatus() {
-        const s = localStorage.getItem('noVaX_applyStatus') || 'open';
-        document.getElementById('form-inner').classList.toggle('hidden', s !== 'open');
-        document.getElementById('closed-inner').classList.toggle('hidden', s === 'open');
-        const st = document.getElementById('status-now');
-        if(st) st.innerText = "الحالة الآن: " + (s === 'open' ? "مفتوح ✅" : "مغلق ❌");
-    }
-
-    window.announce = async function() {
-        const m = document.getElementById('annMsg').value;
-        if(!m) return alert("اكتب شي!");
-        await fetch(WEBHOOK_ANN, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ content: "@everyone\n" + m }) });
-        alert("تم النشر!");
-        document.getElementById('annMsg').value = "";
-    }
-
-    window.sendApply = async function() {
-        if(!currentUser) return alert("سجل دخول أولاً!");
-        const n = document.getElementById('p_name').value;
-        const q = document.getElementById('p_q').value;
-        if(!n || !q) return alert("أكمل البيانات!");
-        await fetch(WEBHOOK_APPLY, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({
-            embeds: [{ title: "تقديم جديد", color: 0xa246f0, fields: [{name:"الاسم", value:n}, {name:"التفاصيل", value:q}, {name:"الحساب", value:`<@${currentUser.id}>`}] }]
-        }) });
-        alert("تم إرسال طلبك!");
-    }
-
-    window.switchTab = function(id, btn) {
-        document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        btn.classList.add('active');
-        checkStatus();
-    }
-
-    const CLIENT_ID = "1444065204051906610";
-    const REDIRECT_URI = window.location.origin + window.location.pathname;
-    let currentUser = null;
-
-    window.login = () => window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`;
-    window.logout = () => window.location.href = REDIRECT_URI;
-
-    window.onload = () => {
-        checkStatus();
-        const params = new URLSearchParams(window.location.hash.substring(1));
-        const token = params.get('access_token');
-        if (token) {
-            fetch('https://discord.com/api/users/@me', { headers: { authorization: `Bearer ${token}` } })
-            .then(r => r.json()).then(user => {
-                currentUser = user;
-                document.getElementById('loginBtn').classList.add('hidden');
-                document.getElementById('userProfile').classList.remove('hidden');
-                document.getElementById('displayUserName').innerText = user.username;
-                document.getElementById('userAvatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
-                if(user.id === MY_ID) document.getElementById('adminTab').classList.remove('hidden');
-            });
+            alert("تم تحديث الحالة وإرسال الإشعار للديسكورد بنجاح!");
+            syncUI();
         }
-    };
-</script>
+
+        // مزامنة الواجهة مع الحالة المحفوظة
+        function syncUI() {
+            const isOpen = localStorage.getItem('noVaX_apply_open') !== 'false';
+            document.getElementById('form-body').style.display = isOpen ? 'block' : 'none';
+            document.getElementById('closed-body').style.display = isOpen ? 'none' : 'block';
+            
+            const badge = document.getElementById('current-state');
+            if(badge) {
+                badge.innerText = isOpen ? "الحالة: مفتوح ✅" : "الحالة: مغلق ❌";
+                badge.style.background = isOpen ? "var(--success)" : "var(--danger)";
+            }
+        }
+
+        // إرسال التقديم
+        window.submitApplication = async function() {
+            const name = document.getElementById('app_name').value;
+            const reason = document.getElementById('app_reason').value;
+
+            if(!name || !reason) return alert("يرجى ملء البيانات!");
+
+            const data = {
+                embeds: [{
+                    title: "📩 تقديم طلب تفعيل جديد",
+                    fields: [
+                        { name: "صاحب الطلب", value: `<@${userObject?.id || 'غير معروف'}>` },
+                        { name: "الاسم والعمر", value: name },
+                        { name: "السبب", value: reason }
+                    ],
+                    color: 10635000
+                }]
+            };
+
+            await fetch(WEBHOOK_APPLICATIONS, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+
+            alert("تم إرسال تقديمك بنجاح!");
+        }
+
+        // إرسال إعلان
+        window.postGlobalAnnouncement = async function() {
+            const text = document.getElementById('ann_text').value;
+            if(!text) return alert("اكتب الإعلان أولاً!");
+
+            await fetch(WEBHOOK_NOTIFICATIONS, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ content: "@everyone\n" + text })
+            });
+
+            alert("تم نشر الإعلان بنجاح!");
+            document.getElementById('ann_text').value = "";
+        }
+
+        // تبديل الصفحات
+        window.changePage = function(id, el) {
+            document.querySelectorAll('.section-box').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            el.classList.add('active');
+            syncUI();
+        }
+
+        // نظام الدخول
+        let userObject = null;
+        function discordLogin() {
+            const CLIENT_ID = "1444065204051906610";
+            const REDIRECT = encodeURIComponent(window.location.origin + window.location.pathname);
+            window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT}&response_type=token&scope=identify`;
+        }
+
+        window.onload = () => {
+            syncUI();
+            const fragment = new URLSearchParams(window.location.hash.slice(1));
+            const token = fragment.get('access_token');
+            if (token) {
+                fetch('https://discord.com/api/users/@me', { headers: { authorization: `Bearer ${token}` } })
+                .then(r => r.json()).then(user => {
+                    userObject = user;
+                    document.getElementById('loginBtn').style.display = 'none';
+                    document.getElementById('userInfo').classList.remove('hidden');
+                    document.getElementById('username').innerText = user.username;
+                    document.getElementById('avatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+                    document.getElementById('adminTab').classList.toggle('hidden', user.id !== ADMIN_ID);
+                });
+            }
+        };
+    </script>
 </body>
 </html>
