@@ -219,34 +219,29 @@ window.toggleApply = async function(val) {
 
 function checkApply() {
     const isOpen = localStorage.getItem('noVaX_isOpen') !== 'false';
-    const hasApplied = localStorage.getItem('noVaX_applied') === 'true'; 
+    const hasApplied = localStorage.getItem('noVaX_applied') === 'true'; // البصمة
 
     const form = document.getElementById('apply-form');
     const closedMsg = document.getElementById('apply-closed');
     const alreadyAppliedMsg = document.getElementById('already-applied');
-    const statusText = document.getElementById('current-status');
 
-    // إخفاء كل شيء أولاً
+    // إخفاء الكل أولاً
     if(form) form.classList.add('hidden');
     if(closedMsg) closedMsg.classList.add('hidden');
     if(alreadyAppliedMsg) alreadyAppliedMsg.classList.add('hidden');
 
-    // منطق الإظهار الذكي (الترتيب مهم)
+    // منطق الإظهار
     if (hasApplied) {
-        // إذا كان قد قدم مسبقاً، تظهر رسالة التنبيه فقط
         if(alreadyAppliedMsg) alreadyAppliedMsg.classList.remove('hidden');
     } else if (!isOpen) {
-        // إذا كان التقديم مغلقاً
         if(closedMsg) closedMsg.classList.remove('hidden');
     } else {
-        // إذا كان التقديم مفتوحاً ولم يقدم بعد
         if(form) form.classList.remove('hidden');
     }
 
     // تحديث نص الحالة في لوحة الإدارة
-    if(statusText) {
-        statusText.innerText = "الحالة الحالية: " + (isOpen ? "مفتوح ✅" : "مغلق ❌");
-    }
+    const statusText = document.getElementById('current-status');
+    if(statusText) statusText.innerText = "الحالة الحالية: " + (isOpen ? "مفتوح ✅" : "مغلق ❌");
 }
 
 window.submitApp = async function() {
