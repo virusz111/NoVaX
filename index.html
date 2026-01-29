@@ -217,27 +217,47 @@ window.toggleApply = async function(val) {
     }
 }
 
+// حط آيدي رتبة "مفعل" هنا (جيبه من إعدادات السيرفر عندك)
+const ROLE_MEMBER_ID = "1221794986203418704"; // آيدي رتبة مفعل
+
 function checkApply() {
     const isOpen = localStorage.getItem('noVaX_isOpen') !== 'false';
-    const hasApplied = localStorage.getItem('noVaX_applied') === 'true'; // البصمة
+    const lastSubmit = localStorage.getItem('last_submit_time');
+    const cooldown = 60 * 60 * 1000; // ساعة واحدة بالملي ثانية
+    
+    // فحص وقت الانتظار: هل مرت ساعة؟
+    const isWaiting = lastSubmit && (Date.now() - lastSubmit < cooldown);
+    
+    // فحص هل اللاعب عنده رتبة مفعل؟
+    const isMember = currentUser && currentUser.roles && currentUser.roles.includes(ROLE_MEMBER_ID);
 
     const form = document.getElementById('apply-form');
     const closedMsg = document.getElementById('apply-closed');
     const alreadyAppliedMsg = document.getElementById('already-applied');
 
-    // إخفاء الكل أولاً
     if(form) form.classList.add('hidden');
     if(closedMsg) closedMsg.classList.add('hidden');
     if(alreadyAppliedMsg) alreadyAppliedMsg.classList.add('hidden');
 
-    // منطق الإظهار
-    if (hasApplied) {
-        if(alreadyAppliedMsg) alreadyAppliedMsg.classList.remove('hidden');
-    } else if (!isOpen) {
+    if (isMember) {
+        // حالة 1: اللاعب مفعل أصلاً (يختفي التقديم للأبد)
+        alreadyAppliedMsg.innerHTML = `<h2 style="color:var(--success);">✅ أنت عضو مفعل</h2><p>حسابك يمتلك رتبة التفعيل بالفعل، لا داعي للتقديم مجدداً.</p>`;
+        alreadyAppliedMsg.classList.remove('hidden');
+    } 
+    else if (isWaiting) {
+        // حالة 2: اللاعب قدم ولسه ما مرت ساعة (رسالة الانتظار)
+        alreadyAppliedMsg.innerHTML = `<h2 style="color:var(--warning);">⏳ يرجى الانتظار</h2><p>لقد قدمت طلباً مؤخراً. يمكنك التقديم مرة أخرى بعد مرور ساعة إذا لم يتم تفعيلك.</p>`;
+        alreadyAppliedMsg.classList.remove('hidden');
+    }
+    else if (!isOpen) {
+        // حالة 3: التقديم مغلق من الإدارة
         if(closedMsg) closedMsg.classList.remove('hidden');
-    } else {
+    } 
+    else {
+        // حالة 4: مسموح له يقدم
         if(form) form.classList.remove('hidden');
     }
+}
 
     // تحديث نص الحالة في لوحة الإدارة
     const statusText = document.getElementById('current-status');
