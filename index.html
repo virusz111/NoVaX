@@ -250,28 +250,37 @@
         } catch (e) { alert("فشل في الإرسال."); }
     };
 
-    window.toggleApply = async function(val) {
+        window.toggleApply = async function(val) {
         localStorage.setItem('noVaX_isOpen', val);
+        
+        // محاولة حذف الرسالة السابقة لتجنب الزحمة (اختياري)
         const oldId = localStorage.getItem('last_status_msg_id');
         if (oldId) {
             try { await fetch(WEB_ADMIN.split('?')[0] + "/messages/" + oldId, { method: 'DELETE' }); } catch(e){}
         }
+
+        // إرسال الـ Embed الجديد بالشكل المرتب
         const res = await fetch(WEB_ADMIN, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 embeds: [{
-                    title: val ? "✅ التقديم مفتوح" : "❌ التقديم مغلق",
-                    description: `بواسطة <@${currentUser.id}>`,
-                    color: val ? 3066993 : 15158332
+                    title: val ? "🟢 تم فتح باب التقديم" : "🔴 تم إغلاق باب التقديم",
+                    description: `قام الإداري <@${currentUser.id}> بتغيير حالة التقديم الآن.\n\n**الحالة الحالية:** ${val ? "متاح للاعبين ✅" : "مغلق حالياً ❌"}`,
+                    color: val ? 3066993 : 15158332, // أخضر للفتح، أحمر للإغلاق
+                    timestamp: new Date(),
+                    footer: { text: "نظام إدارة NoVaX RP" }
                 }]
             })
         });
+
         const json = await res.json();
         if(json.id) localStorage.setItem('last_status_msg_id', json.id);
+        
         checkApply();
-        alert("تم تحديث الحالة!");
+        alert(val ? "تم فتح التقديم بنجاح! ✅" : "تم إغلاق التقديم بنجاح! ❌");
     };
+    
 
     window.sendAnn = async function() {
         const msg = document.getElementById('ann_text').value;
