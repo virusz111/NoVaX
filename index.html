@@ -366,15 +366,13 @@ window.sendAnn = async function() {
 }
 
     const CLIENT_ID = "1444065204051906610";
-    const REDIRECT = encodeURIComponent(window.location.origin + window.location.pathname);
+    const REDIRECT = encodeURIComponent("https://virusz111.github.io/NoVaX/");
     let currentUser = null;
 
-    window.login = () => {
-    // التعديل: استبدال code بـ token ليتوافق مع برمجة موقعك
-    const finalUrl = "https://discord.com/oauth2/authorize?client_id=1444065204051906610&response_type=token&redirect_uri=https%3A%2F%2Fvirusz111.github.io%2FNoVaX%2F&scope=identify+guilds.members.read+guilds";
-    
-    window.location.href = finalUrl;
+window.login = () => {
+    window.location.href = `https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT}&response_type=token&scope=identify+guilds+guilds.members.read`;
 };
+
 
     window.logout = () => {
         localStorage.clear(); 
