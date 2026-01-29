@@ -275,34 +275,36 @@ window.submitApp = async function() {
     });
 }
 
-Window.sendAnn = async function() {
+window.sendAnn = async function() {
     const msg = document.getElementById('ann_text').value;
-    if(!msg) return alert("يا بطل، الخانة فاضية! اكتب شي للأعضاء.");
+    if(!msg) return alert("الخانة فاضية! اكتب شي للأعضاء أولاً.");
 
     const annEmbed = {
-        content: "@everyone", 
+        content: "||@everyone - @here||", // منشن للكل
         embeds: [{
             title: "📢 إعلان إداري جديد",
             description: msg,
-            color: 0xa246f0, 
+            color: 0xa246f0, // اللون البنفسجي الخاص بك
             fields: [
-                // استخدمنا MY_ID اللي عرفناه فوق كاحتياط
                 { name: "بواسطة:", value: `<@${MY_ID}>`, inline: true }
             ],
-            footer: { text: "NoVaX System" },
+            footer: { text: "NoVaX" },
             timestamp: new Date()
         }]
     };
 
-    // التغيير هنا: استخدمنا رابط الإعلانات الجديد
-    await fetch(WEB_ANNOUNCEMENT, { 
-        method: 'POST', 
-        headers: {'Content-Type': 'application/json'}, 
-        body: JSON.stringify(annEmbed) 
-    });
-
-    alert("تم نشر الإعلان الفخم بنجاح! 🚀");
-    document.getElementById('ann_text').value = ""; 
+    try {
+        await fetch(WEB_ANNOUNCEMENT, { 
+            method: 'POST', 
+            headers: {'Content-Type': 'application/json'}, 
+            body: JSON.stringify(annEmbed) 
+        });
+        alert("🚀 تم نشر الإعلان بنجاح!");
+        document.getElementById('ann_text').value = ""; // تفريغ النص بعد الإرسال
+    } catch (error) {
+        console.error("خطأ في الإرسال:", error);
+        alert("للأسف فشل الإرسال، تأكد من رابط الويبهوك.");
+    }
 }
 
     const CLIENT_ID = "1444065204051906610";
