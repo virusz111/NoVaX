@@ -116,16 +116,25 @@
     const APPLY_WEBHOOK = "https://discord.com/api/webhooks/1466173783537750201/Dbm7MYHeWnFUHMhRoV0g-66Nfyni6kB3XXENjUL9aUEZWDGgjOjrGb0YtvOkOwOwwPaJ";
 
     const staffList = [
-        { id: "1221794986203418704", name: "NoVaX", rank: "Owner", class: "rank-owner" },
+        { id: "https://cdn.discordapp.com/attachments/1441771278649266286/1466239958397227029/file_0000000069c071f492d3d90ddf9eae10.png?ex=697c05df&is=697ab45f&hm=1da7d9b947c2bb1901090c69a55598efeda798e32ecf86aa2b5d6e9ebec300f5&", name: "BA95", rank: "Owner", class: "OwnerShip" },
         { id: "آيدي_المسؤول_هنا", name: "المسؤول الأول", rank: "Manager", class: "" }
     ];
 
     function loadStaff() {
-        const container = document.getElementById('staff-container');
-        staffList.forEach(m => {
-            container.innerHTML += `<div class="staff-card"><img src="https://img.v-rp.io/u/${m.id}" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=${m.name}'" class="staff-img"><div style="font-weight:bold;">${m.name}</div><span class="staff-rank ${m.class}">${m.rank}</span></div>`;
-        });
-    }
+    const container = document.getElementById('staff-container');
+    staffList.forEach(m => {
+        // إذا كان الـ id يبدأ بـ http يعني حطيت رابط صورة مباشر
+        let finalImg = m.id.startsWith('http') ? m.id : `https://img.v-rp.io/u/${m.id}`;
+        
+        container.innerHTML += `
+            <div class="staff-card">
+                <img src="${finalImg}" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=${m.name}'" class="staff-img">
+                <div style="font-weight:bold;">${m.name}</div>
+                <span class="staff-rank ${m.class}">${m.rank}</span>
+            </div>
+        `;
+    });
+}
 
     const CLIENT_ID = "1444065204051906610";
     const REDIRECT_URI = "https://virusz111.github.io/NoVaX/";
