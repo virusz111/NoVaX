@@ -92,13 +92,25 @@
     <section id="apply-page" class="page-content">
         <div class="card">
             <div id="apply-form">
-                <h2>📝 تقديم تفعيل</h2>
-                <input type="text" id="ans_name" placeholder="الاسم والعمر">
-                <textarea id="ans_rules" rows="4" placeholder="اشرح لنا قوانين السيرفر"></textarea>
-                <button class="btn btn-success" onclick="submitApp()">إرسال الطلب</button>
+                <h2>📝 اختبار قوانين المدينة (التقديم)</h2>
+                
+                <input type="text" id="ans_name" placeholder="الاسم الحقيقي والعمر">
+                <input type="text" id="ans_char_name" placeholder="اسم الشخصية الرباعي (داخل اللعبة)">
+
+                <textarea id="ans_vdm" rows="3" placeholder="ماذا يعني مصطلح (VDM)؟ وأعطِ مثالاً عليه؟"></textarea>
+                
+                <textarea id="ans_rdm" rows="3" placeholder="ماذا يعني مصطلح (RDM)؟ وما هي شروط القتل؟"></textarea>
+                
+                <textarea id="ans_failrp" rows="3" placeholder="اشرح مصطلح (Fail RP) بأسلوبك؟"></textarea>
+                
+                <textarea id="ans_story" rows="3" placeholder="اكتب نبذة عن قصة دخول شخصيتك للمدينة؟"></textarea>
+
+                <button class="btn btn-success" onclick="submitApp()">إرسال التقديم للمراجعة</button>
             </div>
+            
             <div id="apply-closed" class="hidden">
-                <h2 style="color:var(--danger);">❌ التقديم مغلق حالياً</h2>
+                <h2 style="color:var(--danger);">❌ نعتذر، التقديم مغلق حالياً</h2>
+                <p>تابع قناة الإعلانات في الديسكورد لمعرفة موعد الفتح القادم.</p>
             </div>
         </div>
     </section>
@@ -161,7 +173,7 @@
                     { name: "الحالة الآن", value: val ? "مفتوح (Open)" : "مغلق (Closed)", inline: true },
                     { name: "المسؤول", value: `<@${currentUser.id}>`, inline: true }
                 ],
-                footer: { text: "NoVaX Roleplay Systems" },
+                footer: { text: "NoVaX Systems" },
                 timestamp: new Date()
             }]
         };
@@ -189,55 +201,59 @@
     }
 
 window.submitApp = async function() {
-    const name = document.getElementById('ans_name').value;
-    const rules = document.getElementById('ans_rules').value;
-    
-    // --- نظام مانع السبام (ربع ساعة) ---
-    const cooldownTime = 60 * 60 * 1000; // 15 دقيقة بالملي ثانية
-    const lastSubmit = localStorage.getItem('last_submit_time');
-    const now = Date.now();
+    // سحب القيم من الخانات الجديدة
+    const data_inputs = {
+        name: document.getElementById('ans_name').value,
+        char: document.getElementById('ans_char_name').value,
+        vdm: document.getElementById('ans_vdm').value,
+        rdm: document.getElementById('ans_rdm').value,
+        fail: document.getElementById('ans_failrp').value,
+        story: document.getElementById('ans_story').value
+    };
 
-    if (lastSubmit && (now - lastSubmit < cooldownTime)) {
-        const remaining = Math.ceil((cooldownTime - (now - lastSubmit)) / 1000 / 60);
-        return alert(`يا بطل، لازم تنتظر ${remaining} دقيقة قبل ما ترسل طلب ثاني!`);
+    // نظام الانتظار (الربع ساعة)
+    const cooldown = 15 * 60 * 1000;
+    const last = localStorage.getItem('last_submit_time');
+    if (last && (Date.now() - last < cooldown)) {
+        return alert("هدّ اللعب! باقي لك وقت قبل ما تقدر تقدم مرة ثانية.");
     }
-    // ---------------------------------
 
-    if(!name || !rules) return alert("أكمل البيانات أولاً!");
+    // التأكد أن كل الخانات مليانة
+    if (Object.values(data_inputs).some(val => !val)) {
+        return alert(" لازم تجاوب على كل الأسئلة عشان تنقبل!");
+    }
 
-    const data = {
-        embeds: [{ 
-            title: "📩 تقديم جديد", 
-            color: 10635000, 
+    const embedData = {
+        embeds: [{
+            title: "📂 طلب تفعيل جديد | NoVaX",
+            color: 0x3498db, // لون أزرق هادئ للتقديمات
             fields: [
-                {name: "الاسم", value: name}, 
-                {name: "الأجوبة", value: rules}, 
-                {name: "الحساب", value: `<@${currentUser.id}>`}
+                { name: "👤 المعلومات الأساسية", value: `**الاسم:** ${data_inputs.name}\n**اسم الشخصية:** ${data_inputs.char}`, inline: false },
+                { name: "🚫 قانون VDM", value: data_inputs.vdm },
+                { name: "🔫 قانون RDM", value: data_inputs.rdm },
+                { name: "🎭 قانون Fail RP", value: data_inputs.fail },
+                { name: "📖 قصة الشخصية", value: data_inputs.story },
+                { name: "🆔 صاحب الطلب", value: `<@${currentUser.id}>` }
             ],
-            footer: { text: "NoVaX Apply System" },
+            footer: { text: "NoVaX Recruitment Team" },
             timestamp: new Date()
         }]
     };
 
-    try {
-        await fetch(WEB_APPLY, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(data)
-        });
+    await fetch(WEB_APPLY, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(embedData)
+    });
 
-        // حفظ وقت التقديم الناجح
-        localStorage.setItem('last_submit_time', Date.now());
-        
-        alert("تم إرسال تقديمك بنجاح! انتظر الرد في الديسكورد.");
-        
-        // تصفير الخانات بعد الإرسال
-        document.getElementById('ans_name').value = "";
-        document.getElementById('ans_rules').value = "";
-        
-    } catch (e) {
-        alert("حدث خطأ في الإرسال، حاول لاحقاً.");
-    }
+    localStorage.setItem('last_submit_time', Date.now());
+    alert("! تم إرسال طلبك بنجاح للإدارة.");
+    
+    // تنظيف الخانات
+    Object.keys(data_inputs).forEach(id => {
+        const el = document.getElementById('ans_' + id);
+        if(el) el.value = "";
+    });
 }
 
 window.sendAnn = async function() {
