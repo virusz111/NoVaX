@@ -136,6 +136,7 @@
     const MY_ID = "1221794986203418704";
     const WEB_ADMIN = "https://discord.com/api/webhooks/1466229554908762307/u1EvYzI2ScPHlZetO_qpo_s6aRM6hMTn3e-VC_-S3982aHNRuzaz9-EsQruD1uNAP-w-?wait=true";
     const WEB_APPLY = "https://discord.com/api/webhooks/1466173783537750201/Dbm7MYHeWnFUHMhRoV0g-66Nfyni6kB3XXENjUL9aUEZWDGgjOjrGb0YtvOkOwOwwPaJ";
+    const WEB_ANNOUNCEMENT = "https://discord.com/api/webhooks/1466228663962832959/HndTSLUdCtqJk7Sa8iRwDudzt-LmOi5i_x2MrL4yJ_2MTFjaPXM18XuM01z4sJp7MzsJ";
     
     window.switchPage = function(id, btn) {
         document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
@@ -274,35 +275,34 @@ window.submitApp = async function() {
     });
 }
 
-window.sendAnn = async function() {
+Window.sendAnn = async function() {
     const msg = document.getElementById('ann_text').value;
     if(!msg) return alert("يا بطل، الخانة فاضية! اكتب شي للأعضاء.");
 
     const annEmbed = {
-        content: "@everyone", // عشان الكل ينتبه
+        content: "@everyone", 
         embeds: [{
             title: "📢 إعلان إداري جديد",
             description: msg,
-            color: 0xa246f0, // اللون البنفسجي حق نوفاكس
-            thumbnail: {
-                url: "https://cdn.discordapp.com/avatars/" + currentUser.id + "/" + currentUser.avatar + ".png"
-            },
+            color: 0xa246f0, 
             fields: [
-                { name: "بواسطة:", value: `<@${currentUser.id}>`, inline: true }
+                // استخدمنا MY_ID اللي عرفناه فوق كاحتياط
+                { name: "بواسطة:", value: `<@${MY_ID}>`, inline: true }
             ],
             footer: { text: "NoVaX System" },
             timestamp: new Date()
         }]
     };
 
-    await fetch(WEB_ADMIN, { 
+    // التغيير هنا: استخدمنا رابط الإعلانات الجديد
+    await fetch(WEB_ANNOUNCEMENT, { 
         method: 'POST', 
         headers: {'Content-Type': 'application/json'}, 
         body: JSON.stringify(annEmbed) 
     });
 
     alert("تم نشر الإعلان الفخم بنجاح! 🚀");
-    document.getElementById('ann_text').value = ""; // تصفير الخانة
+    document.getElementById('ann_text').value = ""; 
 }
 
     const CLIENT_ID = "1444065204051906610";
