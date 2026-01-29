@@ -3,46 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NoVaX RP | Grand Command System</title>
+    <title>NoVaX RP | Control Center</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #a246f0; --bg: #030305; --card-bg: rgba(15, 15, 20, 0.95); --admin-red: #ff4d4d; }
         body { font-family: 'Cairo', sans-serif; background: var(--bg); color: white; margin: 0; overflow-x: hidden; }
-        
         #video-background { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -2; filter: brightness(0.4) blur(2px); object-fit: cover; }
         #video-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: -1; }
-
         header { padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.85); border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
-        
         .nav-tabs { display: flex; justify-content: center; gap: 20px; background: rgba(0,0,0,0.7); padding: 12px; border-bottom: 1px solid rgba(162, 70, 240, 0.2); }
         .tab-btn { cursor: pointer; opacity: 0.6; font-weight: 700; transition: 0.3s; padding: 6px 18px; border-radius: 10px; }
         .tab-btn.active { opacity: 1; color: var(--primary); background: rgba(162, 70, 240, 0.15); }
-
         .container { max-width: 900px; margin: 30px auto; padding: 20px; min-height: 70vh; }
         .page-content { display: none; animation: fadeIn 0.5s ease; }
         .page-content.active { display: block; }
-        .card { background: var(--card-bg); padding: 30px; border-radius: 30px; border: 1px solid rgba(162, 70, 240, 0.3); box-shadow: 0 15px 40px rgba(0,0,0,0.6); margin-bottom: 20px; }
-
-        /* ستايل لوحة الإدارة الجديد */
+        .card { background: var(--card-bg); padding: 30px; border-radius: 30px; border: 1px solid rgba(162, 70, 240, 0.3); margin-bottom: 20px; }
         .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         .admin-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 77, 77, 0.2); border-radius: 20px; padding: 20px; }
         .admin-title { color: var(--admin-red); font-weight: bold; border-bottom: 1px solid rgba(255, 77, 77, 0.2); padding-bottom: 10px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        
-        input, textarea, select { width: 100%; padding: 12px; margin-top: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--primary); border-radius: 10px; color: white; font-family: 'Cairo'; }
+        input, textarea { width: 100%; padding: 12px; margin-top: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--primary); border-radius: 10px; color: white; font-family: 'Cairo'; box-sizing: border-box; }
         .btn { padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; border: none; transition: 0.2s; margin-top: 10px; }
         .btn-admin { background: var(--admin-red); color: white; width: 100%; }
-        .btn-admin:hover { filter: brightness(1.2); }
-
-        /* أوامر السيرفر */
-        code { background: #000; color: #0f0; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
-        
-        .slide-step { display: none; text-align: center; }
-        .slide-step.active { display: block; animation: slideIn 0.4s ease; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        code { background: #000; color: #0f0; padding: 2px 6px; border-radius: 4px; }
         .hidden { display: none !important; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -53,9 +38,9 @@
 <div id="video-overlay"></div>
 
 <header>
-    <div style="font-size: 26px; font-weight: bold; color: var(--primary); text-shadow: 0 0 10px var(--primary);">NoVaX</div>
+    <div style="font-size: 26px; font-weight: bold; color: var(--primary);">NoVaX</div>
     <div id="auth-zone">
-        <button id="loginBtn" class="btn" style="background:#5865F2; color:white;" onclick="login()">دخول</button>
+        <button id="loginBtn" class="btn" style="background:#5865F2; color:white;" onclick="login()">دخول بالديسكورد</button>
         <div id="userProfile" class="hidden" style="display:flex; align-items:center; gap:12px;">
             <span id="displayUserName"></span>
             <img id="userAvatar" src="" style="width:35px; border-radius:50%; border:1px solid var(--primary);">
@@ -78,67 +63,56 @@
             <div style="background:rgba(162,70,240,0.1); padding:15px; border-radius:15px; border-right:4px solid var(--primary);">
                 <p>• <b>VDM / RDM:</b> القتل والدهس العشوائي ممنوع.</p>
                 <p>• <b>MetaGaming:</b> يمنع استخدام معلومات خارجية داخل اللعبة.</p>
-                <p>• <b>FailRP:</b> تصرف دائماً بواقعية.</p>
+                <p>• <b>FailRP:</b> تصرف بواقعية في كل الأوقات.</p>
             </div>
+            <p style="text-align:center; opacity:0.6; margin-top:20px;">سجل دخولك لتتمكن من التقديم.</p>
         </div>
     </section>
 
     <section id="apply-page" class="page-content">
         <div class="card">
-            <div class="slide-step active" id="step0">
-                <h2>نظام التقديم 📝</h2>
-                <p>سجل بياناتك وسيتم مراجعتها من قبل الإدارة.</p>
-                <button class="btn" style="background:var(--primary); color:white;" onclick="nextSlide(1)">ابدأ</button>
+            <div id="apply-form">
+                <h2>نموذج التقديم 📝</h2>
+                <input type="text" id="ans1" placeholder="الاسم والعمر والآيدي داخل اللعبة...">
+                <textarea id="ans2" rows="3" placeholder="لماذا تريد الانضمام؟"></textarea>
+                <button class="btn" style="background:var(--primary); color:white; width:100%;" onclick="finishApply()">إرسال التقديم</button>
             </div>
-            <div class="slide-step" id="step1">
-                <h3>الاسم والعمر؟</h3>
-                <input type="text" id="ans1" placeholder="أدخل اسمك وعمرك...">
-                <button class="btn" style="background:var(--primary); color:white;" onclick="finishApply()">إرسال</button>
-            </div>
-            <div class="slide-step" id="step-final">
-                <h2 style="color:#2ecc71;">تم الإرسال!</h2>
+            <div id="success-msg" class="hidden">
+                <h2 style="color:#2ecc71; text-align:center;">✅ تم الإرسال بنجاح!</h2>
             </div>
         </div>
     </section>
 
     <section id="admin-page" class="page-content">
         <div class="admin-grid">
-            
             <div class="admin-card">
                 <div class="admin-title"><i class="fas fa-bullhorn"></i> نظام الإعلانات</div>
                 <textarea id="annContent" rows="3" placeholder="اكتب الإعلان هنا..."></textarea>
-                <button class="btn btn-admin" onclick="sendAdminAction('announcement')">إرسال إعلان للكل</button>
+                <button class="btn btn-admin" onclick="sendAdminAction('announcement')">إرسال للديسكورد (@everyone)</button>
             </div>
-
             <div class="admin-card">
-                <div class="admin-title"><i class="fas fa-toggle-on"></i> حالة التقديم</div>
-                <button class="btn btn-admin" style="background:#2ecc71;" onclick="sendAdminAction('open_apply')">فتح التقديمات</button>
-                <button class="btn btn-admin" onclick="sendAdminAction('close_apply')">إغلاق التقديمات</button>
+                <div class="admin-title"><i class="fas fa-toggle-on"></i> التحكم</div>
+                <button class="btn btn-admin" style="background:#2ecc71;" onclick="sendAdminAction('open_apply')">فتح التقديم</button>
+                <button class="btn btn-admin" onclick="sendAdminAction('close_apply')">إغلاق التقديم</button>
             </div>
-
             <div class="admin-card">
-                <div class="admin-title"><i class="fas fa-code"></i> أوامر سريعة</div>
-                <p>• إنعاش: <code>/revive [ID]</code></p>
-                <p>• سيارة: <code>/car [Name]</code></p>
-                <p>• بنيد: <code>/ban [ID] [Reason]</code></p>
+                <div class="admin-title"><i class="fas fa-code"></i> أوامر الفايف إم</div>
+                <p>إنعاش: <code>/revive [ID]</code></p>
+                <p>بنيد: <code>/ban [ID]</code></p>
             </div>
-
-            <div class="admin-card">
-                <div class="admin-title"><i class="fas fa-bug"></i> بلاغ خلل تقني</div>
-                <input type="text" id="bugTitle" placeholder="عنوان المشكلة...">
-                <button class="btn btn-admin" style="background:#f1c40f; color:black;" onclick="sendAdminAction('report_bug')">إرسال للمطورين</button>
-            </div>
-
         </div>
     </section>
-
 </div>
 
 <script>
+    // --- إعداداتك ---
     const CLIENT_ID = "1444065204051906610";
     const REDIRECT_URI = "https://virusz111.github.io/NoVaX/";
     const WEBHOOK = "https://discord.com/api/webhooks/1466173783537750201/Dbm7MYHeWnFUHMhRoV0g-66Nfyni6kB3XXENjUL9aUEZWDGgjOjrGb0YtvOkOwOwwPaJ";
     
+    // ضع آيدي حسابك الشخصي هنا (الآيدي المكون من 18 أو 19 رقم)
+    const MY_PERSONAL_ID = "ضع_هنا_آيدي_حسابك_الشخصي"; 
+
     let currentUser = null;
 
     function login() {
@@ -153,53 +127,22 @@
         btn.classList.add('active');
     }
 
-    function nextSlide(step) {
-        document.querySelectorAll('.slide-step').forEach(s => s.classList.remove('active'));
-        document.getElementById('step' + step).classList.add('active');
-    }
-
     async function sendAdminAction(action) {
         let embed = { color: 16729413, timestamp: new Date() };
         let content = "";
-
-        if(action === 'announcement') {
-            content = "@everyone";
-            embed.title = "📢 إعلان إداري جديد";
-            embed.description = document.getElementById('annContent').value;
-        } else if(action === 'open_apply') {
-            embed.title = "✅ تم فتح باب التقديم";
-            embed.description = "يمكنكم الآن الدخول للموقع والتقديم على السيرفر!";
-            embed.color = 3066993;
-        } else if(action === 'close_apply') {
-            embed.title = "❌ تم إغلاق التقديم";
-            embed.description = "نعتذر، تم إغلاق التقديمات حالياً لاكتفاء العدد.";
-        } else if(action === 'report_bug') {
-            embed.title = "⚠️ بلاغ عن خلل تقني";
-            embed.description = `صاحب البلاغ: ${currentUser.username}\nالمشكلة: ${document.getElementById('bugTitle').value}`;
-            embed.color = 15844367;
-        }
-
-        await fetch(WEBHOOK, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ content: content, embeds: [embed] })
-        });
-        alert("تم إرسال الأمر للديسكورد!");
+        if(action === 'announcement') { content = "@everyone"; embed.title = "📢 إعلان جديد"; embed.description = document.getElementById('annContent').value; }
+        else if(action === 'open_apply') { embed.title = "✅ التقديم مفتوح"; embed.description = "يمكنكم الآن التقديم عبر الموقع!"; embed.color = 3066993; }
+        else if(action === 'close_apply') { embed.title = "❌ التقديم مغلق"; embed.description = "تم إغلاق التقديمات حالياً."; }
+        
+        await fetch(WEBHOOK, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ content: content, embeds: [embed] }) });
+        alert("تم التنفيذ!");
     }
 
     async function finishApply() {
-        const data = {
-            embeds: [{
-                title: "📩 تقديم جديد",
-                color: 10634992,
-                fields: [
-                    { name: "👤 العضو", value: `<@${currentUser.id}>` },
-                    { name: "📝 المعلومات", value: document.getElementById('ans1').value }
-                ]
-            }]
-        };
+        const data = { embeds: [{ title: "📩 تقديم جديد", fields: [{ name: "المقدم", value: `<@${currentUser.id}>` }, { name: "البيانات", value: document.getElementById('ans1').value }] }] };
         await fetch(WEBHOOK, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
-        nextSlide('-final');
+        document.getElementById('apply-form').classList.add('hidden');
+        document.getElementById('success-msg').classList.remove('hidden');
     }
 
     window.onload = () => {
@@ -214,12 +157,14 @@
                 document.getElementById('displayUserName').innerText = user.username;
                 document.getElementById('userAvatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
                 document.getElementById('applyTab').classList.remove('hidden');
-                // لو أنت صاحب الموقع (آيدي الديسكورد حقك) تظهر لك لوحة الإدارة
-                if(user.id === "1444065204051906610") document.getElementById('adminTab').classList.remove('hidden');
+                
+                // هنا يتم التحقق: إذا كان آيدي الشخص اللي سجل دخول هو نفس آيديك.. تظهر اللوحة
+                if(user.id === 1221794986203418704) {
+                    document.getElementById('adminTab').classList.remove('hidden');
+                }
             });
         }
     };
-
     function logout() { window.location.href = REDIRECT_URI; }
 </script>
 </body>
