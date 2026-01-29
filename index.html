@@ -370,8 +370,10 @@ window.sendAnn = async function() {
     let currentUser = null;
 
 window.login = () => {
-    window.location.href = `https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT}&response_type=token&scope=identify+guilds+guilds.members.read`;
-};
+    // تأكد أن response_type مكتوب token وليس code
+    const url = "https://discord.com/oauth2/authorize?client_id=1444065204051906610&response_type=token&redirect_uri=https%3A%2F%2Fvirusz111.github.io%2FNoVaX%2F&scope=identify+guilds+guilds.members.read";
+    window.location.href = url;
+}
 
 
     window.logout = () => {
