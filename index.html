@@ -202,12 +202,36 @@
         alert("تم الإرسال!");
     }
 
-    window.sendAnn = async function() {
-        const msg = document.getElementById('ann_text').value;
-        if(!msg) return alert("اكتب الإعلان!");
-        await fetch(WEB_ADMIN, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ content: "@everyone\n" + msg }) });
-        alert("تم النشر!");
-    }
+window.sendAnn = async function() {
+    const msg = document.getElementById('ann_text').value;
+    if(!msg) return alert("يا بطل، الخانة فاضية! اكتب شي للأعضاء.");
+
+    const annEmbed = {
+        content: "@everyone", // عشان الكل ينتبه
+        embeds: [{
+            title: "📢 إعلان إداري جديد",
+            description: msg,
+            color: 0xa246f0, // اللون البنفسجي حق نوفاكس
+            thumbnail: {
+                url: "https://cdn.discordapp.com/avatars/" + currentUser.id + "/" + currentUser.avatar + ".png"
+            },
+            fields: [
+                { name: "بواسطة:", value: `<@${currentUser.id}>`, inline: true }
+            ],
+            footer: { text: "NoVaX System" },
+            timestamp: new Date()
+        }]
+    };
+
+    await fetch(WEB_ADMIN, { 
+        method: 'POST', 
+        headers: {'Content-Type': 'application/json'}, 
+        body: JSON.stringify(annEmbed) 
+    });
+
+    alert("تم نشر الإعلان الفخم بنجاح! 🚀");
+    document.getElementById('ann_text').value = ""; // تصفير الخانة
+}
 
     const CLIENT_ID = "1444065204051906610";
     const REDIRECT = encodeURIComponent(window.location.origin + window.location.pathname);
