@@ -7,31 +7,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #a246f0; --bg: #030305; --card-bg: rgba(15, 15, 20, 0.95); --admin-red: #ff4d4d; --discord: #5865F2; }
+        :root { --primary: #a246f0; --bg: #030305; --card-bg: rgba(15, 15, 20, 0.95); --admin-red: #ff4d4d; --discord: #5865F2; --success: #2ecc71; }
         body { font-family: 'Cairo', sans-serif; background: var(--bg); color: white; margin: 0; overflow-x: hidden; }
         #video-background { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -2; filter: brightness(0.3) blur(2px); object-fit: cover; }
         #video-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: -1; }
         header { padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.9); border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
-        .nav-tabs { display: flex; justify-content: center; gap: 15px; background: rgba(0,0,0,0.8); padding: 10px; border-bottom: 1px solid rgba(162, 70, 240, 0.2); }
-        .tab-btn { cursor: pointer; opacity: 0.6; font-weight: 700; transition: 0.3s; padding: 8px 20px; border-radius: 10px; font-size: 14px; }
-        .tab-btn.active { opacity: 1; color: var(--primary); background: rgba(162, 70, 240, 0.15); }
-        .container { max-width: 1000px; margin: 20px auto; padding: 20px; }
+        .nav-tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; background: rgba(0,0,0,0.8); padding: 10px; border-bottom: 1px solid rgba(162, 70, 240, 0.2); }
+        .tab-btn { cursor: pointer; opacity: 0.6; font-weight: 700; transition: 0.3s; padding: 8px 15px; border-radius: 10px; font-size: 14px; }
+        .tab-btn.active { opacity: 1; color: var(--primary); background: rgba(162, 70, 240, 0.15); border: 1px solid var(--primary); }
+        .container { max-width: 1100px; margin: 20px auto; padding: 20px; }
         .page-content { display: none; animation: fadeIn 0.6s ease; }
         .page-content.active { display: block; }
         .welcome-section { text-align: center; padding: 60px 20px; background: linear-gradient(to bottom, rgba(162, 70, 240, 0.1), transparent); border-radius: 40px; margin-bottom: 40px; border: 1px solid rgba(162, 70, 240, 0.2); }
         .discord-btn { background: var(--discord); color: white; padding: 15px 35px; border-radius: 15px; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; font-weight: bold; transition: 0.3s; margin-top: 20px; border: none; cursor: pointer; }
-        .staff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; margin-top: 30px; }
-        .staff-card { background: var(--card-bg); padding: 25px; border-radius: 25px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
-        .staff-img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary); margin-bottom: 15px; background: #111; object-fit: cover; }
+        .staff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 30px; }
+        .staff-card, .store-card { background: var(--card-bg); padding: 25px; border-radius: 25px; text-align: center; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+        .staff-card:hover, .store-card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 10px 20px rgba(162, 70, 240, 0.2); }
+        .staff-img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary); margin-bottom: 15px; object-fit: cover; }
         .staff-rank { font-size: 13px; padding: 4px 12px; border-radius: 20px; background: rgba(162, 70, 240, 0.2); color: var(--primary); font-weight: bold; border: 1px solid var(--primary); }
-        .rank-owner { color: #ff4d4d; border-color: #ff4d4d; background: rgba(255, 77, 77, 0.1); }
-        .card { background: var(--card-bg); padding: 35px; border-radius: 30px; border: 1px solid rgba(162, 70, 240, 0.3); }
+        .rank-owner { color: #ff4d4d; border-color: #ff4d4d; background: rgba(255, 77, 77, 0.1); box-shadow: 0 0 10px rgba(255, 77, 77, 0.3); }
+        .card { background: var(--card-bg); padding: 35px; border-radius: 30px; border: 1px solid rgba(162, 70, 240, 0.3); margin-bottom: 20px; }
         .slide-step { display: none; text-align: center; }
         .slide-step.active { display: block; animation: slideIn 0.4s ease; }
-        input, textarea { width: 100%; padding: 14px; margin-top: 20px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 12px; color: white; font-family: 'Cairo'; }
-        .btn { padding: 12px 25px; border-radius: 12px; cursor: pointer; font-weight: bold; border: none; transition: 0.3s; font-family: 'Cairo'; }
-        .btn-primary { background: var(--primary); color: white; width: 100%; }
+        input, textarea { width: 100%; padding: 14px; margin-top: 20px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 12px; color: white; font-family: 'Cairo'; box-sizing: border-box; }
+        .btn { padding: 12px 25px; border-radius: 12px; cursor: pointer; font-weight: bold; border: none; transition: 0.3s; font-family: 'Cairo'; text-decoration: none; display: inline-block; }
+        .btn-primary { background: var(--primary); color: white; width: 100%; margin-top: 15px; }
         .btn-admin { background: var(--admin-red); color: white; width: 100%; margin-top: 10px; }
+        .price-tag { font-size: 22px; color: var(--success); font-weight: bold; margin: 15px 0; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .hidden { display: none !important; }
@@ -45,7 +47,7 @@
 <div id="video-overlay"></div>
 
 <header>
-    <div style="font-size: 26px; font-weight: bold; color: var(--primary);">NoVaX</div>
+    <div style="font-size: 26px; font-weight: bold; color: var(--primary); letter-spacing: 2px;">NoVaX</div>
     <div id="auth-zone">
         <button id="loginBtn" class="btn" style="background:var(--discord); color:white;" onclick="login()">دخول بالديسكورد</button>
         <div id="userProfile" class="hidden" style="display:flex; align-items:center; gap:12px;">
@@ -59,6 +61,7 @@
 <div class="nav-tabs">
     <div class="tab-btn active" onclick="switchMainTab('home-page', this)">الرئيسية</div>
     <div class="tab-btn" onclick="switchMainTab('rules-page', this)">القوانين</div>
+    <div class="tab-btn" onclick="switchMainTab('store-page', this)">المتجر</div>
     <div id="applyTab" class="tab-btn hidden" onclick="switchMainTab('apply-page', this)">التقديم</div>
     <div id="adminTab" class="tab-btn hidden" onclick="switchMainTab('admin-page', this)" style="color:var(--admin-red);">لوحة الإدارة</div>
 </div>
@@ -77,8 +80,32 @@
     <section id="rules-page" class="page-content">
         <div class="card">
             <h2 style="color:var(--primary); text-align:center;">📜 قوانين المدينة</h2>
-            <p>1. يمنع الـ VDM والـ RDM نهائياً.</p>
-            <p>2. الالتزام بالواقعية التامة داخل المدينة.</p>
+            <div style="line-height: 1.8; font-size: 18px;">
+                <p>1. يمنع الـ VDM (صدم اللاعبين بالسيارة بدون سبب) نهائياً.</p>
+                <p>2. يمنع الـ RDM (قتل اللاعبين بدون سيناريو) نهائياً.</p>
+                <p>3. الالتزام بالواقعية التامة (Roleplay) في جميع الأوقات.</p>
+                <p>4. يمنع الخروج من السيناريو (Out of Character) داخل المدينة.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="store-page" class="page-content">
+        <h2 style="text-align: center; color: var(--primary); margin-bottom: 30px;">🛒 متجر NoVaX</h2>
+        <div class="staff-grid">
+            <div class="store-card">
+                <img src="https://gta-objects.com/images/vehicles/sport/t20.webp" style="width: 100%; border-radius: 15px;">
+                <h3>حزمة السيارات الفخمة</h3>
+                <p>سيارات سريعة وتعديلات حصرية.</p>
+                <div class="price-tag">50,000 $</div>
+                <button class="btn btn-primary" onclick="buyItem('حزمة السيارات')">شراء عبر التكت</button>
+            </div>
+            <div class="store-card">
+                <img src="https://img.v-rp.io/i/houses/mansion.jpg" onerror="this.src='https://api.dicebear.com/7.x/identicon/svg?seed=house'" style="width: 100%; border-radius: 15px;">
+                <h3>تملك منزل / قصر</h3>
+                <p>اختر موقعك المفضل مع كراج خاص.</p>
+                <div class="price-tag">100,000 $</div>
+                <button class="btn btn-primary" onclick="buyItem('منزل VIP')">شراء عبر التكت</button>
+            </div>
         </div>
     </section>
 
@@ -88,79 +115,122 @@
             <div class="slide-step" id="step1"><h3>الاسم الحقيقي والعمر؟</h3><input type="text" id="ans1" placeholder="مثلاً: علي - 19 سنة"><button class="btn btn-primary" onclick="nextSlide(2)">التالي</button></div>
             <div class="slide-step" id="step2"><h3>الآيدي (ID)؟</h3><input type="number" id="ans2" placeholder="الآيدي داخل اللعبة..."><button class="btn btn-primary" onclick="nextSlide(3)">التالي</button></div>
             <div class="slide-step" id="step3"><h3>شرح قانون VDM؟</h3><textarea id="ans3"></textarea><button class="btn btn-primary" onclick="nextSlide(4)">التالي</button></div>
-            <div class="slide-step" id="step4"><h3>شرح قانون RDM؟</h3><textarea id="ans4"></textarea><button class="btn btn-primary" style="background:#2ecc71;" onclick="finishApply()">إرسال التقديم</button></div>
-            <div class="slide-step" id="step-final"><h2 style="color:#2ecc71;">✅ تم الإرسال بنجاح!</h2></div>
+            <div class="slide-step" id="step4"><h3>شرح قانون RDM؟</h3><textarea id="ans4"></textarea><button class="btn btn-primary" style="background:var(--success);" onclick="finishApply()">إرسال التقديم</button></div>
+            <div class="slide-step" id="step-final"><h2 style="color:var(--success);">✅ تم الإرسال بنجاح! راجع الديسكورد.</h2></div>
         </div>
     </section>
 
     <section id="admin-page" class="page-content">
-        <div class="admin-grid">
-            <div class="admin-card">
+        <div class="staff-grid">
+            <div class="card">
                 <h3>📢 نظام الإعلانات</h3>
                 <textarea id="annContent" placeholder="اكتب إعلانك هنا..."></textarea>
-                <button class="btn btn-admin" onclick="sendAdminAction('announcement')">إرسال لروم الإعلانات (@everyone)</button>
+                <button class="btn btn-admin" onclick="sendAdminAction('announcement')">إرسال لكل السيرفر</button>
             </div>
-            <div class="admin-card">
+            <div class="card">
                 <h3>⚙️ التحكم بالتقديم</h3>
-                <button class="btn btn-admin" style="background:#2ecc71;" onclick="sendAdminAction('open_apply')">فتح التقديم (حذف تلقائي)</button>
-                <button class="btn btn-admin" onclick="sendAdminAction('close_apply')">إغلاق التقديم (حذف تلقائي)</button>
+                <button class="btn btn-admin" style="background:var(--success);" onclick="sendAdminAction('open_apply')">فتح التقديم</button>
+                <button class="btn btn-admin" onclick="sendAdminAction('close_apply')">إغلاق التقديم</button>
             </div>
         </div>
     </section>
 </div>
 
 <script>
+    // --- الإعدادات الروابط ---
+    const DISCORD_INVITE = "https://discord.gg/HZFb5BZ8dZ";
     const MY_PERSONAL_ID = "1221794986203418704";
     const ANN_WEBHOOK = "https://discord.com/api/webhooks/1466228663962832959/HndTSLUdCtqJk7Sa8iRwDudzt-LmOi5i_x2MrL4yJ_2MTFjaPXM18XuM01z4sJp7MzsJ";
     const CONTROL_WEBHOOK = "https://discord.com/api/webhooks/1466229554908762307/u1EvYzI2ScPHlZetO_qpo_s6aRM6hMTn3e-VC_-S3982aHNRuzaz9-EsQruD1uNAP-w-";
     const APPLY_WEBHOOK = "https://discord.com/api/webhooks/1466173783537750201/Dbm7MYHeWnFUHMhRoV0g-66Nfyni6kB3XXENjUL9aUEZWDGgjOjrGb0YtvOkOwOwwPaJ";
+    const CLIENT_ID = "1444065204051906610";
+    const REDIRECT_URI = "https://virusz111.github.io/NoVaX/";
 
+    // --- طاقم الإدارة ---
     const staffList = [
-        { id: "https://cdn.discordapp.com/attachments/1441771278649266286/1466239958397227029/file_0000000069c071f492d3d90ddf9eae10.png?ex=697c05df&is=697ab45f&hm=1da7d9b947c2bb1901090c69a55598efeda798e32ecf86aa2b5d6e9ebec300f5&", name: "Better", rank: "Owner", class: "rank-owner" },
-        { id: "آيدي_المسؤول_هنا", name: "BA95", rank: "Owner", class: "rank-owner" }
+        { 
+            id: "https://cdn.discordapp.com/attachments/1441771278649266286/1466239958397227029/file_0000000069c071f492d3d90ddf9eae10.png?ex=697c05df&is=697ab45f&hm=1da7d9b947c2bb1901090c69a55598efeda798e32ecf86aa2b5d6e9ebec300f5&", 
+            name: "BA95", rank: "Owner", class: "rank-owner" 
+        },
+        { id: "1221794986203418704", name: "NoVaX", rank: "Manager", class: "" }
     ];
 
     function loadStaff() {
-    const container = document.getElementById('staff-container');
-    staffList.forEach(m => {
-        // إذا كان الـ id يبدأ بـ http يعني حطيت رابط صورة مباشر
-        let finalImg = m.id.startsWith('http') ? m.id : `https://img.v-rp.io/u/${m.id}`;
-        
-        container.innerHTML += `
-            <div class="staff-card">
-                <img src="${finalImg}" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=${m.name}'" class="staff-img">
-                <div style="font-weight:bold;">${m.name}</div>
-                <span class="staff-rank ${m.class}">${m.rank}</span>
-            </div>
-        `;
-    });
-}
-
-    const CLIENT_ID = "1444065204051906610";
-    const REDIRECT_URI = "https://virusz111.github.io/NoVaX/";
-    let currentUser = null;
-
-    function login() { window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`; }
-    function logout() { window.location.href = REDIRECT_URI; }
-    function switchMainTab(p, b) { document.querySelectorAll('.page-content').forEach(x=>x.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active')); document.getElementById(p).classList.add('active'); b.classList.add('active'); }
-    function nextSlide(s) { document.querySelectorAll('.slide-step').forEach(x=>x.classList.remove('active')); document.getElementById('step'+s).classList.add('active'); }
-
-    async function sendAdminAction(action) {
-        let embed = { color: 16729413, timestamp: new Date() };
-        let target = CONTROL_WEBHOOK;
-        const oldId = localStorage.getItem('lastStatusMsgId');
-        if (oldId && (action === 'open_apply' || action === 'close_apply')) { await fetch(`${CONTROL_WEBHOOK}/messages/${oldId}`, { method: 'DELETE' }).catch(()=>{}); }
-        if(action === 'announcement') { embed.title = "📢 إعلان جديد"; embed.description = document.getElementById('annContent').value; target = ANN_WEBHOOK; }
-        else if(action === 'open_apply') { embed.title = "✅ التقديم مفتوح الآن"; embed.color = 3066993; }
-        else if(action === 'close_apply') { embed.title = "❌ التقديم مغلق حالياً"; }
-        const res = await fetch(`${target}?wait=true`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ content: action === 'announcement' ? "@everyone" : "", embeds: [embed] }) });
-        const result = await res.json();
-        if (result.id && action !== 'announcement') localStorage.setItem('lastStatusMsgId', result.id);
-        alert("تم تحديث الحالة!");
+        const container = document.getElementById('staff-container');
+        staffList.forEach(m => {
+            let finalImg = m.id.startsWith('http') ? m.id : `https://img.v-rp.io/u/${m.id}`;
+            container.innerHTML += `
+                <div class="staff-card">
+                    <img src="${finalImg}" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=${m.name}'" class="staff-img">
+                    <div style="font-weight:bold; font-size:18px;">${m.name}</div>
+                    <span class="staff-rank ${m.class}">${m.rank}</span>
+                </div>`;
+        });
     }
 
+    // --- التنقل والأنظمة ---
+    function switchMainTab(p, b) {
+        document.querySelectorAll('.page-content').forEach(x=>x.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+        document.getElementById(p).classList.add('active');
+        b.classList.add('active');
+    }
+
+    function nextSlide(s) {
+        document.querySelectorAll('.slide-step').forEach(x=>x.classList.remove('active'));
+        document.getElementById('step'+s).classList.add('active');
+    }
+
+    function buyItem(name) {
+        alert("لشراء " + name + "، افتح تكت في الديسكورد.");
+        window.open(DISCORD_INVITE, '_blank');
+    }
+
+    async function sendAdminAction(action) {
+        let embed = { color: 10634992, timestamp: new Date() };
+        let target = CONTROL_WEBHOOK;
+        const oldId = localStorage.getItem('lastStatusMsgId');
+        
+        if (oldId && (action === 'open_apply' || action === 'close_apply')) {
+            await fetch(`${CONTROL_WEBHOOK}/messages/${oldId}`, { method: 'DELETE' }).catch(()=>{});
+        }
+
+        if(action === 'announcement') {
+            embed.title = "📢 إعلان من الإدارة";
+            embed.description = document.getElementById('annContent').value;
+            target = ANN_WEBHOOK;
+        } else if(action === 'open_apply') {
+            embed.title = "✅ التقديم مفتوح"; embed.color = 3066993;
+        } else if(action === 'close_apply') {
+            embed.title = "❌ التقديم مغلق"; embed.color = 15158332;
+        }
+
+        const res = await fetch(`${target}?wait=true`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ content: action === 'announcement' ? "@everyone" : "", embeds: [embed] })
+        });
+        const result = await res.json();
+        if (result.id && action !== 'announcement') localStorage.setItem('lastStatusMsgId', result.id);
+        alert("تم التنفيذ!");
+    }
+
+    let currentUser = null;
+    function login() { window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`; }
+    function logout() { window.location.href = REDIRECT_URI; }
+
     async function finishApply() {
-        const data = { embeds: [{ title: "📩 تقديم تفعيل جديد", color: 10634992, thumbnail: { url: `https://cdn.discordapp.com/avatars/${currentUser.id}/${currentUser.avatar}.png` }, fields: [{ name: "👤 العضو", value: `<@${currentUser.id}>` }, { name: "🆔 ID اللعبة", value: document.getElementById('ans2').value }, { name: "📝 الاسم/العمر", value: document.getElementById('ans1').value }, { name: "🚗 VDM", value: document.getElementById('ans3').value }, { name: "🔫 RDM", value: document.getElementById('ans4').value }] }] };
+        const data = { embeds: [{
+            title: "📩 تقديم جديد", color: 10634992,
+            thumbnail: { url: `https://cdn.discordapp.com/avatars/${currentUser.id}/${currentUser.avatar}.png` },
+            fields: [
+                { name: "👤 العضو", value: `<@${currentUser.id}>` },
+                { name: "🆔 ID اللعبة", value: document.getElementById('ans2').value },
+                { name: "📝 الاسم/العمر", value: document.getElementById('ans1').value },
+                { name: "🚗 VDM", value: document.getElementById('ans3').value },
+                { name: "🔫 RDM", value: document.getElementById('ans4').value }
+            ]
+        }]};
         await fetch(APPLY_WEBHOOK, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
         nextSlide('-final');
     }
