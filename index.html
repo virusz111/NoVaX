@@ -111,7 +111,7 @@
     const WEBHOOK = "https://discord.com/api/webhooks/1466173783537750201/Dbm7MYHeWnFUHMhRoV0g-66Nfyni6kB3XXENjUL9aUEZWDGgjOjrGb0YtvOkOwOwwPaJ";
     
     // ضع آيدي حسابك الشخصي هنا (الآيدي المكون من 18 أو 19 رقم)
-    const MY_PERSONAL_ID = "ضع_هنا_آيدي_حسابك_الشخصي"; 
+    const MY_PERSONAL_ID = "1221794986203418704"; 
 
     let currentUser = null;
 
@@ -159,7 +159,7 @@
                 document.getElementById('applyTab').classList.remove('hidden');
                 
                 // هنا يتم التحقق: إذا كان آيدي الشخص اللي سجل دخول هو نفس آيديك.. تظهر اللوحة
-                if(user.id === 1221794986203418704) {
+                if(user.id === MY_PERSONAL_ID) {
                     document.getElementById('adminTab').classList.remove('hidden');
                 }
             });
