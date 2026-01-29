@@ -3,33 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NoVaX RP | Grand System</title>
+    <title>NoVaX RP | Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #a246f0; --bg: #030305; --card-bg: rgba(15, 15, 20, 0.95); --admin-red: #ff4d4d; }
+        :root { --primary: #a246f0; --bg: #030305; --card-bg: rgba(15, 15, 20, 0.95); --admin-red: #ff4d4d; --discord: #5865F2; }
         body { font-family: 'Cairo', sans-serif; background: var(--bg); color: white; margin: 0; overflow-x: hidden; }
-        #video-background { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -2; filter: brightness(0.4) blur(2px); object-fit: cover; }
-        #video-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: -1; }
-        header { padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.85); border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
-        .nav-tabs { display: flex; justify-content: center; gap: 20px; background: rgba(0,0,0,0.7); padding: 12px; border-bottom: 1px solid rgba(162, 70, 240, 0.2); }
-        .tab-btn { cursor: pointer; opacity: 0.6; font-weight: 700; transition: 0.3s; padding: 6px 18px; border-radius: 10px; }
+        #video-background { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -2; filter: brightness(0.3) blur(2px); object-fit: cover; }
+        #video-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: -1; }
+        header { padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.9); border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
+        .nav-tabs { display: flex; justify-content: center; gap: 15px; background: rgba(0,0,0,0.8); padding: 10px; border-bottom: 1px solid rgba(162, 70, 240, 0.2); }
+        .tab-btn { cursor: pointer; opacity: 0.6; font-weight: 700; transition: 0.3s; padding: 8px 20px; border-radius: 10px; font-size: 14px; }
         .tab-btn.active { opacity: 1; color: var(--primary); background: rgba(162, 70, 240, 0.15); }
-        .container { max-width: 900px; margin: 40px auto; padding: 20px; min-height: 70vh; }
-        .page-content { display: none; animation: fadeIn 0.5s ease; }
+        .container { max-width: 1000px; margin: 20px auto; padding: 20px; }
+        .page-content { display: none; animation: fadeIn 0.6s ease; }
         .page-content.active { display: block; }
-        .card { background: var(--card-bg); padding: 35px; border-radius: 30px; border: 1px solid rgba(162, 70, 240, 0.3); box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
+        .welcome-section { text-align: center; padding: 60px 20px; background: linear-gradient(to bottom, rgba(162, 70, 240, 0.1), transparent); border-radius: 40px; margin-bottom: 40px; border: 1px solid rgba(162, 70, 240, 0.2); }
+        .discord-btn { background: var(--discord); color: white; padding: 15px 35px; border-radius: 15px; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; font-weight: bold; transition: 0.3s; margin-top: 20px; border: none; cursor: pointer; }
+        .staff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; margin-top: 30px; }
+        .staff-card { background: var(--card-bg); padding: 25px; border-radius: 25px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+        .staff-img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary); margin-bottom: 15px; background: #111; }
+        .staff-rank { font-size: 13px; padding: 4px 12px; border-radius: 20px; background: rgba(162, 70, 240, 0.2); color: var(--primary); font-weight: bold; border: 1px solid var(--primary); }
+        .rank-owner { color: #ff4d4d; border-color: #ff4d4d; background: rgba(255, 77, 77, 0.1); }
+        .card { background: var(--card-bg); padding: 35px; border-radius: 30px; border: 1px solid rgba(162, 70, 240, 0.3); }
         .slide-step { display: none; text-align: center; }
         .slide-step.active { display: block; animation: slideIn 0.4s ease; }
-        input, textarea { width: 100%; padding: 14px; margin-top: 20px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 12px; color: white; font-family: 'Cairo'; box-sizing: border-box; font-size: 16px; }
-        .btn { padding: 12px 25px; border-radius: 12px; cursor: pointer; font-weight: bold; border: none; transition: 0.3s; margin-top: 20px; font-family: 'Cairo'; }
+        input, textarea { width: 100%; padding: 14px; margin-top: 20px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 12px; color: white; font-family: 'Cairo'; }
+        .btn { padding: 12px 25px; border-radius: 12px; cursor: pointer; font-weight: bold; border: none; transition: 0.3s; font-family: 'Cairo'; }
         .btn-primary { background: var(--primary); color: white; width: 100%; }
         .btn-admin { background: var(--admin-red); color: white; width: 100%; margin-top: 10px; }
-        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .admin-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 77, 77, 0.2); border-radius: 20px; padding: 20px; }
-        .hidden { display: none !important; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -42,7 +47,7 @@
 <header>
     <div style="font-size: 26px; font-weight: bold; color: var(--primary);">NoVaX</div>
     <div id="auth-zone">
-        <button id="loginBtn" class="btn" style="background:#5865F2; color:white; margin:0;" onclick="login()">دخول بالديسكورد</button>
+        <button id="loginBtn" class="btn" style="background:var(--discord); color:white;" onclick="login()">دخول بالديسكورد</button>
         <div id="userProfile" class="hidden" style="display:flex; align-items:center; gap:12px;">
             <span id="displayUserName"></span>
             <img id="userAvatar" src="" style="width:35px; border-radius:50%; border:1px solid var(--primary);">
@@ -52,62 +57,53 @@
 </header>
 
 <div class="nav-tabs">
-    <div class="tab-btn active" onclick="switchMainTab('rules-page', this)">القوانين</div>
+    <div class="tab-btn active" onclick="switchMainTab('home-page', this)">الرئيسية</div>
+    <div class="tab-btn" onclick="switchMainTab('rules-page', this)">القوانين</div>
     <div id="applyTab" class="tab-btn hidden" onclick="switchMainTab('apply-page', this)">التقديم</div>
     <div id="adminTab" class="tab-btn hidden" onclick="switchMainTab('admin-page', this)" style="color:var(--admin-red);">لوحة الإدارة</div>
 </div>
 
 <div class="container">
-    <section id="rules-page" class="page-content active">
+    <section id="home-page" class="page-content active">
+        <div class="welcome-section">
+            <h1>أهلاً بك في مدينة NoVaX</h1>
+            <p>عالم من الواقعية اللامحدودة بانتظارك</p>
+            <a href="https://discord.gg/YOUR_LINK" target="_blank" class="discord-btn"><i class="fab fa-discord"></i> انضم للديسكورد</a>
+        </div>
+
+        <h2 style="text-align: center; margin-top: 50px;">طاقم الإدارة</h2>
+        <div class="staff-grid" id="staff-container">
+            </div>
+    </section>
+
+    <section id="rules-page" class="page-content">
         <div class="card">
-            <h2 style="color:var(--primary); text-align:center;">📜 قوانين NoVaX RP</h2>
-            <p>1. يمنع الـ VDM والـ RDM نهائياً.</p>
-            <p>2. يمنع الخروج عن الواقعية (Fail RP).</p>
-            <p style="text-align:center; opacity:0.6; margin-top:20px;">سجل دخولك لبدء التقديم.</p>
+            <h2 style="color:var(--primary); text-align:center;">📜 قوانين المدينة</h2>
+            <p>• VDM / RDM ممنوع نهائياً.</p>
+            <p>• الالتزام بالواقعية التامة (Roleplay).</p>
         </div>
     </section>
 
     <section id="apply-page" class="page-content">
         <div class="card">
-            <div class="slide-step active" id="step0">
-                <h2>تقديم طلب تفعيل 📝</h2>
-                <button class="btn btn-primary" onclick="nextSlide(1)">ابدأ التقديم</button>
-            </div>
-            <div class="slide-step" id="step1">
-                <h3>ما هو اسمك الحقيقي وعمرك؟ 👤</h3>
-                <input type="text" id="ans1" placeholder="مثال: علي - 20 سنة">
-                <button class="btn btn-primary" onclick="nextSlide(2)">التالي</button>
-            </div>
-            <div class="slide-step" id="step2">
-                <h3>ما هو الآيدي (ID) الخاص بك؟ 🆔</h3>
-                <input type="number" id="ans2" placeholder="الآيدي داخل اللعبة...">
-                <button class="btn btn-primary" onclick="nextSlide(3)">التالي</button>
-            </div>
-            <div class="slide-step" id="step3">
-                <h3>اشرح لنا قانون الـ VDM؟ 🚗</h3>
-                <textarea id="ans3" rows="3" placeholder="تعريف الـ VDM..."></textarea>
-                <button class="btn btn-primary" onclick="nextSlide(4)">التالي</button>
-            </div>
-            <div class="slide-step" id="step4">
-                <h3>اشرح لنا قانون الـ RDM؟ 🔫</h3>
-                <textarea id="ans4" rows="3" placeholder="تعريف الـ RDM..."></textarea>
-                <button class="btn btn-primary" style="background:#2ecc71;" onclick="finishApply()">إرسال الطلب</button>
-            </div>
-            <div class="slide-step" id="step-final">
-                <h2 style="color:#2ecc71;">✅ تم الإرسال بنجاح!</h2>
-            </div>
+            <div class="slide-step active" id="step0"><h2>تقديم طلب تفعيل</h2><button class="btn btn-primary" onclick="nextSlide(1)">ابدأ</button></div>
+            <div class="slide-step" id="step1"><h3>الاسم والعمر؟</h3><input type="text" id="ans1"><button class="btn btn-primary" onclick="nextSlide(2)">التالي</button></div>
+            <div class="slide-step" id="step2"><h3>الآيدي (ID)؟</h3><input type="number" id="ans2"><button class="btn btn-primary" onclick="nextSlide(3)">التالي</button></div>
+            <div class="slide-step" id="step3"><h3>شرح VDM؟</h3><textarea id="ans3"></textarea><button class="btn btn-primary" onclick="nextSlide(4)">التالي</button></div>
+            <div class="slide-step" id="step4"><h3>شرح RDM؟</h3><textarea id="ans4"></textarea><button class="btn btn-primary" style="background:#2ecc71;" onclick="finishApply()">إرسال</button></div>
+            <div class="slide-step" id="step-final"><h2>✅ تم الإرسال!</h2></div>
         </div>
     </section>
 
     <section id="admin-page" class="page-content">
         <div class="admin-grid">
             <div class="admin-card">
-                <div style="color:var(--admin-red); font-weight:bold; margin-bottom:10px;">📢 نظام الإعلانات</div>
-                <textarea id="annContent" rows="3" placeholder="محتوى الإعلان..."></textarea>
+                <h3>📢 إعلان</h3>
+                <textarea id="annContent"></textarea>
                 <button class="btn btn-admin" onclick="sendAdminAction('announcement')">إرسال (@everyone)</button>
             </div>
             <div class="admin-card">
-                <div style="color:var(--admin-red); font-weight:bold; margin-bottom:10px;">⚙️ التحكم (حذف تلقائي)</div>
+                <h3>⚙️ تحكم</h3>
                 <button class="btn btn-admin" style="background:#2ecc71;" onclick="sendAdminAction('open_apply')">فتح التقديم</button>
                 <button class="btn btn-admin" onclick="sendAdminAction('close_apply')">إغلاق التقديم</button>
             </div>
@@ -116,87 +112,65 @@
 </div>
 
 <script>
-    const CLIENT_ID = "1444065204051906610";
-    const REDIRECT_URI = "https://virusz111.github.io/NoVaX/";
-    const MY_PERSONAL_ID = "1221794986203418704"; 
-
+    // --- الإعدادات ---
+    const MY_PERSONAL_ID = "1221794986203418704";
     const ANN_WEBHOOK = "https://discord.com/api/webhooks/1466228663962832959/HndTSLUdCtqJk7Sa8iRwDudzt-LmOi5i_x2MrL4yJ_2MTFjaPXM18XuM01z4sJp7MzsJ";
     const CONTROL_WEBHOOK = "https://discord.com/api/webhooks/1466229554908762307/u1EvYzI2ScPHlZetO_qpo_s6aRM6hMTn3e-VC_-S3982aHNRuzaz9-EsQruD1uNAP-w-";
     const APPLY_WEBHOOK = "https://discord.com/api/webhooks/1466173783537750201/Dbm7MYHeWnFUHMhRoV0g-66Nfyni6kB3XXENjUL9aUEZWDGgjOjrGb0YtvOkOwOwwPaJ";
 
+    // --- نظام الإدارة التلقائي (حط الآيديات هنا بس) ---
+    const staffList = [
+        { id: "1221794986203418704", name: "NoVaX", rank: "Owner", class: "rank-owner" },
+        { id: "آيدي_المطور_هنا", name: "اسم المطور", rank: "Developer", class: "" },
+        { id: "آيدي_اداري_آخر", name: "المنصب", rank: "Admin", class: "" }
+    ];
+
+    function loadStaff() {
+        const container = document.getElementById('staff-container');
+        staffList.forEach(member => {
+            const imgUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${member.name}`; // صورة احتياطية فخمة
+            container.innerHTML += `
+                <div class="staff-card">
+                    <img src="https://img.v-rp.io/u/${member.id}" onerror="this.src='${imgUrl}'" class="staff-img">
+                    <div style="font-weight:bold; margin-bottom:5px;">${member.name}</div>
+                    <span class="staff-rank ${member.class}">${member.rank}</span>
+                </div>
+            `;
+        });
+    }
+
+    // بقية الوظائف البرمجية (دخول، إرسال، حذف تلقائي)
+    const CLIENT_ID = "1444065204051906610";
+    const REDIRECT_URI = "https://virusz111.github.io/NoVaX/";
     let currentUser = null;
 
-    function login() {
-        const url = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`;
-        window.location.href = url;
-    }
-
-    function switchMainTab(pageId, btn) {
-        document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(pageId).classList.add('active');
-        btn.classList.add('active');
-    }
-
-    function nextSlide(step) {
-        document.querySelectorAll('.slide-step').forEach(s => s.classList.remove('active'));
-        document.getElementById('step' + step).classList.add('active');
-    }
+    function login() { window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`; }
+    function logout() { window.location.href = REDIRECT_URI; }
+    function switchMainTab(p, b) { document.querySelectorAll('.page-content').forEach(x=>x.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active')); document.getElementById(p).classList.add('active'); b.classList.add('active'); }
+    function nextSlide(s) { document.querySelectorAll('.slide-step').forEach(x=>x.classList.remove('active')); document.getElementById('step'+s).classList.add('active'); }
 
     async function sendAdminAction(action) {
         let embed = { color: 16729413, timestamp: new Date() };
-        let targetWebhook = CONTROL_WEBHOOK;
-        let content = "";
-
-        // حذف الرسالة السابقة إذا كانت موجودة
-        const oldMsgId = localStorage.getItem('lastStatusMsgId');
-        if (oldMsgId && (action === 'open_apply' || action === 'close_apply')) {
-            await fetch(`${CONTROL_WEBHOOK}/messages/${oldMsgId}`, { method: 'DELETE' }).catch(() => {});
-        }
-
-        if(action === 'announcement') { 
-            content = "@everyone"; embed.title = "📢 إعلان جديد"; 
-            embed.description = document.getElementById('annContent').value;
-            targetWebhook = ANN_WEBHOOK;
-        } else if(action === 'open_apply') { 
-            embed.title = "✅ التقديم متاح الآن"; embed.description = "بإمكانكم التقديم عبر الموقع الرسمي!"; embed.color = 3066993; 
-        } else if(action === 'close_apply') { 
-            embed.title = "❌ التقديم مغلق"; embed.description = "نعتذر، تم إغلاق باب التقديمات حالياً."; 
-        }
-        
-        const response = await fetch(`${targetWebhook}?wait=true`, { 
-            method: 'POST', 
-            headers: {'Content-Type': 'application/json'}, 
-            body: JSON.stringify({ content: content, embeds: [embed] }) 
-        });
-
-        const result = await response.json();
-        if (result.id && (action === 'open_apply' || action === 'close_apply')) {
-            localStorage.setItem('lastStatusMsgId', result.id);
-        }
-        alert("تم التحديث بنجاح!");
+        let target = CONTROL_WEBHOOK;
+        const oldId = localStorage.getItem('lastStatusMsgId');
+        if (oldId && (action === 'open_apply' || action === 'close_apply')) { await fetch(`${CONTROL_WEBHOOK}/messages/${oldId}`, { method: 'DELETE' }).catch(()=>{}); }
+        if(action === 'announcement') { embed.title = "📢 إعلان جديد"; embed.description = document.getElementById('annContent').value; target = ANN_WEBHOOK; }
+        else if(action === 'open_apply') { embed.title = "✅ التقديم مفتوح"; embed.color = 3066993; }
+        else if(action === 'close_apply') { embed.title = "❌ التقديم مغلق"; }
+        const res = await fetch(`${target}?wait=true`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ content: action === 'announcement' ? "@everyone" : "", embeds: [embed] }) });
+        const data = await res.json();
+        if (data.id && action !== 'announcement') localStorage.setItem('lastStatusMsgId', data.id);
+        alert("تم!");
     }
 
     async function finishApply() {
-        const data = {
-            embeds: [{
-                title: "📩 تقديم جديد: NoVaX RP",
-                color: 10634992,
-                thumbnail: { url: `https://cdn.discordapp.com/avatars/${currentUser.id}/${currentUser.avatar}.png` },
-                fields: [
-                    { name: "👤 المستخدم", value: `<@${currentUser.id}>`, inline: true },
-                    { name: "🆔 ID اللعبة", value: document.getElementById('ans2').value, inline: true },
-                    { name: "📝 الاسم والعمر", value: document.getElementById('ans1').value },
-                    { name: "🚗 VDM", value: document.getElementById('ans3').value },
-                    { name: "🔫 RDM", value: document.getElementById('ans4').value }
-                ]
-            }]
-        };
+        const data = { embeds: [{ title: "📩 تقديم جديد", color: 10634992, fields: [{ name: "👤 المستخدم", value: `<@${currentUser.id}>` }, { name: "🆔 ID", value: document.getElementById('ans2').value }, { name: "📝 بيانات", value: document.getElementById('ans1').value }, { name: "🚗 VDM", value: document.getElementById('ans3').value }, { name: "🔫 RDM", value: document.getElementById('ans4').value }] }] };
         await fetch(APPLY_WEBHOOK, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
         nextSlide('-final');
     }
 
     window.onload = () => {
+        loadStaff();
         const params = new URLSearchParams(window.location.hash.substring(1));
         const token = params.get('access_token');
         if (token) {
@@ -212,7 +186,6 @@
             });
         }
     };
-    function logout() { window.location.href = REDIRECT_URI; }
 </script>
 </body>
 </html>
