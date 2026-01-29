@@ -128,7 +128,6 @@
 
 <script>
     const MY_ID = "1221794986203418704";
-    const ROLE_ADMIN_ID = "1354015622182211587";
     const ROLE_MEMBER_ID = "1443982445455343650";
     const WEB_ADMIN = "https://discord.com/api/webhooks/1466229554908762307/u1EvYzI2ScPHlZetO_qpo_s6aRM6hMTn3e-VC_-S3982aHNRuzaz9-EsQruD1uNAP-w-?wait=true";
     const WEB_APPLY = "https://discord.com/api/webhooks/1466173783537750201/Dbm7MYHeWnFUHMhRoV0g-66Nfyni6kB3XXENjUL9aUEZWDGgjOjrGb0YtvOkOwOwwPaJ";
@@ -154,6 +153,37 @@
         checkApply();
     };
 
+    function checkApply() {
+        const isOpen = localStorage.getItem('noVaX_isOpen') !== 'false';
+        const hasAppliedLocal = localStorage.getItem('noVaX_applied') === 'true';
+        const isMember = currentUser && currentUser.roles && currentUser.roles.includes(ROLE_MEMBER_ID);
+        const isAdmin = currentUser && currentUser.id === MY_ID;
+
+        const form = document.getElementById('apply-form');
+        const closedMsg = document.getElementById('apply-closed');
+        const alreadyMsg = document.getElementById('already-applied');
+        const msgText = document.getElementById('applied-msg-text');
+
+        if(form) form.classList.add('hidden');
+        if(closedMsg) closedMsg.classList.add('hidden');
+        if(alreadyMsg) alreadyMsg.classList.add('hidden');
+
+        if (isMember || isAdmin) {
+            msgText.innerText = isAdmin ? "أنت الإدارة، التقديم متاح للاعبين فقط." : "أنت عضو مفعل بالفعل في المدينة ✅";
+            alreadyMsg.classList.remove('hidden');
+        } else if (hasAppliedLocal) {
+            msgText.innerText = "لقد قمت بإرسال طلبك مسبقاً، يرجى انتظار رد الإدارة ⏳";
+            alreadyMsg.classList.remove('hidden');
+        } else if (!isOpen) {
+            closedMsg.classList.remove('hidden');
+        } else {
+            form.classList.remove('hidden');
+        }
+
+        const statusText = document.getElementById('current-status');
+        if(statusText) statusText.innerText = "الحالة الحالية: " + (isOpen ? "مفتوح ✅" : "مغلق ❌");
+    }
+
     window.submitApp = async function() {
         if(!currentUser) return alert("سجل دخولك بالديسكورد أولاً!");
 
@@ -170,48 +200,7 @@
             vdm: document.getElementById('ans_vdm').value,
             rdm: document.getElementById('ans_rdm').value,
             fail: document.getElementById('ans_failrp').value,
-            storyfunction checkApply() {
-    const isOpen = localStorage.getItem('noVaX_isOpen') !== 'false';
-    const hasAppliedLocal = localStorage.getItem('noVaX_applied') === 'true';
-    
-    // فحص الرتب: العضوية العادية
-    const isMember = currentUser && currentUser.roles && currentUser.roles.includes(ROLE_MEMBER_ID);
-    
-    // التعديل هنا: فحص هل هو صاحب الموقع (MY_ID) أو يملك رتبة الإدارة (ROLE_ADMIN_ID)
-    const isAdmin = currentUser && (currentUser.id === MY_ID || (currentUser.roles && currentUser.roles.includes(ROLE_ADMIN_ID)));
-
-    const form = document.getElementById('apply-form');
-    const closedMsg = document.getElementById('apply-closed');
-    const alreadyMsg = document.getElementById('already-applied');
-    const msgText = document.getElementById('applied-msg-text');
-    const adminTab = document.getElementById('adminTab'); // جلب تبويب الإدارة
-
-    if(form) form.classList.add('hidden');
-    if(closedMsg) closedMsg.classList.add('hidden');
-    if(alreadyMsg) alreadyMsg.classList.add('hidden');
-
-    // إظهار أو إخفاء زر الإدارة في القائمة العلوية بناءً على الرتبة
-    if (adminTab) {
-        if (isAdmin) adminTab.classList.remove('hidden');
-        else adminTab.classList.add('hidden');
-    }
-
-    if (isAdmin || isMember) {
-        // إذا كان أدمن تظهر له رسالة الإدارة، وإذا كان عضواً تظهر له رسالة التفعيل
-        msgText.innerText = isAdmin ? "أنت الإدارة، التقديم متاح للاعبين فقط." : "أنت عضو مفعل بالفعل في المدينة ✅";
-        alreadyMsg.classList.remove('hidden');
-    } else if (hasAppliedLocal) {
-        msgText.innerText = "لقد قمت بإرسال طلبك مسبقاً، يرجى انتظار رد الإدارة ⏳";
-        alreadyMsg.classList.remove('hidden');
-    } else if (!isOpen) {
-        if(closedMsg) closedMsg.classList.remove('hidden');
-    } else {
-        if(form) form.classList.remove('hidden');
-    }
-
-    const statusText = document.getElementById('current-status');
-    if(statusText) statusText.innerText = "الحالة الحالية: " + (isOpen ? "مفتوح ✅" : "مغلق ❌");
-            }: document.getElementById('ans_story').value
+            story: document.getElementById('ans_story').value
         };
 
         if (Object.values(data).some(v => !v)) return alert("أكمل جميع الإجابات أولاً!");
