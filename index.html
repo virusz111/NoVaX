@@ -13,7 +13,7 @@
         #video-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: -1; }
         header { padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.9); border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
         .nav-tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; background: rgba(0,0,0,0.8); padding: 10px; border-bottom: 1px solid rgba(162, 70, 240, 0.2); }
-        .tab-btn { cursor: pointer; opacity: 0.6; font-weight: 700; transition: 0.3s; padding: 8px 15px; border-radius: 10px; font-size: 14px; color: white; }
+        .tab-btn { cursor: pointer; opacity: 0.6; font-weight: 700; transition: 0.3s; padding: 8px 15px; border-radius: 10px; font-size: 14px; color: white; border: 1px solid transparent; }
         .tab-btn.active { opacity: 1; color: var(--primary); background: rgba(162, 70, 240, 0.15); border: 1px solid var(--primary); }
         .container { max-width: 1100px; margin: 20px auto; padding: 20px; }
         .page-content { display: none; animation: fadeIn 0.6s ease; }
@@ -129,16 +129,11 @@
     const APPLY_WEBHOOK = "https://discord.com/api/webhooks/1466173783537750201/Dbm7MYHeWnFUHMhRoV0g-66Nfyni6kB3XXENjUL9aUEZWDGgjOjrGb0YtvOkOwOwwPaJ";
     const ANN_WEBHOOK = "https://discord.com/api/webhooks/1466228663962832959/HndTSLUdCtqJk7Sa8iRwDudzt-LmOi5i_x2MrL4yJ_2MTFjaPXM18XuM01z4sJp7MzsJ";
 
-    // حالة التقديم
-    let isApplyOpen = (localStorage.getItem('apply_status') === 'false') ? false : true;
-    
-    // قائمة المتجر
     let storeItems = [
         { name: "سيارة G-Class 2024", price: "50k", img: "https://gta-objects.com/images/vehicles/sport/t20.webp" },
         { name: "قصر VIP مودرن", price: "200k", img: "https://img.v-rp.io/i/houses/mansion.jpg" }
     ];
 
-    // طاقم الإدارة
     const staffList = [
         { id: "https://cdn.discordapp.com/attachments/1441771278649266286/1466239958397227029/file_0000000069c071f492d3d90ddf9eae10.png", name: "BA95", rank: "Owner", class: "rank-owner" },
         { id: "1221794986203418704", name: "NoVaX", rank: "Manager", class: "" }
@@ -148,7 +143,7 @@
         document.getElementById('staff-container').innerHTML = staffList.map(m => `
             <div class="staff-card">
                 <img src="${m.id}" class="staff-img">
-                <div style="font-weight:bold; font-size:1.2rem;">${m.name}</div>
+                <div style="font-weight:bold;">${m.name}</div>
                 <span class="staff-rank ${m.class}">${m.rank}</span>
             </div>`).join('');
     }
@@ -158,7 +153,7 @@
             <div class="store-card">
                 <img src="${item.img}" class="item-img" onerror="this.src='https://api.dicebear.com/7.x/identicon/svg?seed=${index}'">
                 <h3>${item.name}</h3>
-                <div style="color:var(--success); font-weight:bold; font-size:1.3rem; margin:10px 0;">${item.price}</div>
+                <div style="color:var(--success); font-weight:bold; margin:10px 0;">${item.price}</div>
                 <button class="btn btn-primary" onclick="window.open('https://discord.gg/HZFb5BZ8dZ')">طلب شراء</button>
             </div>`).join('');
     }
@@ -167,24 +162,23 @@
         const form = document.getElementById('apply-form-content');
         const closed = document.getElementById('apply-closed-msg');
         const done = document.getElementById('apply-done-msg');
+        const status = localStorage.getItem('apply_status') !== 'false';
 
         form.classList.add('hidden'); closed.classList.add('hidden'); done.classList.add('hidden');
 
         if (localStorage.getItem('novax_applied') === 'true') {
             done.classList.remove('hidden');
-        } else if (!isApplyOpen) {
+        } else if (!status) {
             closed.classList.remove('hidden');
         } else {
             form.classList.remove('hidden');
         }
     }
 
-    // وظائف الإدارة
     window.toggleApply = function(s) {
-        isApplyOpen = s;
         localStorage.setItem('apply_status', s);
         alert(s ? "✅ تم فتح التقديم" : "❌ تم إغلاق التقديم");
-        renderApplyPage();
+        renderApplyPage(); // تحديث فوري للواجهة
     }
 
     window.sendAnnouncement = async function() {
@@ -193,56 +187,30 @@
         const btn = document.getElementById('sendAnnBtn');
         btn.disabled = true;
         btn.innerText = "جاري النشر...";
-        
         try {
-            await fetch(ANN_WEBHOOK, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ content: "@everyone\n" + content })
-            });
-            alert("✅ تم النشر في الديسكورد!");
+            await fetch(ANN_WEBHOOK, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ content: "@everyone\n" + content }) });
+            alert("✅ تم النشر!");
             document.getElementById('annContent').value = "";
-        } catch(e) { alert("❌ خطأ في الإرسال"); }
-        btn.disabled = false;
-        btn.innerText = "نشر الإعلان @everyone";
+        } catch(e) { alert("❌ خطأ"); }
+        btn.disabled = false; btn.innerText = "نشر الإعلان @everyone";
     }
 
-    // وظيفة التقديم
     window.finishApply = async function() {
-        if(!currentUser) return alert("سجل دخولك بالديسكورد أولاً!");
+        if(!currentUser) return alert("سجل دخول أولاً!");
         const a1 = document.getElementById('ans1').value;
         const a2 = document.getElementById('ans_rules').value;
         const a3 = document.getElementById('ans_rp').value;
-        if(!a1 || !a2 || !a3) return alert("الرجاء الإجابة على جميع الأسئلة!");
-
+        if(!a1 || !a2 || !a3) return alert("أكمل الإجابات!");
         const btn = document.getElementById('sendApplyBtn');
         btn.disabled = true;
-        btn.innerText = "جاري الإرسال...";
-
-        const data = {
-            embeds: [{
-                title: "📩 تقديم جديد", color: 0xa246f0,
-                thumbnail: { url: `https://cdn.discordapp.com/avatars/${currentUser.id}/${currentUser.avatar}.png` },
-                fields: [
-                    { name: "👤 العضو", value: `<@${currentUser.id}> (${currentUser.username})` },
-                    { name: "📝 الاسم والعمر", value: a1 },
-                    { name: "🛑 القوانين", value: a2 },
-                    { name: "🎮 الـ RP", value: a3 }
-                ],
-                timestamp: new Date()
-            }]
-        };
-
         try {
-            await fetch(APPLY_WEBHOOK, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
+            await fetch(APPLY_WEBHOOK, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({
+                embeds: [{ title: "تقديم جديد", color: 0xa246f0, fields: [{name:"العضو", value:`<@${currentUser.id}>`}, {name:"الاسم", value:a1}, {name:"القوانين", value:a2}, {name:"RP", value:a3}] }]
+            }) });
             localStorage.setItem('novax_applied', 'true');
-            alert("✅ تم إرسال طلبك بنجاح!");
+            alert("✅ تم الإرسال!");
             renderApplyPage();
-        } catch(e) { 
-            alert("❌ فشل الإرسال"); 
-            btn.disabled = false;
-            btn.innerText = "إرسال التقديم";
-        }
+        } catch(e) { alert("❌ فشل"); btn.disabled = false; }
     }
 
     window.switchMainTab = function(p, b) {
@@ -253,7 +221,6 @@
         if(p === 'apply-page') renderApplyPage();
     }
 
-    // ربط الديسكورد
     const CLIENT_ID = "1444065204051906610";
     const REDIRECT_URI = window.location.origin + window.location.pathname;
     let currentUser = null;
