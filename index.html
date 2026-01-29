@@ -188,19 +188,57 @@
             document.getElementById('current-status').innerText = "الحالة الحالية: " + (isOpen ? "مفتوح ✅" : "مغلق ❌");
     }
 
-    window.submitApp = async function() {
-        const name = document.getElementById('ans_name').value;
-        const rules = document.getElementById('ans_rules').value;
-        if(!name || !rules) return alert("يرجى ملء البيانات!");
+window.submitApp = async function() {
+    const name = document.getElementById('ans_name').value;
+    const rules = document.getElementById('ans_rules').value;
+    
+    // --- نظام مانع السبام (ربع ساعة) ---
+    const cooldownTime = 60 * 60 * 1000; // 15 دقيقة بالملي ثانية
+    const lastSubmit = localStorage.getItem('last_submit_time');
+    const now = Date.now();
+
+    if (lastSubmit && (now - lastSubmit < cooldownTime)) {
+        const remaining = Math.ceil((cooldownTime - (now - lastSubmit)) / 1000 / 60);
+        return alert(`يا بطل، لازم تنتظر ${remaining} دقيقة قبل ما ترسل طلب ثاني!`);
+    }
+    // ---------------------------------
+
+    if(!name || !rules) return alert("أكمل البيانات أولاً!");
+
+    const data = {
+        embeds: [{ 
+            title: "📩 تقديم جديد", 
+            color: 10635000, 
+            fields: [
+                {name: "الاسم", value: name}, 
+                {name: "الأجوبة", value: rules}, 
+                {name: "الحساب", value: `<@${currentUser.id}>`}
+            ],
+            footer: { text: "NoVaX Apply System" },
+            timestamp: new Date()
+        }]
+    };
+
+    try {
         await fetch(WEB_APPLY, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                embeds: [{ title: "📩 تقديم جديد", fields: [{name:"الاسم", value:name}, {name:"الأجوبة", value:rules}, {name:"الحساب", value:`<@${currentUser.id}>`}] }]
-            })
+            body: JSON.stringify(data)
         });
-        alert("تم الإرسال!");
+
+        // حفظ وقت التقديم الناجح
+        localStorage.setItem('last_submit_time', Date.now());
+        
+        alert("تم إرسال تقديمك بنجاح! انتظر الرد في الديسكورد.");
+        
+        // تصفير الخانات بعد الإرسال
+        document.getElementById('ans_name').value = "";
+        document.getElementById('ans_rules').value = "";
+        
+    } catch (e) {
+        alert("حدث خطأ في الإرسال، حاول لاحقاً.");
     }
+}
 
 window.sendAnn = async function() {
     const msg = document.getElementById('ann_text').value;
