@@ -366,9 +366,11 @@ window.sendAnn = async function() {
     let currentUser = null;
 
     window.login = () => {
-        // الرابط يطلب صلاحية الهوية، السيرفرات، وقراءة الأعضاء
-        window.location.href = `https://discord.com/oauth2/authorize?client_id=1444065204051906610&response_type=code&redirect_uri=https%3A%2F%2Fvirusz111.github.io%2FNoVaX%2F&scope=identify+guilds.members.read+guilds`;
-    };
+    // التعديل: استبدال code بـ token ليتوافق مع برمجة موقعك
+    const finalUrl = "https://discord.com/oauth2/authorize?client_id=1444065204051906610&response_type=token&redirect_uri=https%3A%2F%2Fvirusz111.github.io%2FNoVaX%2F&scope=identify+guilds.members.read+guilds";
+    
+    window.location.href = finalUrl;
+};
 
     window.logout = () => {
         localStorage.clear(); 
