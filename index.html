@@ -73,7 +73,7 @@
             <h2 style="color:var(--primary); text-align:center;">📜 قوانين NoVaX RP</h2>
             <p>1. يمنع الـ VDM والـ RDM نهائياً.</p>
             <p>2. يمنع الخروج عن الواقعية (Fail RP).</p>
-            <p style="text-align:center; opacity:0.6; margin-top:20px;">سجل دخولك لبدء التقديم.</p>
+            <p style="text-align:center; opacity:0.6; margin-top:20px;">سجل دخولك لبدء التتقديم.</p>
         </div>
     </section>
 
@@ -87,7 +87,7 @@
             
             <div class="slide-step" id="step1">
                 <h3>ما هو اسمك الحقيقي وعمرك؟ 👤</h3>
-                <input type="text" id="ans1" placeholder="مثال: محمد - 20 سنة">
+                <input type="text" id="ans1" placeholder="مثال: علي - 20 سنة">
                 <button class="btn btn-primary" onclick="nextSlide(2)">التالي</button>
             </div>
 
@@ -119,12 +119,12 @@
     <section id="admin-page" class="page-content">
         <div class="admin-grid">
             <div class="admin-card">
-                <div style="color:var(--admin-red); font-weight:bold; margin-bottom:10px;">📢 إعلان سريع</div>
+                <div style="color:var(--admin-red); font-weight:bold; margin-bottom:10px;">📢 نظام الإعلانات</div>
                 <textarea id="annContent" rows="3" placeholder="محتوى الإعلان..."></textarea>
-                <button class="btn btn-admin" onclick="sendAdminAction('announcement')">إرسال (@everyone)</button>
+                <button class="btn btn-admin" onclick="sendAdminAction('announcement')">إرسال لروم الإعلانات (@everyone)</button>
             </div>
             <div class="admin-card">
-                <div style="color:var(--admin-red); font-weight:bold; margin-bottom:10px;">⚙️ التحكم</div>
+                <div style="color:var(--admin-red); font-weight:bold; margin-bottom:10px;">⚙️ التحكم بالتقديم</div>
                 <button class="btn btn-admin" style="background:#2ecc71;" onclick="sendAdminAction('open_apply')">فتح التقديم</button>
                 <button class="btn btn-admin" onclick="sendAdminAction('close_apply')">إغلاق التقديم</button>
             </div>
@@ -134,12 +134,14 @@
 </div>
 
 <script>
+    // --- الإعدادات التي قدمتها ---
     const CLIENT_ID = "1444065204051906610";
     const REDIRECT_URI = "https://virusz111.github.io/NoVaX/";
-    
+    const MY_PERSONAL_ID = "1221794986203418704"; 
+
+    const ANN_WEBHOOK = "https://discord.com/api/webhooks/1466228663962832959/HndTSLUdCtqJk7Sa8iRwDudzt-LmOi5i_x2MrL4yJ_2MTFjaPXM18XuM01z4sJp7MzsJ";
+    const CONTROL_WEBHOOK = "https://discord.com/api/webhooks/1466229554908762307/u1EvYzI2ScPHlZetO_qpo_s6aRM6hMTn3e-VC_-S3982aHNRuzaz9-EsQruD1uNAP-w-";
     const APPLY_WEBHOOK = "https://discord.com/api/webhooks/1466173783537750201/Dbm7MYHeWnFUHMhRoV0g-66Nfyni6kB3XXENjUL9aUEZWDGgjOjrGb0YtvOkOwOwwPaJ";
-    const ANN_WEBHOOK = "ضع_هنا_رابط_ويب_هوك_الاعلانات"; 
-    const MY_PERSONAL_ID = "ضع_آيديك_هنا"; 
 
     let currentUser = null;
 
@@ -162,13 +164,25 @@
 
     async function sendAdminAction(action) {
         let embed = { color: 16729413, timestamp: new Date() };
+        let targetWebhook = CONTROL_WEBHOOK;
         let content = "";
-        if(action === 'announcement') { content = "@everyone"; embed.title = "📢 إعلان من الإدارة"; embed.description = document.getElementById('annContent').value; }
-        else if(action === 'open_apply') { embed.title = "✅ التقديم متاح"; embed.description = "يمكنكم الآن التقديم عبر الموقع الرسمي."; embed.color = 3066993; }
-        else if(action === 'close_apply') { embed.title = "❌ التقديم مغلق"; embed.description = "نكتفي بهذا القدر من التقديمات حالياً."; }
+
+        if(action === 'announcement') { 
+            content = "@everyone"; 
+            embed.title = "📢 إعلان جديد"; 
+            embed.description = document.getElementById('annContent').value;
+            targetWebhook = ANN_WEBHOOK;
+        } else if(action === 'open_apply') { 
+            embed.title = "✅ فتح التقديم"; 
+            embed.description = "تم فتح باب التقديمات الآن عبر الموقع الرسمي!"; 
+            embed.color = 3066993; 
+        } else if(action === 'close_apply') { 
+            embed.title = "❌ إغلاق التقديم"; 
+            embed.description = "نعتذر، تم إغلاق التقديمات حالياً لاكتفاء العدد."; 
+        }
         
-        await fetch(ANN_WEBHOOK, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ content: content, embeds: [embed] }) });
-        alert("تم الإرسال!");
+        await fetch(targetWebhook, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ content: content, embeds: [embed] }) });
+        alert("تم التنفيذ بنجاح!");
     }
 
     async function finishApply() {
@@ -183,8 +197,7 @@
                     { name: "📝 الاسم والعمر", value: document.getElementById('ans1').value },
                     { name: "🚗 VDM", value: document.getElementById('ans3').value },
                     { name: "🔫 RDM", value: document.getElementById('ans4').value }
-                ],
-                footer: { text: `حالة التحقق: ${currentUser.verified ? 'موثق' : 'غير موثق'}` }
+                ]
             }]
         };
         await fetch(APPLY_WEBHOOK, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
@@ -204,70 +217,6 @@
                 document.getElementById('userAvatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
                 document.getElementById('applyTab').classList.remove('hidden');
                 if(user.id === MY_PERSONAL_ID) document.getElementById('adminTab').classList.remove('hidden');
-            });
-        }
-    };
-    function logout() { window.location.href = REDIRECT_URI; }
-</script>
-</body>
-</html>
-    // --- إعداداتك ---
-    const CLIENT_ID = "1444065204051906610";
-    const REDIRECT_URI = "https://virusz111.github.io/NoVaX/";
-    const WEBHOOK = "https://discord.com/api/webhooks/1466173783537750201/Dbm7MYHeWnFUHMhRoV0g-66Nfyni6kB3XXENjUL9aUEZWDGgjOjrGb0YtvOkOwOwwPaJ";
-    
-    // ضع آيدي حسابك الشخصي هنا (الآيدي المكون من 18 أو 19 رقم)
-    const MY_PERSONAL_ID = "1221794986203418704"; 
-
-    let currentUser = null;
-
-    function login() {
-        const url = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`;
-        window.location.href = url;
-    }
-
-    function switchMainTab(pageId, btn) {
-        document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(pageId).classList.add('active');
-        btn.classList.add('active');
-    }
-
-    async function sendAdminAction(action) {
-        let embed = { color: 16729413, timestamp: new Date() };
-        let content = "";
-        if(action === 'announcement') { content = "@everyone"; embed.title = "📢 إعلان جديد"; embed.description = document.getElementById('annContent').value; }
-        else if(action === 'open_apply') { embed.title = "✅ التقديم مفتوح"; embed.description = "يمكنكم الآن التقديم عبر الموقع!"; embed.color = 3066993; }
-        else if(action === 'close_apply') { embed.title = "❌ التقديم مغلق"; embed.description = "تم إغلاق التقديمات حالياً."; }
-        
-        await fetch(WEBHOOK, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ content: content, embeds: [embed] }) });
-        alert("تم التنفيذ!");
-    }
-
-    async function finishApply() {
-        const data = { embeds: [{ title: "📩 تقديم جديد", fields: [{ name: "المقدم", value: `<@${currentUser.id}>` }, { name: "البيانات", value: document.getElementById('ans1').value }] }] };
-        await fetch(WEBHOOK, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
-        document.getElementById('apply-form').classList.add('hidden');
-        document.getElementById('success-msg').classList.remove('hidden');
-    }
-
-    window.onload = () => {
-        const params = new URLSearchParams(window.location.hash.substring(1));
-        const token = params.get('access_token');
-        if (token) {
-            fetch('https://discord.com/api/users/@me', { headers: { authorization: `Bearer ${token}` } })
-            .then(r => r.json()).then(user => {
-                currentUser = user;
-                document.getElementById('loginBtn').classList.add('hidden');
-                document.getElementById('userProfile').classList.remove('hidden');
-                document.getElementById('displayUserName').innerText = user.username;
-                document.getElementById('userAvatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
-                document.getElementById('applyTab').classList.remove('hidden');
-                
-                // هنا يتم التحقق: إذا كان آيدي الشخص اللي سجل دخول هو نفس آيديك.. تظهر اللوحة
-                if(user.id === MY_PERSONAL_ID) {
-                    document.getElementById('adminTab').classList.remove('hidden');
-                }
             });
         }
     };
