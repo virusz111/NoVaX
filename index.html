@@ -219,14 +219,39 @@ window.toggleApply = async function(val) {
 
 function checkApply() {
     const isOpen = localStorage.getItem('noVaX_isOpen') !== 'false';
-    document.getElementById('apply-form').classList.toggle('hidden', !isOpen);
-    document.getElementById('apply-closed').classList.toggle('hidden', isOpen);
-    if(document.getElementById('current-status'))
-        document.getElementById('current-status').innerText = "الحالة الحالية: " + (isOpen ? "مفتوح ✅" : "مغلق ❌");
+    const hasApplied = localStorage.getItem('noVaX_applied') === 'true'; 
+
+    const form = document.getElementById('apply-form');
+    const closedMsg = document.getElementById('apply-closed');
+    const alreadyAppliedMsg = document.getElementById('already-applied');
+    const statusText = document.getElementById('current-status');
+
+    // إخفاء كل شيء أولاً
+    if(form) form.classList.add('hidden');
+    if(closedMsg) closedMsg.classList.add('hidden');
+    if(alreadyAppliedMsg) alreadyAppliedMsg.classList.add('hidden');
+
+    // منطق الإظهار الذكي (الترتيب مهم)
+    if (hasApplied) {
+        // إذا كان قد قدم مسبقاً، تظهر رسالة التنبيه فقط
+        if(alreadyAppliedMsg) alreadyAppliedMsg.classList.remove('hidden');
+    } else if (!isOpen) {
+        // إذا كان التقديم مغلقاً
+        if(closedMsg) closedMsg.classList.remove('hidden');
+    } else {
+        // إذا كان التقديم مفتوحاً ولم يقدم بعد
+        if(form) form.classList.remove('hidden');
+    }
+
+    // تحديث نص الحالة في لوحة الإدارة
+    if(statusText) {
+        statusText.innerText = "الحالة الحالية: " + (isOpen ? "مفتوح ✅" : "مغلق ❌");
+    }
 }
 
 window.submitApp = async function() {
-    // سحب القيم من الخانات الجديدة
+    if(!currentUser) return alert("يا بطل، لازم تسجل دخولك بالديسكورد أولاً!");
+
     const data_inputs = {
         name: document.getElementById('ans_name').value,
         char: document.getElementById('ans_char_name').value,
@@ -236,22 +261,20 @@ window.submitApp = async function() {
         story: document.getElementById('ans_story').value
     };
 
-    // نظام الانتظار (الربع ساعة)
     const cooldown = 15 * 60 * 1000;
     const last = localStorage.getItem('last_submit_time');
     if (last && (Date.now() - last < cooldown)) {
         return alert("هدّ اللعب! باقي لك وقت قبل ما تقدر تقدم مرة ثانية.");
     }
 
-    // التأكد أن كل الخانات مليانة
     if (Object.values(data_inputs).some(val => !val)) {
-        return alert(" لازم تجاوب على كل الأسئلة عشان تنقبل!");
+        return alert("لازم تجاوب على كل الأسئلة عشان تنقبل!");
     }
 
     const embedData = {
         embeds: [{
             title: "📂 طلب تفعيل جديد | NoVaX",
-            color: 0x3498db, // لون أزرق هادئ للتقديمات
+            color: 0x3498db,
             fields: [
                 { name: "👤 المعلومات الأساسية", value: `**الاسم:** ${data_inputs.name}\n**اسم الشخصية:** ${data_inputs.char}`, inline: false },
                 { name: "🚫 قانون VDM", value: data_inputs.vdm },
@@ -265,24 +288,30 @@ window.submitApp = async function() {
         }]
     };
 
-    await fetch(WEB_APPLY, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(embedData)
-    });
+    try {
+        await fetch(WEB_APPLY, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(embedData)
+        });
 
-    localStorage.setItem('last_submit_time', Date.now());
-    alert("! تم إرسال طلبك بنجاح للإدارة.");
+        // حفظ البيانات في المتصفح
+        localStorage.setItem('last_submit_time', Date.now());
+        localStorage.setItem('noVaX_applied', 'true'); // أهم سطر
 
-    localStorage.setItem('noVaX_applied', 'true');
-    checkApply(); // عشان يختفي الفورم فوراً
-    
-    // تنظيف الخانات
-    Object.keys(data_inputs).forEach(id => {
-        const el = document.getElementById('ans_' + id);
-        if(el) el.value = "";
-    });
-}
+        alert("تم إرسال طلبك بنجاح للإدارة! 🚀");
+        
+        checkApply(); // تحديث الصفحة فوراً لإخفاء الفورم
+
+        // تنظيف الخانات
+        Object.keys(data_inputs).forEach(id => {
+            const el = document.getElementById('ans_' + id);
+            if(el) el.value = "";
+        });
+    } catch (e) {
+        alert("فشل الإرسال، تأكد من اتصالك بالإنترنت.");
+    }
+        }
 
 window.sendAnn = async function() {
     const msg = document.getElementById('ann_text').value;
