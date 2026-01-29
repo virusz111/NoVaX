@@ -89,25 +89,47 @@
         </div>
     </section>
 
-    <section id="store-page" class="page-content">
-        <h2 style="text-align: center; color: var(--primary); margin-bottom: 30px;">🛒 متجر NoVaX</h2>
-        <div class="staff-grid">
+// --- قسم بيانات المتجر (عدل هنا للإضافة أو الحذف) ---
+const storeItems = [
+    { 
+        name: "حزمة مرسيدس G-Class", 
+        price: "50,000 $", 
+        img: "https://رابط_صورة_الجي_كلاس.png", 
+        desc: "السيارة الأقوى للطرق الوعرة والهيبة في المدينة." 
+    },
+    { 
+        name: "قصر فيلا - ماليبو", 
+        price: "150,000 $", 
+        img: "https://رابط_صورة_القصر.png", 
+        desc: "إطلالة بحرية مباشرة مع مسبح خاص وكراج واسع." 
+    },
+    { 
+        name: "رتبة VIP بلاتينيوم", 
+        price: "30,000 $", 
+        img: "https://cdn-icons-png.flaticon.com/512/5551/5551284.png", 
+        desc: "أولوية دخول، لون مميز، وراتب إضافي كل ساعة." 
+    }
+];
+
+// --- وظيفة عرض المتجر تلقائياً ---
+function loadStore() {
+    const container = document.getElementById('store-container');
+    if(!container) return;
+    container.innerHTML = ""; // تنظيف الحاوية
+    
+    storeItems.forEach(item => {
+        container.innerHTML += `
             <div class="store-card">
-                <img src="https://gta-objects.com/images/vehicles/sport/t20.webp" style="width: 100%; border-radius: 15px;">
-                <h3>حزمة السيارات الفخمة</h3>
-                <p>سيارات سريعة وتعديلات حصرية.</p>
-                <div class="price-tag">50,000 $</div>
-                <button class="btn btn-primary" onclick="buyItem('حزمة السيارات')">شراء عبر التكت</button>
+                <img src="${item.img}" onerror="this.src='https://api.dicebear.com/7.x/identicon/svg?seed=${item.name}'" 
+                     style="width: 100%; height: 180px; border-radius: 15px; object-fit: cover; margin-bottom: 15px; border: 1px solid var(--primary);">
+                <h3 style="margin: 10px 0; color: var(--primary);">${item.name}</h3>
+                <p style="font-size: 14px; color: #ccc; min-height: 40px;">${item.desc}</p>
+                <div class="price-tag" style="color: #2ecc71; font-size: 20px; font-weight: bold; margin: 15px 0;">${item.price}</div>
+                <button class="btn btn-primary" onclick="buyItem('${item.name}')" style="width: 100%;">شراء عبر التكت</button>
             </div>
-            <div class="store-card">
-                <img src="https://img.v-rp.io/i/houses/mansion.jpg" onerror="this.src='https://api.dicebear.com/7.x/identicon/svg?seed=house'" style="width: 100%; border-radius: 15px;">
-                <h3>تملك منزل / قصر</h3>
-                <p>اختر موقعك المفضل مع كراج خاص.</p>
-                <div class="price-tag">100,000 $</div>
-                <button class="btn btn-primary" onclick="buyItem('منزل VIP')">شراء عبر التكت</button>
-            </div>
-        </div>
-    </section>
+        `;
+    });
+}
 
     <section id="apply-page" class="page-content">
         <div class="card">
