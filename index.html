@@ -13,7 +13,7 @@
         #video-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: -1; }
         header { padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.9); border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
         .nav-tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; background: rgba(0,0,0,0.8); padding: 10px; border-bottom: 1px solid rgba(162, 70, 240, 0.2); }
-        .tab-btn { cursor: pointer; opacity: 0.6; font-weight: 700; transition: 0.3s; padding: 8px 15px; border-radius: 10px; font-size: 14px; }
+        .tab-btn { cursor: pointer; opacity: 0.6; font-weight: 700; transition: 0.3s; padding: 8px 15px; border-radius: 10px; font-size: 14px; color: white; }
         .tab-btn.active { opacity: 1; color: var(--primary); background: rgba(162, 70, 240, 0.15); border: 1px solid var(--primary); }
         .container { max-width: 1100px; margin: 20px auto; padding: 20px; }
         .page-content { display: none; animation: fadeIn 0.6s ease; }
@@ -23,7 +23,7 @@
         .staff-img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary); margin-bottom: 15px; object-fit: cover; }
         .staff-rank { font-size: 13px; padding: 4px 12px; border-radius: 20px; background: rgba(162, 70, 240, 0.2); color: var(--primary); font-weight: bold; border: 1px solid var(--primary); }
         .rank-owner { color: #ff4d4d; border-color: #ff4d4d; background: rgba(255, 77, 77, 0.1); }
-        .btn { padding: 12px 20px; border-radius: 12px; cursor: pointer; font-weight: bold; border: none; transition: 0.3s; font-family: 'Cairo'; width: 100%; display: block; margin-top: 10px; color: white; text-decoration: none; }
+        .btn { padding: 12px 20px; border-radius: 12px; cursor: pointer; font-weight: bold; border: none; transition: 0.3s; font-family: 'Cairo'; width: 100%; display: block; margin-top: 10px; color: white; text-decoration: none; text-align: center; }
         .btn-primary { background: var(--primary); }
         .btn-admin { background: var(--admin-red); }
         .btn-success { background: var(--success); }
@@ -64,7 +64,7 @@
     <section id="home-page" class="page-content active">
         <div class="card">
             <h1>NoVaX RP</h1>
-            <p>مرحباً بك في أفضل تجربة واقعية</p>
+            <p>أهلاً بك في مدينة الأحلام والواقعية</p>
             <a href="https://discord.gg/HZFb5BZ8dZ" target="_blank" class="btn btn-primary" style="width:200px; margin: 20px auto;">سيرفر الديسكورد</a>
         </div>
         <h2 style="text-align: center; margin-top: 40px;">طاقم الإدارة</h2>
@@ -75,35 +75,35 @@
         <div class="card">
             <h2 style="color:var(--primary);">📜 قوانين المدينة</h2>
             <div style="text-align: right; line-height: 2;">
-                <p>• يمنع صدم اللاعبين (VDM) أو قتلهم (RDM).</p>
-                <p>• يمنع الـ Meta Gaming والـ Power Gaming.</p>
-                <p>• الالتزام التام بتمثيل الشخصية والواقعية.</p>
-                <p>• احترام جميع أفراد المجتمع والإدارة.</p>
+                <p>• يمنع القتل العشوائي (RDM) أو الصدم العشوائي (VDM).</p>
+                <p>• يمنع استخدام معلومات من خارج اللعبة (Meta Gaming).</p>
+                <p>• الالتزام بالواقعية التامة وتمثيل الشخصية (Roleplay).</p>
+                <p>• احترام الطاقم الإداري وجميع اللاعبين.</p>
             </div>
         </div>
     </section>
 
     <section id="store-page" class="page-content">
-        <h2 style="text-align:center;">🛒 المتجر</h2>
+        <h2 style="text-align:center;">🛒 المتجر الحصري</h2>
         <div class="staff-grid" id="store-container"></div>
     </section>
 
     <section id="apply-page" class="page-content">
         <div class="card">
             <div id="apply-form-content">
-                <h2 style="color:var(--primary);">📋 تقديم تفعيل</h2>
-                <input type="text" id="ans1" placeholder="الاسم والعمر">
-                <textarea id="ans_rules" rows="3" placeholder="اشرح مفهوم الـ RDM و الـ VDM؟"></textarea>
+                <h2 style="color:var(--primary);">📋 تقديم على التفعيل</h2>
+                <input type="text" id="ans1" placeholder="الاسم الحقيقي والعمر">
+                <textarea id="ans_rules" rows="3" placeholder="اشرح مفهوم RDM و VDM؟"></textarea>
                 <textarea id="ans_rp" rows="3" placeholder="ما هو الـ Meta Gaming والـ Power Gaming؟"></textarea>
                 <button id="sendApplyBtn" class="btn btn-success" onclick="finishApply()">إرسال التقديم</button>
             </div>
             <div id="apply-closed-msg" class="hidden">
                 <h2 style="color:var(--admin-red);">❌ التقديم مغلق حالياً</h2>
-                <p>يرجى متابعة الديسكورد لمعرفة مواعيد الفتح.</p>
+                <p>تابع الإعلانات في الديسكورد لمعرفة وقت الفتح.</p>
             </div>
             <div id="apply-done-msg" class="hidden">
-                <h2 style="color:var(--success);">✅ تم إرسال تقديمك سابقاً</h2>
-                <p>طلبك قيد المراجعة، شكراً لصبرك.</p>
+                <h2 style="color:var(--success);">✅ لقد قمت بالتقديم مسبقاً</h2>
+                <p>طلبك قيد المراجعة، يرجى الانتظار.</p>
             </div>
         </div>
     </section>
@@ -116,9 +116,9 @@
                 <button class="btn btn-admin" onclick="toggleApply(false)" style="margin-top:10px;">إغلاق التقديم</button>
             </div>
             <div class="card">
-                <h3>📢 نشر إعلان</h3>
-                <textarea id="annContent" placeholder="محتوى الإعلان..."></textarea>
-                <button id="sendAnnBtn" class="btn btn-primary" onclick="sendAnnouncement()">نشر @everyone</button>
+                <h3>📢 نشر إعلان سريع</h3>
+                <textarea id="annContent" placeholder="محتوى الإعلان هنا..."></textarea>
+                <button id="sendAnnBtn" class="btn btn-primary" onclick="sendAnnouncement()">نشر الإعلان @everyone</button>
             </div>
         </div>
     </section>
@@ -129,14 +129,16 @@
     const APPLY_WEBHOOK = "https://discord.com/api/webhooks/1466173783537750201/Dbm7MYHeWnFUHMhRoV0g-66Nfyni6kB3XXENjUL9aUEZWDGgjOjrGb0YtvOkOwOwwPaJ";
     const ANN_WEBHOOK = "https://discord.com/api/webhooks/1466228663962832959/HndTSLUdCtqJk7Sa8iRwDudzt-LmOi5i_x2MrL4yJ_2MTFjaPXM18XuM01z4sJp7MzsJ";
 
-    // جلب حالة التقديم من التخزين المحلي
+    // حالة التقديم
     let isApplyOpen = (localStorage.getItem('apply_status') === 'false') ? false : true;
     
+    // قائمة المتجر
     let storeItems = [
-        { name: "سيارة G-Class", price: "50k", img: "https://gta-objects.com/images/vehicles/sport/t20.webp" },
-        { name: "فيلا الملك", price: "200k", img: "https://img.v-rp.io/i/houses/mansion.jpg" }
+        { name: "سيارة G-Class 2024", price: "50k", img: "https://gta-objects.com/images/vehicles/sport/t20.webp" },
+        { name: "قصر VIP مودرن", price: "200k", img: "https://img.v-rp.io/i/houses/mansion.jpg" }
     ];
 
+    // طاقم الإدارة
     const staffList = [
         { id: "https://cdn.discordapp.com/attachments/1441771278649266286/1466239958397227029/file_0000000069c071f492d3d90ddf9eae10.png", name: "BA95", rank: "Owner", class: "rank-owner" },
         { id: "1221794986203418704", name: "NoVaX", rank: "Manager", class: "" }
@@ -146,7 +148,7 @@
         document.getElementById('staff-container').innerHTML = staffList.map(m => `
             <div class="staff-card">
                 <img src="${m.id}" class="staff-img">
-                <div style="font-weight:bold;">${m.name}</div>
+                <div style="font-weight:bold; font-size:1.2rem;">${m.name}</div>
                 <span class="staff-rank ${m.class}">${m.rank}</span>
             </div>`).join('');
     }
@@ -156,8 +158,8 @@
             <div class="store-card">
                 <img src="${item.img}" class="item-img" onerror="this.src='https://api.dicebear.com/7.x/identicon/svg?seed=${index}'">
                 <h3>${item.name}</h3>
-                <div style="color:var(--success); font-weight:bold;">${item.price}</div>
-                <button class="btn btn-primary" onclick="window.open('https://discord.gg/HZFb5BZ8dZ')">شراء</button>
+                <div style="color:var(--success); font-weight:bold; font-size:1.3rem; margin:10px 0;">${item.price}</div>
+                <button class="btn btn-primary" onclick="window.open('https://discord.gg/HZFb5BZ8dZ')">طلب شراء</button>
             </div>`).join('');
     }
 
@@ -166,9 +168,7 @@
         const closed = document.getElementById('apply-closed-msg');
         const done = document.getElementById('apply-done-msg');
 
-        form.classList.add('hidden');
-        closed.classList.add('hidden');
-        done.classList.add('hidden');
+        form.classList.add('hidden'); closed.classList.add('hidden'); done.classList.add('hidden');
 
         if (localStorage.getItem('novax_applied') === 'true') {
             done.classList.remove('hidden');
@@ -179,77 +179,71 @@
         }
     }
 
-    // تصحيح وظيفة فتح/إغلاق التقديم
+    // وظائف الإدارة
     window.toggleApply = function(s) {
         isApplyOpen = s;
         localStorage.setItem('apply_status', s);
-        alert(s ? "✅ تم فتح التقديم للجميع" : "❌ تم إغلاق التقديم");
+        alert(s ? "✅ تم فتح التقديم" : "❌ تم إغلاق التقديم");
         renderApplyPage();
-    };
+    }
 
-    // تصحيح وظيفة إرسال الإعلان
     window.sendAnnouncement = async function() {
         const content = document.getElementById('annContent').value;
+        if(!content) return alert("اكتب الإعلان أولاً!");
         const btn = document.getElementById('sendAnnBtn');
-        if(!content) return alert("اكتب شي الأول!");
-
         btn.disabled = true;
         btn.innerText = "جاري النشر...";
-
+        
         try {
-            const res = await fetch(ANN_WEBHOOK, {
+            await fetch(ANN_WEBHOOK, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ content: "@everyone\n" + content })
             });
-            if(res.ok) {
-                alert("✅ تم نشر الإعلان في الديسكورد بنجاح!");
-                document.getElementById('annContent').value = "";
-            } else {
-                alert("❌ فشل الإرسال، تأكد من رابط الويبهوك.");
-            }
-        } catch (e) {
-            alert("❌ خطأ: " + e.message);
-        } finally {
-            btn.disabled = false;
-            btn.innerText = "نشر @everyone";
-        }
-    };
+            alert("✅ تم النشر في الديسكورد!");
+            document.getElementById('annContent').value = "";
+        } catch(e) { alert("❌ خطأ في الإرسال"); }
+        btn.disabled = false;
+        btn.innerText = "نشر الإعلان @everyone";
+    }
 
+    // وظيفة التقديم
     window.finishApply = async function() {
-        if(!currentUser) return alert("سجل دخول بالديسكورد!");
+        if(!currentUser) return alert("سجل دخولك بالديسكورد أولاً!");
         const a1 = document.getElementById('ans1').value;
         const a2 = document.getElementById('ans_rules').value;
         const a3 = document.getElementById('ans_rp').value;
-        if(!a1 || !a2 || !a3) return alert("املأ كل الخانات!");
+        if(!a1 || !a2 || !a3) return alert("الرجاء الإجابة على جميع الأسئلة!");
 
         const btn = document.getElementById('sendApplyBtn');
         btn.disabled = true;
         btn.innerText = "جاري الإرسال...";
 
-        const data = { embeds: [{
-            title: "📩 تقديم جديد من الموقع", color: 0xa246f0,
-            thumbnail: { url: `https://cdn.discordapp.com/avatars/${currentUser.id}/${currentUser.avatar}.png` },
-            fields: [
-                { name: "👤 العضو", value: `<@${currentUser.id}> (${currentUser.username})` },
-                { name: "📝 الاسم والعمر", value: a1 },
-                { name: "🛑 القوانين", value: a2 },
-                { name: "🎮 الـ RP", value: a3 }
-            ],
-            timestamp: new Date()
-        }]};
+        const data = {
+            embeds: [{
+                title: "📩 تقديم جديد", color: 0xa246f0,
+                thumbnail: { url: `https://cdn.discordapp.com/avatars/${currentUser.id}/${currentUser.avatar}.png` },
+                fields: [
+                    { name: "👤 العضو", value: `<@${currentUser.id}> (${currentUser.username})` },
+                    { name: "📝 الاسم والعمر", value: a1 },
+                    { name: "🛑 القوانين", value: a2 },
+                    { name: "🎮 الـ RP", value: a3 }
+                ],
+                timestamp: new Date()
+            }]
+        };
 
         try {
             await fetch(APPLY_WEBHOOK, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
             localStorage.setItem('novax_applied', 'true');
-            alert("✅ تم إرسال طلبك للإدارة!");
+            alert("✅ تم إرسال طلبك بنجاح!");
             renderApplyPage();
-        } catch (e) {
-            alert("❌ خطأ في الإرسال.");
+        } catch(e) { 
+            alert("❌ فشل الإرسال"); 
             btn.disabled = false;
             btn.innerText = "إرسال التقديم";
         }
-    };
+    }
 
     window.switchMainTab = function(p, b) {
         document.querySelectorAll('.page-content').forEach(x => x.classList.remove('active'));
@@ -257,14 +251,15 @@
         document.getElementById(p).classList.add('active');
         b.classList.add('active');
         if(p === 'apply-page') renderApplyPage();
-    };
+    }
 
+    // ربط الديسكورد
     const CLIENT_ID = "1444065204051906610";
     const REDIRECT_URI = window.location.origin + window.location.pathname;
     let currentUser = null;
 
-    window.login = () => { window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`; };
-    window.logout = () => { window.location.href = REDIRECT_URI; };
+    window.login = () => { window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`; }
+    window.logout = () => { window.location.href = REDIRECT_URI; }
 
     window.onload = () => {
         loadStaff(); loadStore(); renderApplyPage();
