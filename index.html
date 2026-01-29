@@ -106,6 +106,12 @@
                 <textarea id="ans_story" rows="3" placeholder="اكتب نبذة عن قصة دخول شخصيتك للمدينة؟"></textarea>
 
                 <button class="btn btn-success" onclick="submitApp()">إرسال التقديم للمراجعة</button>
+
+                 <div id="already-applied" class="hidden text-center">
+                 <h2 style="color: #ffc107; margin-bottom: 15px;">⚠️ تم استلام طلبك مسبقاً</h2>
+                 <p style="color: #ffffff; font-size: 1.1em;">لقد قمت بإرسال نموذج التقديم الخاص بك بنجاح.</p>
+                 <p style="color: #aaaaaa; font-size: 0.9em; margin-top: 10px;">يرجى انتظار رد الإدارة في الديسكورد، لا يمكنك التقديم مرة أخرى في الوقت الحالي.</p>
+                 </div<
             </div>
             
             <div id="apply-closed" class="hidden">
@@ -267,6 +273,9 @@ window.submitApp = async function() {
 
     localStorage.setItem('last_submit_time', Date.now());
     alert("! تم إرسال طلبك بنجاح للإدارة.");
+
+    localStorage.setItem('noVaX_applied', 'true');
+    checkApply(); // عشان يختفي الفورم فوراً
     
     // تنظيف الخانات
     Object.keys(data_inputs).forEach(id => {
