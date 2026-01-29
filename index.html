@@ -143,15 +143,41 @@
         alert("تم إرسال طلبك للإدارة!");
     }
 
+        // وظيفة التحكم بالتقديم مع إرسال Embed احترافية
     window.toggleApply = async function(val) {
         localStorage.setItem('noVaX_isOpen', val);
-        await fetch(WEB_ADMIN, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ content: val ? "✅ **تم فتح التقديم في الموقع**" : "❌ **تم إغلاق التقديم في الموقع**" })
-        });
-        checkApply();
-        alert("تم تحديث الحالة!");
+        
+        // بناء الـ Embed المنسق
+        const embedPayload = {
+            username: "نظام إدارة NoVaX",
+            avatar_url: "https://cdn.discordapp.com/icons/1221794986203418704/a_66f3e1a6c1e3d6e5.png", // يمكنك وضع رابط لوجو سيرفرك هنا
+            embeds: [{
+                title: val ? "✅ تم فتح باب التقديم" : "❌ تم إغلاق باب التقديم",
+                description: val 
+                    ? "@everyone\nيسر إدارة **NoVaX RP** إعلان فتح باب التقديم للحصول على التفعيل! يمكنك الآن الدخول للموقع وتقديم طلبك." 
+                    : "@everyone\nتم إغلاق التقديم حالياً من قبل الإدارة. يرجى انتظار المواعيد القادمة.",
+                color: val ? 3066993 : 15158332, // أخضر للفتح وأحمر للإغلاق
+                fields: [
+                    { name: "الحالة الآن", value: val ? "مفتوح (Open)" : "مغلق (Closed)", inline: true },
+                    { name: "المسؤول", value: `<@${currentUser.id}>`, inline: true }
+                ],
+                footer: { text: "NoVaX Roleplay Systems" },
+                timestamp: new Date()
+            }]
+        };
+
+        try {
+            await fetch(WEB_ADMIN, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(embedPayload)
+            });
+            checkApply();
+            alert(val ? "تم فتح التقديم وإرسال Embed بنجاح!" : "تم الإغلاق وإرسال Embed بنجاح!");
+        } catch (error) {
+            console.error("خطأ في الإرسال:", error);
+            alert("حدث خطأ أثناء الاتصال بالديسكورد.");
+        }
     }
 
     function checkApply() {
