@@ -257,13 +257,14 @@ function checkApply() {
         // حالة 4: مسموح له يقدم
         if(form) form.classList.remove('hidden');
     }
-}
 
-    // تحديث نص الحالة في لوحة الإدارة
+    // تحديث نص الحالة في لوحة الإدارة (داخل حدود الدالة الآن)
     const statusText = document.getElementById('current-status');
-    if(statusText) statusText.innerText = "الحالة الحالية: " + (isOpen ? "مفتوح ✅" : "مغلق ❌");
-}
-
+    if(statusText) {
+        statusText.innerText = "الحالة الحالية: " + (isOpen ? "مفتوح ✅" : "مغلق ❌");
+    }
+} // القوس النهائي الوحيد للدال
+    
 window.submitApp = async function() {
     if(!currentUser) return alert("يا بطل، لازم تسجل دخولك بالديسكورد أولاً!");
 
