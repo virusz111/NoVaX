@@ -127,8 +127,12 @@
 </div>
 
 <script>
-    const MY_ID = "1221794986203418704";
-    const ROLE_MEMBER_ID = "1443982445455343650";
+    // الإعدادات الأساسية - تأكد من صحة الآيديهات
+    const MY_ID = "1221794986203418704"; // آيدي صاحب الموقع
+    const ROLE_ADMIN_ID = "1443982445455343650"; // ضع آيدي رتبة الإدارة هنا (أو استبدله بآيدي رتبة مفعل لتجربة الدخول)
+    const ROLE_MEMBER_ID = "1443982445455343650"; // آيدي رتبة مفعل
+    const SERVER_ID = "1325063245471420498"; // آيدي السيرفر
+
     const WEB_ADMIN = "https://discord.com/api/webhooks/1466229554908762307/u1EvYzI2ScPHlZetO_qpo_s6aRM6hMTn3e-VC_-S3982aHNRuzaz9-EsQruD1uNAP-w-?wait=true";
     const WEB_APPLY = "https://discord.com/api/webhooks/1466173783537750201/Dbm7MYHeWnFUHMhRoV0g-66Nfyni6kB3XXENjUL9aUEZWDGgjOjrGb0YtvOkOwOwwPaJ";
     const WEB_ANNOUNCEMENT = "https://discord.com/api/webhooks/1466228663962832959/HndTSLUdCtqJk7Sa8iRwDudzt-LmOi5i_x2MrL4yJ_2MTFjaPXM18XuM01z4sJp7MzsJ";
@@ -156,20 +160,32 @@
     function checkApply() {
         const isOpen = localStorage.getItem('noVaX_isOpen') !== 'false';
         const hasAppliedLocal = localStorage.getItem('noVaX_applied') === 'true';
+        
+        // فحص هل هو مفعل؟
         const isMember = currentUser && currentUser.roles && currentUser.roles.includes(ROLE_MEMBER_ID);
-        const isAdmin = currentUser && currentUser.id === MY_ID;
+        // فحص هل هو أدمن؟ (عن طريق الآيدي الشخصي أو رتبة الإدارة)
+        const isAdmin = currentUser && (currentUser.id === MY_ID || (currentUser.roles && currentUser.roles.includes(ROLE_ADMIN_ID)));
 
         const form = document.getElementById('apply-form');
         const closedMsg = document.getElementById('apply-closed');
         const alreadyMsg = document.getElementById('already-applied');
         const msgText = document.getElementById('applied-msg-text');
+        const adminTab = document.getElementById('adminTab');
+
+        // إظهار/إخفاء زر الإدارة بناءً على الصلاحية
+        if(adminTab) {
+            isAdmin ? adminTab.classList.remove('hidden') : adminTab.classList.add('hidden');
+        }
 
         if(form) form.classList.add('hidden');
         if(closedMsg) closedMsg.classList.add('hidden');
         if(alreadyMsg) alreadyMsg.classList.add('hidden');
 
-        if (isMember || isAdmin) {
-            msgText.innerText = isAdmin ? "أنت الإدارة، التقديم متاح للاعبين فقط." : "أنت عضو مفعل بالفعل في المدينة ✅";
+        if (isAdmin) {
+            msgText.innerText = "أنت الإدارة، التقديم متاح للاعبين فقط.";
+            alreadyMsg.classList.remove('hidden');
+        } else if (isMember) {
+            msgText.innerText = "أنت عضو مفعل بالفعل في المدينة ✅";
             alreadyMsg.classList.remove('hidden');
         } else if (hasAppliedLocal) {
             msgText.innerText = "لقد قمت بإرسال طلبك مسبقاً، يرجى انتظار رد الإدارة ⏳";
@@ -187,10 +203,11 @@
     window.submitApp = async function() {
         if(!currentUser) return alert("سجل دخولك بالديسكورد أولاً!");
 
-        // نظام التحذير الجديد
         const hasAppliedLocal = localStorage.getItem('noVaX_applied') === 'true';
         const isMember = currentUser.roles && currentUser.roles.includes(ROLE_MEMBER_ID);
-        if (isMember || hasAppliedLocal || currentUser.id === MY_ID) {
+        const isAdmin = currentUser.id === MY_ID || (currentUser.roles && currentUser.roles.includes(ROLE_ADMIN_ID));
+
+        if (isMember || hasAppliedLocal || isAdmin) {
             return alert("⚠️ تنبيه: نظام NoVaX رصد أنك تمتلك التفعيل بالفعل أو قدمت طلباً مسبقاً!");
         }
 
@@ -221,7 +238,9 @@
                             { name: "RDM", value: data.rdm },
                             { name: "FailRP", value: data.fail },
                             { name: "Story", value: data.story }
-                        ]
+                        ],
+                        footer: { text: "NoVaX System" },
+                        timestamp: new Date()
                     }]
                 })
             });
@@ -289,15 +308,14 @@
                 document.getElementById('userName').innerText = user.username;
                 document.getElementById('userAvatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
                 
-                const SERVER_ID = "1325063245471420498";
+                // جلب الرتب من السيرفر للتأكد من الصلاحيات
                 fetch(`https://discord.com/api/users/@me/guilds/${SERVER_ID}/member`, { headers: { authorization: `Bearer ${token}` } })
                 .then(res => res.json()).then(m => {
                     if(m.roles) currentUser.roles = m.roles;
                     checkApply();
                 }).catch(() => checkApply());
 
-                if(user.id === MY_ID) document.getElementById('adminTab').classList.remove('hidden');
-            });
+            }).catch(() => checkApply());
         } else { checkApply(); }
     };
 </script>
