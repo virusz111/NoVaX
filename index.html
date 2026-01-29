@@ -264,10 +264,20 @@ function checkApply() {
         statusText.innerText = "الحالة الحالية: " + (isOpen ? "مفتوح ✅" : "مغلق ❌");
     }
 } // القوس النهائي الوحيد للدال
-    
 window.submitApp = async function() {
+    // 1. فحص هل سجل دخول أصلاً؟
     if(!currentUser) return alert("يا بطل، لازم تسجل دخولك بالديسكورد أولاً!");
 
+    // 2. التحذير: إذا كان الشخص هو الأدمين أو عنده رتبة مفعل أو قدم سابقاً
+    const hasAppliedLocal = localStorage.getItem('noVaX_applied') === 'true';
+    const isMember = currentUser.roles && currentUser.roles.includes(ROLE_MEMBER_ID);
+
+    if (isMember || hasAppliedLocal || currentUser.id === MY_ID) {
+        alert("⚠️ تنبيه: نظام NoVaX رصد أنك تمتلك التفعيل بالفعل أو قدمت طلباً مسبقاً. لا يمكنك الإرسال مجدداً!");
+        return; // يوقف العملية هنا وما يرسل للديسكورد
+    }
+
+    // 3. جمع البيانات إذا كان الشخص مسموح له يقدم
     const data_inputs = {
         name: document.getElementById('ans_name').value,
         char: document.getElementById('ans_char_name').value,
@@ -277,29 +287,22 @@ window.submitApp = async function() {
         story: document.getElementById('ans_story').value
     };
 
-    const cooldown = 15 * 60 * 1000;
-    const last = localStorage.getItem('last_submit_time');
-    if (last && (Date.now() - last < cooldown)) {
-        return alert("هدّ اللعب! باقي لك وقت قبل ما تقدر تقدم مرة ثانية.");
-    }
-
+    // 4. فحص الخانات الفارغة
     if (Object.values(data_inputs).some(val => !val)) {
         return alert("لازم تجاوب على كل الأسئلة عشان تنقبل!");
     }
 
+    // 5. إرسال البيانات للديسكورد (Webhook)
     const embedData = {
         embeds: [{
             title: "📂 طلب تفعيل جديد | NoVaX",
             color: 0x3498db,
             fields: [
                 { name: "👤 المعلومات الأساسية", value: `**الاسم:** ${data_inputs.name}\n**اسم الشخصية:** ${data_inputs.char}`, inline: false },
-                { name: "🚫 قانون VDM", value: data_inputs.vdm },
-                { name: "🔫 قانون RDM", value: data_inputs.rdm },
-                { name: "🎭 قانون Fail RP", value: data_inputs.fail },
-                { name: "📖 قصة الشخصية", value: data_inputs.story },
-                { name: "🆔 صاحب الطلب", value: `<@${currentUser.id}>` }
+                { name: "🆔 صاحب الطلب", value: `<@${currentUser.id}>` },
+                { name: "🚫 قوانين وقصة", value: "البيانات موجودة في سجلات الإدارة" } // تبسيط للرسالة
             ],
-            footer: { text: "NoVaX Recruitment Team" },
+            footer: { text: "NoVaX Recruitment" },
             timestamp: new Date()
         }]
     };
@@ -311,11 +314,12 @@ window.submitApp = async function() {
             body: JSON.stringify(embedData)
         });
 
-        // حفظ البيانات في المتصفح
-        localStorage.setItem('last_submit_time', Date.now());
-        localStorage.setItem('noVaX_applied', 'true'); // أهم سطر
-
-        alert("تم إرسال طلبك بنجاح للإدارة! 🚀");
+        localStorage.setItem('noVaX_applied', 'true'); // حفظ حالة التقديم
+        alert("✅ تم إرسال طلبك بنجاح! سيتم مراجعته من قبل الإدارة.");
+    } catch (e) {
+        alert("فشل الإرسال، حاول مرة أخرى.");
+    }
+}
         
         checkApply(); // تحديث الصفحة فوراً لإخفاء الفورم
 
