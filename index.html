@@ -3,128 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NoVaX RP | 2026 Edition 👑</title>
+    <title>NoVaX Roleplay | Official Portal 👑</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
     <style>
+        /* =========================================
+           1. CSS VARIABLES & CORE SETUP
+           ========================================= */
         :root { 
-            --primary: #a246f0; --bg: #030305; --card: rgba(15, 15, 20, 0.98); 
-            --danger: #ff4d4d; --success: #2ecc71; --kick: #53fc18; --discord: #5865F2;
+            --primary: #a246f0; 
+            --primary-glow: rgba(162, 70, 240, 0.5);
+            --bg: #050507; 
+            --card-bg: rgba(15, 15, 20, 0.98); 
+            --danger: #ff4757; 
+            --success: #2ed573; 
+            --kick: #53fc18; 
+            --discord: #5865F2;
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
         }
-        body { font-family: 'Cairo', sans-serif; background: var(--bg); color: white; margin: 0; overflow-x: hidden; }
-        
-        /* --- هيدر السيرفر --- */
+
+        * { box-sizing: border-box; outline: none; }
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background: var(--bg); 
+            color: var(--text-main); 
+            margin: 0; 
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* =========================================
+           2. HEADER & NAVIGATION
+           ========================================= */
         header { 
-            background: rgba(0,0,0,0.95); padding: 15px 5%; display: flex; 
-            justify-content: space-between; align-items: center; 
-            border-bottom: 3px solid var(--primary); position: sticky; top: 0; z-index: 1000; 
+            background: rgba(0, 0, 0, 0.95); 
+            backdrop-filter: blur(10px);
+            padding: 15px 6%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 2px solid var(--primary); 
+            position: sticky; 
+            top: 0; 
+            z-index: 2000;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.5);
         }
-        .logo { font-size: 28px; font-weight: 900; color: var(--primary); text-shadow: 0 0 15px var(--primary); }
 
-        /* --- القائمة العلوية --- */
-        .nav-tabs { display: flex; justify-content: center; gap: 12px; background: rgba(10,10,10,0.9); padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .logo-area { display: flex; align-items: center; gap: 15px; }
+        .logo-text { font-size: 30px; font-weight: 900; color: var(--primary); text-shadow: 0 0 20px var(--primary-glow); }
+
+        .user-nav { display: flex; align-items: center; gap: 15px; }
+        .user-profile { 
+            display: flex; align-items: center; gap: 10px; 
+            background: rgba(255,255,255,0.05); padding: 5px 15px; 
+            border-radius: 50px; border: 1px solid var(--primary);
+        }
+        .user-profile img { width: 35px; height: 35px; border-radius: 50%; }
+
+        .nav-tabs { 
+            display: flex; justify-content: center; gap: 10px; 
+            background: #0a0a0e; padding: 12px; 
+            border-bottom: 1px solid rgba(162, 70, 240, 0.1);
+            overflow-x: auto;
+        }
         .tab-btn { 
-            cursor: pointer; padding: 12px 22px; border-radius: 12px; font-weight: bold; 
-            transition: 0.3s; opacity: 0.5; color: white; border: 1px solid transparent; white-space: nowrap;
+            cursor: pointer; padding: 12px 25px; border-radius: 12px; 
+            font-weight: 700; transition: 0.3s; opacity: 0.5; color: white; 
+            border: 1px solid transparent; white-space: nowrap;
+            display: flex; align-items: center; gap: 8px;
         }
-        .tab-btn:hover { opacity: 0.8; background: rgba(162, 70, 240, 0.1); }
-        .tab-btn.active { opacity: 1; background: rgba(162, 70, 240, 0.2); border-color: var(--primary); color: var(--primary); transform: scale(1.05); }
+        .tab-btn.active { opacity: 1; background: rgba(162, 70, 240, 0.15); border-color: var(--primary); color: var(--primary); }
 
-        /* --- الحاويات والبطاقات --- */
-        .container { max-width: 1200px; margin: 30px auto; padding: 15px; }
+        /* =========================================
+           3. PAGE SECTIONS & CARDS
+           ========================================= */
+        .container { max-width: 1300px; margin: 40px auto; padding: 0 20px; }
         .page-content { display: none; }
-        .page-content.active { display: block !important; animation: slideIn 0.5s ease; }
-        
+        .page-content.active { display: block !important; animation: fadeIn 0.6s ease; }
+
         .card { 
-            background: var(--card); padding: 30px; border-radius: 25px; 
-            border: 1px solid rgba(255,255,255,0.05); text-align: center; margin-bottom: 25px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6); position: relative;
+            background: var(--card-bg); padding: 40px; border-radius: 30px; 
+            border: 1px solid rgba(255, 255, 255, 0.03); text-align: center; 
+            margin-bottom: 30px; position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
-        .card h2 { display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--primary); }
 
-        /* --- نظام المتجر (قوي) --- */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 20px; }
-        .item { background: rgba(255,255,255,0.02); border-radius: 20px; padding: 20px; border: 1px solid rgba(162, 70, 240, 0.1); transition: 0.4s; }
-        .item:hover { transform: translateY(-10px); border-color: var(--primary); background: rgba(162, 70, 240, 0.05); }
-        .price { font-size: 30px; font-weight: 900; color: var(--success); margin: 15px 0; }
-
-        /* --- نظام الستريم (Kick) --- */
-        .streams-grid { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-top: 20px; }
-        .stream-card { 
-            background: rgba(83, 252, 24, 0.05); border: 1px solid rgba(83, 252, 24, 0.15); 
-            border-radius: 20px; padding: 15px; width: 130px; text-align: center; position: relative;
+        /* =========================================
+           4. STORE SYSTEM (GRID)
+           ========================================= */
+        .store-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-top: 30px; }
+        .item-card { 
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(162, 70, 240, 0.1); 
+            border-radius: 25px; padding: 25px; transition: 0.4s; text-align: right;
         }
-        .stream-card img { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--kick); margin-bottom: 10px; }
-        .live-tag { position: absolute; top: 10px; right: 10px; background: var(--kick); color: black; font-size: 8px; font-weight: 900; padding: 2px 6px; border-radius: 4px; }
+        .item-card:hover { transform: translateY(-10px); border-color: var(--primary); }
+        .item-card i { font-size: 40px; color: var(--primary); margin-bottom: 20px; display: block; }
+        .item-price { font-size: 32px; font-weight: 900; color: var(--success); margin: 15px 0; }
 
-        /* --- الأزرار --- */
-        .btn { padding: 14px 25px; border-radius: 12px; cursor: pointer; font-weight: bold; border: none; font-family: 'Cairo'; color: white; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; }
-        .btn-p { background: var(--primary); box-shadow: 0 8px 20px rgba(162, 70, 240, 0.3); }
-        .btn-k { background: var(--kick); color: black !important; font-size: 11px; width: 100%; justify-content: center; }
-        .btn-d { background: var(--danger); }
+        /* =========================================
+           5. KICK STREAM SYSTEM
+           ========================================= */
+        .kick-grid { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+        .streamer-card { 
+            background: rgba(83, 252, 24, 0.03); border: 1px solid rgba(83, 252, 24, 0.1); 
+            border-radius: 20px; padding: 20px; width: 150px; text-align: center;
+        }
+        .streamer-card img { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--kick); margin-bottom: 10px; }
+        .btn-kick-watch { background: var(--kick); color: black !important; padding: 8px; border-radius: 10px; font-weight: 900; font-size: 12px; display: block; text-decoration: none; }
 
-        input, textarea, select { width: 100%; padding: 15px; margin-top: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 12px; color: white; font-family: 'Cairo'; }
+        /* =========================================
+           6. RULES & ADMIN PANEL
+           ========================================= */
+        .rules-container { text-align: right; }
+        .rule-box { background: rgba(0,0,0,0.2); padding: 15px; border-right: 4px solid var(--primary); margin-bottom: 15px; border-radius: 5px; }
+        
+        .admin-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .admin-box { background: rgba(255, 0, 0, 0.05); padding: 20px; border-radius: 15px; border: 1px solid var(--danger); }
 
-        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; } }
+        /* =========================================
+           7. FORM INPUTS & BUTTONS
+           ========================================= */
+        input, textarea, select { 
+            width: 100%; padding: 15px; margin-top: 15px; 
+            background: rgba(255,255,255,0.04); border: 1px solid var(--primary); 
+            border-radius: 12px; color: white; font-family: 'Cairo'; 
+        }
+        .btn { 
+            padding: 15px 30px; border-radius: 15px; cursor: pointer; 
+            font-weight: 800; border: none; font-family: 'Cairo'; 
+            display: inline-flex; align-items: center; gap: 10px; transition: 0.3s;
+        }
+        .btn-main { background: var(--primary); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">NoVaX RP 🌌</div>
-    <div id="userInfo" class="hidden" style="display:flex; align-items:center; gap:12px;">
-        <img id="userAvatar" src="" style="width:38px; border-radius:50%; border: 2px solid var(--primary);">
-        <span id="userName" style="font-weight: 900;"></span>
-        <button onclick="logout()" class="btn-d" style="padding: 5px 10px; font-size: 12px; border-radius: 8px;">خروج</button>
+    <div class="logo-area">
+        <div class="logo-text">NoVaX RP</div>
     </div>
-    <a id="loginBtn" href="رابط_الديسكورد_الخاص_بك" class="btn btn-p">
-        <i class="fab fa-discord"></i> دخول المدينة
-    </a>
+    <div class="user-nav">
+        <div id="userInfo" class="hidden">
+            <div class="user-profile">
+                <img id="userAvatar" src="">
+                <span id="userName"></span>
+                <button onclick="logout()" class="btn-danger" style="padding: 4px 8px; border-radius: 5px; font-size: 11px;">خروج</button>
+            </div>
+        </div>
+        <a id="loginBtn" href="رابط_الديسكورد_الخاص_بك" class="btn btn-main" style="padding: 8px 15px; font-size: 13px;">
+            <i class="fab fa-discord"></i> دخول العضوية
+        </a>
+    </div>
 </header>
 
 <div class="nav-tabs">
-    <div class="tab-btn active" onclick="switchPage('home', this)"><i class="fas fa-house"></i> الرئيسية</div>
-    <div class="tab-btn" onclick="switchPage('store', this)"><i class="fas fa-cart-shopping"></i> المتجر</div>
-    <div class="tab-btn" onclick="switchPage('apply', this)"><i class="fas fa-file-pen"></i> التقديم</div>
+    <div class="tab-btn active" onclick="switchPage('home', this)"><i class="fas fa-home"></i> الرئيسية</div>
+    <div class="tab-btn" onclick="switchPage('rules', this)"><i class="fas fa-gavel"></i> القوانين</div>
+    <div class="tab-btn" onclick="switchPage('store', this)"><i class="fas fa-shopping-bag"></i> المتجر</div>
+    <div class="tab-btn" onclick="switchPage('apply', this)"><i class="fas fa-file-signature"></i> التقديم</div>
     <div id="adminTab" class="tab-btn hidden" onclick="switchPage('admin', this)" style="color:var(--danger)">
-        <i class="fas fa-user-shield"></i> الإدارة
+        <i class="fas fa-user-shield"></i> لوحة الإدارة
     </div>
 </div>
 
 <div class="container">
+    
     <section id="home-page" class="page-content active">
         <div class="card">
-            <h1>أهلاً بك في نوفاكس رول بلاي 🎭</h1>
-            <p>مجتمع متكامل يجمع بين الواقعية، المتعة، والاحترافية.</p>
-            <div style="margin-top: 20px;">
-                <a href="https://discord.gg/HZFb5BZ8dZ" class="btn btn-p"><i class="fab fa-discord"></i> ديسكورد المدينة</a>
+            <h1 style="font-size: 45px; font-weight: 900; margin-bottom: 10px;">نوفاكس رول بلاي <span style="color:var(--primary)">2026</span></h1>
+            <p style="font-size: 20px; opacity: 0.8;">المدينة رقم #1 في الشرق الأوسط من حيث الأنظمة والواقعية.</p>
+            <div style="margin-top: 30px;">
+                <a href="https://discord.gg/HZFb5BZ8dZ" class="btn btn-main" style="font-size: 18px; padding: 15px 40px;"><i class="fab fa-discord"></i> انضم لمجتمعنا</a>
             </div>
         </div>
 
         <div class="card" style="border-top: 4px solid var(--kick);">
-            <h2><i class="fas fa-broadcast-tower"></i> بثوث الـ KICK المباشرة 📺</h2>
-            <div id="kick-streams-home" class="streams-grid"></div>
+            <h2 style="color:var(--kick); margin-bottom: 25px;"><i class="fas fa-broadcast-tower"></i> ستريمرز المدينة (Live On Kick)</h2>
+            <div id="kick-streams-home" class="kick-grid"></div>
+        </div>
+    </section>
+
+    <section id="rules-page" class="page-content">
+        <div class="card">
+            <h2>📜 قوانين المدينة العامة</h2>
+            <div class="rules-container">
+                <div class="rule-box">
+                    <h3>1. الاحترام العام</h3>
+                    <p>يمنع منعاً باتاً السب أو القذف أو التعدي اللفظي خارج إطار الشخصية.</p>
+                </div>
+                <div class="rule-box">
+                    <h3>2. القتل بدون سبب (RDM)</h3>
+                    <p>يمنع قتل أي مواطن بدون وجود سيناريو مسبق وسبب مقنع.</p>
+                </div>
+                <div class="rule-box">
+                    <h3>3. صدم السيارات (VDM)</h3>
+                    <p>يمنع استخدام المركبات كسلاح لقتل أو صدم الآخرين.</p>
+                </div>
+                <div class="rule-box">
+                    <h3>4. الخروج من السيناريو (Combat Log)</h3>
+                    <p>إغلاق اللعبة أثناء التحقيق أو المطاردة يعرضك للبان النهائي.</p>
+                </div>
+            </div>
         </div>
     </section>
 
     <section id="store-page" class="page-content">
         <div class="card">
-            <h2><i class="fas fa-shop"></i> متجر المميزات والأسلحة 🔫</h2>
-            <div class="grid">
-                <div class="item">
-                    <i class="fas fa-gun" style="font-size: 40px; color: var(--primary);"></i>
-                    <h3>باقة الأسلحة الكاملة</h3>
-                    <p>تشمل تراخيص دائمة + أسلحة ثقيلة.</p>
-                    <div class="price">40$</div>
-                    <button onclick="sendOrder('باقة الأسلحة')" class="btn btn-p">طلب الشراء</button>
+            <h2>💎 المتجر الحصري لمدينة NoVaX</h2>
+            <div class="store-grid">
+                <div class="item-card">
+                    <i class="fas fa-shield-halved"></i>
+                    <h3>باقة الأسلحة الثقيلة</h3>
+                    <p>تحتوي على AK-47، مسدسات، ودرع كامل مع ترخيص دائم.</p>
+                    <div class="item-price">45$</div>
+                    <button onclick="orderItem('باقة الأسلحة')" class="btn btn-main" style="width:100%"><i class="fas fa-cart-plus"></i> اطلب الآن</button>
                 </div>
-                <div class="item">
-                    <i class="fas fa-crown" style="font-size: 40px; color: gold;"></i>
+                <div class="item-card">
+                    <i class="fas fa-crown"></i>
                     <h3>عضوية VIP الملكية</h3>
-                    <p>سيارات، منازل، ورتبة خاصة بالديسكورد.</p>
-                    <div class="price">60$</div>
-                    <button onclick="sendOrder('VIP الملكية')" class="btn btn-p">طلب الشراء</button>
+                    <p>أولوية دخول، سيارة حصرية، منزل خاص، ورتبة ذهبية.</p>
+                    <div class="item-price">75$</div>
+                    <button onclick="orderItem('عضوية VIP')" class="btn btn-main" style="width:100%"><i class="fas fa-cart-plus"></i> اطلب الآن</button>
+                </div>
+                <div class="item-card">
+                    <i class="fas fa-car-side"></i>
+                    <h3>باكيج السيارات النادرة</h3>
+                    <p>اختر أي سيارة من قائمة السيارات المستوردة مع تعديلات Max.</p>
+                    <div class="item-price">30$</div>
+                    <button onclick="orderItem('باكيج السيارات')" class="btn btn-main" style="width:100%"><i class="fas fa-cart-plus"></i> اطلب الآن</button>
                 </div>
             </div>
         </div>
@@ -132,28 +245,42 @@
 
     <section id="apply-page" class="page-content">
         <div class="card">
-            <h2><i class="fas fa-paper-plane"></i> تقديم طلب انضمام 📝</h2>
-            <form id="applyForm" onsubmit="handleApply(event)">
-                <input type="text" id="ap_name" placeholder="اسمك الحقيقي" required>
-                <input type="number" id="ap_age" placeholder="العمر" required>
-                <textarea id="ap_reason" rows="5" placeholder="لماذا تود الانضمام إلينا؟" required></textarea>
-                <button type="submit" class="btn btn-p" style="margin-top:20px;">إرسال للديسكورد 🚀</button>
+            <h2>📝 نموذج التقديم للانضمام</h2>
+            <div id="lockMessage">
+                <i class="fas fa-lock" style="font-size:50px; color:var(--danger); margin-bottom:20px;"></i>
+                <p>يجب عليك تسجيل الدخول عبر الديسكورد لتتمكن من فتح نموذج التقديم.</p>
+            </div>
+            <form id="mainApplyForm" class="hidden" onsubmit="submitApply(event)">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                    <input type="text" id="ap_name" placeholder="الاسم الرباعي" required>
+                    <input type="number" id="ap_age" placeholder="العمر الواقعي" required>
+                </div>
+                <select id="ap_job" required>
+                    <option value="">اختر الوظيفة التي تريد التقديم عليها</option>
+                    <option value="Police">جهاز الشرطة</option>
+                    <option value="EMS">الإسعاف الوطني</option>
+                    <option value="Mechanic">الميكانيك</option>
+                </select>
+                <textarea id="ap_exp" rows="6" placeholder="اذكر خبراتك السابقة في سيرفرات الرول بلاي..."></textarea>
+                <button type="submit" class="btn btn-main" style="margin-top:25px; padding: 15px 60px;">إرسال الطلب للإدارة 🚀</button>
             </form>
         </div>
     </section>
 
     <section id="admin-page" class="page-content">
         <div class="card">
-            <h2 style="color:var(--danger)"><i class="fas fa-lock"></i> لوحة التحكم الإدارية 🛠️</h2>
-            <div class="grid">
-                <div class="card" style="background:rgba(255,255,255,0.02)">
-                    <h3>إعلان عام 📣</h3>
-                    <textarea id="adm_msg" placeholder="اكتب نص الإعلان..."></textarea>
-                    <button onclick="sendToAdmin('إعلان')" class="btn btn-d" style="margin-top:10px;">نشر الإعلان</button>
+            <h2 style="color:var(--danger)"><i class="fas fa-user-shield"></i> لوحة التحكم الإدارية العليا</h2>
+            <div class="admin-controls">
+                <div class="admin-box">
+                    <h3>إرسال إعلان عام (Global)</h3>
+                    <textarea id="adm_ann" placeholder="اكتب نص الإعلان الذي سيظهر للجميع..."></textarea>
+                    <button onclick="sendWebhook('admin', 'إعلان جديد')" class="btn btn-danger" style="margin-top:15px; width:100%">نشر الآن 📣</button>
                 </div>
-                <div class="card" style="background:rgba(255,255,255,0.02)">
-                    <h3>إحصائيات السيرفر 📊</h3>
-                    <p>المستخدمين النشطين: <span id="u_count">جاري التحميل...</span></p>
+                <div class="admin-box" style="border-color:var(--primary); background:rgba(162,70,240,0.05)">
+                    <h3>إحصائيات النظام</h3>
+                    <p>عدد الطلبات المعلقة: <span id="req_val">14</span></p>
+                    <p>حالة الموقع: <span style="color:var(--success)">Online</span></p>
+                    <button class="btn btn-main" style="width:100%; margin-top:10px;">تحديث البيانات</button>
                 </div>
             </div>
         </div>
@@ -161,110 +288,210 @@
 </div>
 
 <script>
-    // --- ⚙️ الإعدادات الهامة (Webhooks & Roles) ---
-    const SETTINGS = {
+    /* --- ⚙️ CONFIGURATION (Webhooks & IDs) --- */
+    const SERVER_CONFIG = {
         APPLY_WEBHOOK: "رابط_ويب_هوك_التقديم",
+        ORDER_WEBHOOK: "رابط_ويب_هوك_المتجر",
         ADMIN_WEBHOOK: "رابط_ويب_هوك_الإدارة",
-        ADMIN_ROLE_ID: "آيدي_رتبة_الإدارة",
-        GUILD_ID: "آيدي_سيرفرك"
+        ADMIN_ROLE_ID: "آيدي_رتبة_الإدارة", // الآيدي من الديسكورد
+        GUILD_ID: "آيدي_سيرفرك_الديسكورد"
     };
 
     const streamers = [
-        { id: "zxm-1", label: "ZXM", img: "https://r2.kick.com/avatars/default-avatar.png" },
-        { id: "king-rp", label: "KING", img: "https://r2.kick.com/avatars/default-avatar.png" }
+        { id: "zxm-1", name: "ZXM", img: "https://r2.kick.com/avatars/default-avatar.png" },
+        { id: "king-rp", name: "KING", img: "https://r2.kick.com/avatars/default-avatar.png" },
+        { id: "nova-live", name: "NOVA", img: "https://r2.kick.com/avatars/default-avatar.png" }
     ];
 
-    // --- 🛡️ نظام الحماية والتبديل ---
-    function switchPage(p, btn) {
-        if (p === 'admin' && !window.isAdmin) {
-            alert("❌ خطأ أمني: هذه المنطقة مخصصة لأصحاب الرتب الإدارية فقط!");
+    /* --- 🛡️ CORE PROTECTION SYSTEM --- */
+    function switchPage(pageId, btn) {
+        // حماية صفحة الإدارة
+        if (pageId === 'admin' && !window.isAdmin) {
+            alert("⚠️ تنبيه أمني: ليس لديك صلاحيات الوصول لهذه المنطقة!");
             return;
         }
-        document.querySelectorAll('.page-content').forEach(s => s.classList.remove('active'));
+
+        document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(p + '-page').classList.add('active');
+        
+        document.getElementById(pageId + '-page').classList.add('active');
         if(btn) btn.classList.add('active');
+        window.scrollTo(0, 0);
     }
 
-    // --- 🌐 نظام تسجيل الدخول وفحص الرتبة ---
+    /* --- 🌐 DISCORD AUTHENTICATION --- */
     window.onload = async () => {
-        renderStreams();
+        initStreams();
+        
         const params = new URLSearchParams(window.location.hash.slice(1));
         const token = params.get('access_token');
 
         if (token) {
             window.history.replaceState({}, document.title, window.location.pathname);
-            sessionStorage.setItem('nvx_token', token);
-            await authorize(token);
+            sessionStorage.setItem('nvx_auth_token', token);
+            await authorizeUser(token);
         } else {
-            const saved = sessionStorage.getItem('nvx_token');
-            if (saved) await authorize(saved);
+            const saved = sessionStorage.getItem('nvx_auth_token');
+            if (saved) await authorizeUser(saved);
         }
     };
 
-    async function authorize(token) {
+    async function authorizeUser(token) {
         try {
-            // 1. جلب بيانات الشخص
-            const uRes = await fetch('https://discord.com/api/users/@me', { headers: { authorization: `Bearer ${token}` } });
-            const user = await uRes.json();
+            // جلب البيانات الأساسية
+            const userRes = await fetch('https://discord.com/api/users/@me', {
+                headers: { authorization: `Bearer ${token}` }
+            });
+            if (!userRes.ok) throw new Error();
+            const user = await userRes.json();
             window.currentUser = user;
 
-            // 2. فحص الرتبة في السيرفر (تحتاج سكوبر guilds.members.read)
-            const mRes = await fetch(`https://discord.com/api/users/@me/guilds/${SETTINGS.GUILD_ID}/member`, { headers: { authorization: `Bearer ${token}` } });
-            const member = await mRes.json();
+            // جلب بيانات الرتبة في السيرفر (تحتاج صلاحية guilds.members.read)
+            const memberRes = await fetch(`https://discord.com/api/users/@me/guilds/${SERVER_CONFIG.GUILD_ID}/member`, {
+                headers: { authorization: `Bearer ${token}` }
+            });
+            const member = await memberRes.json();
 
-            if (member.roles && member.roles.includes(SETTINGS.ADMIN_ROLE_ID)) {
+            // فحص رتبة الإدارة
+            if (member.roles && member.roles.includes(SERVER_CONFIG.ADMIN_ROLE_ID)) {
                 window.isAdmin = true;
                 document.getElementById('adminTab').classList.remove('hidden');
             }
 
-            // 3. تحديث الواجهة
+            // تحديث واجهة المستخدم
             document.getElementById('loginBtn').classList.add('hidden');
             document.getElementById('userInfo').classList.remove('hidden');
             document.getElementById('userName').innerText = user.username;
             document.getElementById('userAvatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+            
+            // فتح نموذج التقديم
+            document.getElementById('lockMessage').classList.add('hidden');
+            document.getElementById('mainApplyForm').classList.remove('hidden');
+
+            console.log("🛡️ تم تفعيل نظام الحماية للمستخدم: " + user.username);
         } catch (e) {
-            sessionStorage.removeItem('nvx_token');
+            console.log("الجلسة منتهية أو التوكن غير صالح");
+            logout();
         }
     }
 
-    // --- 🚀 أنظمة الويب هوك (Webhooks) ---
-    async function handleApply(e) {
+    /* --- 🚀 WEBHOOK DISPATCHER (إرسال للديسكورد) --- */
+    async function submitApply(e) {
         e.preventDefault();
-        if(!window.currentUser) return alert("سجل دخولك أولاً!");
-        
+        if(!window.currentUser) return;
+
         const payload = {
             embeds: [{
-                title: "📩 طلب تقديم جديد - NoVaX",
+                title: "📝 طلب تقديم جديد (Whitelist)",
                 color: 0xa246f0,
+                thumbnail: { url: document.getElementById('userAvatar').src },
                 fields: [
-                    { name: "👤 العضو", value: window.currentUser.username },
-                    { name: "📝 الاسم الحقيقي", value: document.getElementById('ap_name').value },
+                    { name: "👤 اسم المستخدم", value: window.currentUser.username, inline: true },
+                    { name: "🆔 آيدي الديسكورد", value: window.currentUser.id, inline: true },
+                    { name: "📛 اسم الشخصية", value: document.getElementById('ap_name').value },
                     { name: "🎂 العمر", value: document.getElementById('ap_age').value },
-                    { name: "💬 السبب", value: document.getElementById('ap_reason').value }
+                    { name: "💼 الوظيفة المطلوبة", value: document.getElementById('ap_job').value },
+                    { name: "📜 الخبرات", value: document.getElementById('ap_exp').value }
                 ],
+                footer: { text: "NoVaX RP Web System" },
                 timestamp: new Date()
             }]
         };
 
-        await fetch(SETTINGS.APPLY_WEBHOOK, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-        alert("✅ تم إرسال طلبك للإدارة بنجاح!");
+        await fetch(SERVER_CONFIG.APPLY_WEBHOOK, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        alert("✅ تم إرسال طلبك بنجاح! سيتم الرد عليك في الديسكورد.");
+        e.target.reset();
     }
 
-    function renderStreams() {
-        const div = document.getElementById('kick-streams-home');
-        if(!div) return;
-        div.innerHTML = streamers.map(s => `
-            <div class="stream-card">
-                <div class="live-tag">LIVE</div>
-                <img src="${s.img}" onerror="this.src='https://ui-avatars.com/api/?name=${s.id}&background=53fc18&color=000'">
-                <h4 style="margin:5px 0; font-size:12px;">${s.label}</h4>
-                <a href="https://kick.com/${s.id}" target="_blank" class="btn btn-k">مشاهدة</a>
+    async function orderItem(itemName) {
+        if(!window.currentUser) return alert("يرجى تسجيل الدخول أولاً لإتمام الشراء!");
+
+        const payload = {
+            content: `🛒 **طلب شراء جديد من المتجر**`,
+            embeds: [{
+                title: itemName,
+                description: `قام العضو **${window.currentUser.username}** بطلب شراء هذه الحزمة.`,
+                color: 0x2ed573,
+                footer: { text: `User ID: ${window.currentUser.id}` }
+            }]
+        };
+
+        await fetch(SERVER_CONFIG.ORDER_WEBHOOK, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+                alert("🛍️ تم إرسال طلب الشراء للإدارة! سيتم التواصل معك قريباً.");
+    }
+
+    /* --- 📺 نظام عرض ستريمرز KICK (تكملة الكود) --- */
+    function initStreams() {
+        const grid = document.getElementById('kick-streams-home');
+        if(!grid) return;
+        
+        // توليد بطاقات الستريمرز مع معالجة الصور المكسورة
+        grid.innerHTML = streamers.map(s => `
+            <div class="streamer-card">
+                <div style="position:relative">
+                    <img src="${s.img}" onerror="this.src='https://ui-avatars.com/api/?name=${s.name}&background=53fc18&color=000'">
+                    <span style="position:absolute; top:5px; right:5px; background:var(--kick); color:black; font-size:10px; padding:2px 6px; border-radius:5px; font-weight:900;">LIVE</span>
+                </div>
+                <h4 style="margin:10px 0; font-size:14px; color:#fff;">${s.name}</h4>
+                <a href="https://kick.com/${s.id}" target="_blank" class="btn-kick-watch" style="text-decoration:none;">مشاهدة الآن</a>
             </div>
         `).join('');
     }
 
-    function logout() { sessionStorage.removeItem('nvx_token'); location.reload(); }
+    /* --- 🚪 نظام تسجيل الخروج (Logout) --- */
+    function logout() {
+        sessionStorage.removeItem('nvx_auth_token');
+        alert("تم تسجيل خروجك بنجاح.");
+        location.reload();
+    }
+
+    /* --- 🛡️ نظام التحقق من الرتبة (Admin Role) --- */
+    async function checkAdminStatus(token) {
+        try {
+            const res = await fetch(`https://discord.com/api/users/@me/guilds/${SERVER_CONFIG.GUILD_ID}/member`, {
+                headers: { authorization: `Bearer ${token}` }
+            });
+            const member = await res.json();
+
+            if (member.roles && member.roles.includes(SERVER_CONFIG.ADMIN_ROLE_ID)) {
+                window.isAdmin = true;
+                const adminTab = document.getElementById('adminTab');
+                if(adminTab) adminTab.classList.remove('hidden');
+            }
+        } catch (e) {
+            console.log("فشل التحقق من الرتبة");
+        }
+    }
+
+    /* --- 📑 نظام تبديل الصفحات --- */
+    function switchPage(pageId, btn) {
+        if (pageId === 'admin' && !window.isAdmin) {
+            alert("🛑 منطقة محظورة! الإدارة فقط.");
+            return;
+        }
+
+        document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        
+        document.getElementById(pageId + '-page').classList.add('active');
+        if(btn) btn.classList.add('active');
+        window.scrollTo(0,0);
+    }
 </script>
+
+<footer style="text-align:center; padding:30px; color:#555; font-size:13px; border-top:1px solid rgba(255,255,255,0.05); margin-top:50px;">
+    NoVaX Roleplay &copy; 2026 | Developed for the community 🎭
+</footer>
+
 </body>
 </html>
