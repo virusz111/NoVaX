@@ -2,535 +2,406 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NoVaX RP | النظام المتكامل 👑</title>
+    <title>NoVaX Roleplay | بوابة المدينة الرسمية</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     
     <style>
-        /* --- الأساسيات والتنسيق العام --- */
+        /* 1. Global Reset & Theme Variables */
         :root { 
             --primary: #a246f0; 
-            --primary-glow: rgba(162, 70, 240, 0.6);
-            --bg-dark: #050507; 
-            --bg-card: rgba(15, 15, 20, 0.98); 
+            --primary-glow: rgba(162, 70, 240, 0.5);
+            --bg-darker: #050507; 
+            --bg-lighter: #0a0a0e;
+            --card-bg: rgba(15, 15, 20, 0.98); 
             --danger: #ff4757; 
             --success: #2ed573; 
-            --kick: #53fc18; 
+            --kick-color: #53fc18; 
             --text-main: #ffffff;
-            --text-dim: #b0b0b0;
+            --text-dim: #a0a0a0;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-            transition: all 0.3s ease; 
-        }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-darker); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(var(--primary), #6a11cb); border-radius: 5px; }
+
+        * { box-sizing: border-box; outline: none; margin: 0; padding: 0; }
 
         body { 
             font-family: 'Cairo', sans-serif; 
-            background: var(--bg-dark); 
+            background-color: var(--bg-darker); 
             color: var(--text-main); 
-            line-height: 1.6;
+            line-height: 1.8;
             overflow-x: hidden;
         }
 
-        /* --- الهيدر (Header) --- */
+        /* 2. Header Section */
         header { 
             background: rgba(0, 0, 0, 0.9); 
-            backdrop-filter: blur(15px);
-            padding: 20px 8%; 
+            backdrop-filter: blur(12px);
+            padding: 20px 7%; 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            border-bottom: 2px solid var(--primary); 
+            border-bottom: 3px solid var(--primary); 
             position: sticky; 
             top: 0; 
-            z-index: 2000;
+            z-index: 9999;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.8);
         }
 
-        .logo { 
-            font-size: 32px; 
+        .logo-text { 
+            font-size: 35px; 
             font-weight: 900; 
             color: var(--primary); 
             text-shadow: 0 0 15px var(--primary-glow);
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
-        /* --- نظام القوائم (Navigation) --- */
-        .nav-tabs { 
+        /* 3. Navigation Tabs */
+        .nav-bar { 
             display: flex; 
             justify-content: center; 
-            gap: 15px; 
-            background: #0a0a0e; 
+            gap: 20px; 
+            background: var(--bg-lighter); 
             padding: 15px; 
-            border-bottom: 1px solid rgba(162, 70, 240, 0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            position: sticky;
+            top: 85px;
+            z-index: 999;
         }
 
-        .tab-btn { 
+        .tab-item { 
             cursor: pointer; 
             padding: 12px 25px; 
-            border-radius: 12px; 
+            border-radius: 15px; 
             font-weight: 700; 
             color: var(--text-dim); 
-            border: 1px solid transparent; 
+            transition: var(--transition);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
-        .tab-btn.active { 
-            background: rgba(162, 70, 240, 0.15); 
+        .tab-item.active { 
             color: var(--primary); 
-            border-color: var(--primary);
-            opacity: 1;
+            background: rgba(162, 70, 240, 0.1); 
+            border: 1px solid var(--primary);
         }
 
-        /* --- الحاوية الرئيسية --- */
-        .container { 
-            max-width: 1200px; 
-            margin: 40px auto; 
-            padding: 0 20px; 
-            min-height: 70vh;
+        /* 4. Layout Containers */
+        .main-wrapper { max-width: 1400px; margin: 50px auto; padding: 0 30px; }
+        .content-panel { display: none; animation: fadeIn 0.6s ease; }
+        .content-panel.active { display: block !important; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .info-card { 
+            background: var(--card-bg); 
+            padding: 45px; 
+            border-radius: 35px; 
+            border: 1px solid rgba(255, 255, 255, 0.03); 
+            margin-bottom: 40px;
         }
 
-        .page-content { 
-            display: none; 
-            animation: fadeInUp 0.5s ease; 
-        }
-
-        .page-content.active { 
-            display: block; 
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- البطاقات (Cards) --- */
-        .card { 
-            background: var(--bg-card); 
-            padding: 40px; 
-            border-radius: 25px; 
-            border: 1px solid rgba(255,255,255,0.05); 
-            margin-bottom: 30px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        /* --- المتجر والقوانين --- */
-        .grid-layout {
+        /* 5. Store & Grid System */
+        .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 25px;
         }
 
-        .item-box {
+        .product-card {
             background: rgba(255,255,255,0.02);
-            padding: 25px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 25px;
             text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* --- أزرار وحقول إدخال --- */
-        input, textarea, select { 
-            width: 100%; 
-            padding: 15px; 
-            margin-top: 10px; 
-            background: rgba(255,255,255,0.03); 
-            border: 1px solid rgba(162, 70, 240, 0.2); 
-            border-radius: 12px; 
-            color: white; 
-            font-family: 'Cairo';
-        }
+        .product-card:hover { transform: translateY(-10px); border-color: var(--primary); }
 
+        /* 6. Buttons & Forms */
         .btn { 
-            padding: 12px 30px; 
-            border-radius: 10px; 
+            padding: 15px 35px; 
+            border-radius: 12px; 
             cursor: pointer; 
-            font-weight: 700; 
+            font-weight: 800; 
             border: none; 
             font-family: 'Cairo'; 
             display: inline-flex; 
             align-items: center; 
             gap: 10px;
         }
-
-        .btn-main { background: var(--primary); color: white; }
+        .btn-primary { background: var(--primary); color: white; }
         .btn-danger { background: var(--danger); color: white; }
         .btn-success { background: var(--success); color: white; }
 
-        .hidden { display: none !important; }
-
-        footer {
-            text-align: center;
-            padding: 50px;
-            color: var(--text-dim);
-            border-top: 1px solid rgba(255,255,255,0.05);
+        input, textarea, select { 
+            width: 100%; padding: 18px; background: #0d0d12; 
+            border: 1px solid #1a1a24; border-radius: 15px; color: white; 
+            font-family: 'Cairo'; margin-top: 10px;
         }
+
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="logo">NoVaX Roleplay</div>
-    <div id="authArea">
-        <a id="loginBtn" href="https://discord.com/oauth2/authorize?client_id=1444065204051906610&response_type=token&redirect_uri=https%3A%2F%2Fvirusz111.github.io%2FNoVaX%2F&scope=identify+guilds+guilds.members.read" class="btn btn-main">
-            <i class="fab fa-discord"></i> تسجيل الدخول
-        </a>
-        <div id="userInfo" class="hidden">
-            <div style="display:flex; align-items:center; gap:12px; background:rgba(255,255,255,0.05); padding:8px 15px; border-radius:50px; border:1px solid var(--primary);">
-                <img id="userAvatar" src="" style="width:35px; height:35px; border-radius:50%; border:2px solid var(--primary);">
-                <span id="userName" style="font-weight:bold;"></span>
-                <i onclick="logout()" class="fas fa-sign-out-alt" style="color:var(--danger); cursor:pointer; margin-right:10px;"></i>
+    <header>
+        <div class="logo-text">NoVaX RP</div>
+        <div id="authArea">
+            <a id="loginBtn" href="https://discord.com/oauth2/authorize?client_id=1444065204051906610&response_type=token&redirect_uri=https%3A%2F%2Fvirusz111.github.io%2FNoVaX%2F&scope=identify+guilds+guilds.members.read" class="btn btn-primary">
+                <i class="fab fa-discord"></i> دخول المواطنين
+            </a>
+            <div id="userInfo" class="hidden">
+                <div style="display:flex; align-items:center; gap:12px; background:rgba(255,255,255,0.05); padding:8px 20px; border-radius:50px; border:1px solid var(--primary);">
+                    <img id="userAvatar" src="" style="width:35px; height:35px; border-radius:50%; border:2px solid var(--primary);">
+                    <span id="userName" style="font-weight:900;"></span>
+                    <i onclick="logout()" class="fas fa-sign-out-alt" style="color:var(--danger); cursor:pointer; margin-right:10px;"></i>
+                </div>
             </div>
         </div>
+    </header>
+
+    <nav class="nav-bar">
+        <div class="tab-item active" onclick="navigate('home', this)"><i class="fas fa-home"></i> الرئيسية</div>
+        <div class="tab-item" onclick="navigate('rules', this)"><i class="fas fa-gavel"></i> القوانين</div>
+        <div class="tab-item" onclick="navigate('store', this)"><i class="fas fa-shopping-cart"></i> المتجر</div>
+        <div class="tab-item" onclick="navigate('apply', this)"><i class="fas fa-file-alt"></i> التقديم</div>
+        <div id="adminTab" class="tab-item hidden" onclick="navigate('admin', this)" style="color:var(--danger);"><i class="fas fa-crown"></i> الإدارة</div>
+    </nav>
+
+    <div class="main-wrapper">
+
+        <section id="home-section" class="content-panel active">
+            <div class="info-card" style="text-align:center;">
+                <h1 style="font-size:50px; margin-bottom:20px;">مرحباً بك في مدينة <span style="color:var(--primary);">NoVaX</span></h1>
+                <p style="font-size:20px; color:var(--text-dim);">عش تجربة الحياة الواقعية الأكثر تطوراً في الوطن العربي.</p>
+                <div style="margin-top:30px; display:flex; justify-content:center; gap:20px;">
+                    <a href="https://discord.gg/HZFb5BZ8dZ" class="btn btn-primary">خادم الديسكورد</a>
+                    <button class="btn" style="background:white; color:black;">دليل اللاعب</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="rules-section" class="content-panel">
+            <div class="info-card">
+                <h2 style="margin-bottom:30px; color:var(--primary);"><i class="fas fa-book"></i> دستور المدينة</h2>
+                <div class="grid-container">
+                    <div class="item-box" style="background:rgba(255,255,255,0.02); padding:20px; border-radius:15px; border-right:4px solid var(--primary);">
+                        <h4>قانون الـ RDM</h4>
+                        <p>يمنع القتل العشوائي بدون سيناريو درامي قائم.</p>
+                    </div>
+                    <div class="item-box" style="background:rgba(255,255,255,0.02); padding:20px; border-radius:15px; border-right:4px solid var(--primary);">
+                        <h4>قانون الـ VDM</h4>
+                        <p>يمنع استخدام المركبات كوسيلة لقتل اللاعبين.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="store-section" class="content-panel">
+            <div class="info-card">
+                <h2 style="text-align:center; margin-bottom:40px;">💎 حزم التميز</h2>
+                <div class="grid-container">
+                    <div class="product-card">
+                        <h3>VIP الفضية</h3>
+                        <p>سيارة رياضية + رتبة ديسكورد</p>
+                        <div style="font-size:25px; color:var(--success); margin:15px 0;">$20.00</div>
+                        <button class="btn btn-primary" style="width:100%;">شراء الآن</button>
+                    </div>
+                    <div class="product-card">
+                        <h3>VIP الذهبية</h3>
+                        <p>قصر خاص + 3 سيارات نادرة</p>
+                        <div style="font-size:25px; color:var(--success); margin:15px 0;">$45.00</div>
+                        <button class="btn btn-primary" style="width:100%;">شراء الآن</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="apply-section" class="content-panel">
+            <div class="info-card">
+                <h2 style="text-align:center; margin-bottom:30px;">📝 طلب انضمام للمدينة</h2>
+                <div id="lockMessage" style="text-align:center; padding:50px;">
+                    <i class="fas fa-lock" style="font-size:60px; color:var(--danger); margin-bottom:20px;"></i>
+                    <p>يجب تسجيل الدخول أولاً للوصول لنظام التقديم.</p>
+                </div>
+                <form id="mainApplyForm" class="hidden" onsubmit="handleApply(event)">
+                    <input type="text" id="ap_name" placeholder="اسمك الحقيقي" required>
+                    <input type="number" id="ap_age" placeholder="عمرك الواقعي" required>
+                    <select id="ap_job">
+                        <option value="Citizen">مواطن</option>
+                        <option value="Police">جهاز الشرطة</option>
+                        <option value="EMS">الإسعاف</option>
+                    </select>
+                    <textarea id="ap_reason" rows="5" placeholder="لماذا تريد الانضمام إلينا؟" required></textarea>
+                    <button type="submit" class="btn btn-primary" style="width:100%; margin-top:20px;">إرسال الطلب</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="admin-section" class="content-panel">
+            <div class="info-card" style="border: 2px solid var(--danger);">
+                <h2 style="color:var(--danger); margin-bottom:30px;"><i class="fas fa-shield-alt"></i> لوحة التحكم</h2>
+                <div class="grid-container">
+                    <div class="item-box" style="border: 1px solid var(--primary);">
+                        <h3>التحكم بالنظام</h3>
+                        <p>الحالة: <span id="status_text" style="color:var(--success); font-weight:900;">مفتوح ✅</span></p>
+                        <div style="display:flex; gap:10px; margin-top:20px;">
+                            <button onclick="updateSystemStatus(true)" class="btn btn-success" style="flex:1;">فتح</button>
+                            <button onclick="updateSystemStatus(false)" class="btn btn-danger" style="flex:1;">إغلاق</button>
+                        </div>
+                    </div>
+                    <div class="item-box" style="border: 1px solid var(--primary);">
+                        <h3>نشر إعلان رسمي</h3>
+                        <textarea id="announce_msg" placeholder="اكتب محتوى الإعلان..."></textarea>
+                        <button onclick="sendOfficialAnnounce()" class="btn btn-primary" style="width:100%; margin-top:15px;">نشر الآن</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </div>
-</header>
 
-<div class="nav-tabs">
-    <div class="tab-btn active" onclick="switchPage('home', this)"><i class="fas fa-home"></i> الرئيسية</div>
-    <div class="tab-btn" onclick="switchPage('rules', this)"><i class="fas fa-gavel"></i> القوانين</div>
-    <div class="tab-btn" onclick="switchPage('apply', this)"><i class="fas fa-file-signature"></i> التقديم</div>
-    <div class="tab-btn" onclick="switchPage('store', this)"><i class="fas fa-shopping-bag"></i> المتجر</div>
-    <div id="adminTab" class="tab-btn hidden" onclick="switchPage('admin', this)" style="color:var(--danger)"><i class="fas fa-shield-crown"></i> الإدارة</div>
-</div>
-
-<div class="container">
-
-    <section id="home-page" class="page-content active">
-        <div class="card" style="text-align:center;">
-            <h1 style="font-size:45px; margin-bottom:15px;">عالم <span style="color:var(--primary)">NoVaX</span> بانتظارك</h1>
-            <p style="color:var(--text-dim); font-size:18px;">المكان الذي تتحول فيه الأحلام إلى واقع. انضم لأكبر مجتمع عرب رول بلاي.</p>
-        </div>
-        <div class="card">
-            <h3 style="color:var(--kick); margin-bottom:20px;"><i class="fas fa-broadcast-tower"></i> البث المباشر للمدينة</h3>
-            <div id="kick-streams" class="grid-layout"></div>
-        </div>
-    </section>
-
-    <section id="rules-page" class="page-content">
-        <div class="card">
-            <h2>📜 قوانين مدينة NoVaX الرسمية</h2>
-            <div style="margin-top:20px;">
-                <div class="item-box" style="text-align:right; margin-bottom:15px; border-right: 5px solid var(--primary);">
-                    <h4>قانون RDM</h4>
-                    <p>يمنع القتل العشوائي بدون أي سيناريو مسبق أو حوار درامي.</p>
-                </div>
-                <div class="item-box" style="text-align:right; margin-bottom:15px; border-right: 5px solid var(--primary);">
-                    <h4>قانون VDM</h4>
-                    <p>يمنع استخدام المركبة كوسيلة للقتل أو دهس المواطنين.</p>
-                </div>
-                <div class="item-box" style="text-align:right; margin-bottom:15px; border-right: 5px solid var(--primary);">
-                    <h4>قانون Combat Log</h4>
-                    <p>يمنع الخروج من اللعبة أثناء سيناريو جاري (سرقة، اعتقال، خطف).</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="apply-page" class="page-content">
-        <div class="card">
-            <h2 style="text-align:center;"><i class="fas fa-id-card"></i> نموذج التقديم للـ Whitelist</h2>
-            
-            <div id="lockMessage" style="text-align:center; padding:40px;">
-                <i class="fas fa-lock" style="font-size: 60px; color: var(--danger); margin-bottom: 20px;"></i>
-                <p style="font-size:18px;">يجب عليك تسجيل الدخول أولاً للوصول إلى التقديم.</p>
-            </div>
-
-            <form id="mainApplyForm" class="hidden" onsubmit="submitApply(event)">
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
-                    <div>
-                        <label>الاسم الثلاثي</label>
-                        <input type="text" id="ap_name" placeholder="الاسم الحقيقي" required>
-                    </div>
-                    <div>
-                        <label>العمر الواقعي</label>
-                        <input type="number" id="ap_age" placeholder="16+" required>
-                    </div>
-                </div>
-                <label style="display:block; margin-top:15px;">الوظيفة المطلوبة</label>
-                <select id="ap_job">
-                    <option value="Player">مواطن عادي</option>
-                    <option value="Police">جهاز الشرطة</option>
-                    <option value="EMS">الإسعاف والطوارئ</option>
-                </select>
-                <label style="display:block; margin-top:15px;">لماذا تريد الانضمام إلينا؟</label>
-                <textarea id="ap_reason" rows="5" placeholder="اكتب نبذة عن خبرتك..." required></textarea>
-                <button type="submit" class="btn btn-main" style="width:100%; margin-top:20px;">إرسال الطلب الآن</button>
-            </form>
-        </div>
-    </section>
-
-    <section id="store-page" class="page-content">
-        <div class="card">
-            <h2 style="text-align:center; margin-bottom:30px;">💎 متجر الميزات الحصرية</h2>
-            <div class="grid-layout">
-                <div class="item-box">
-                    <i class="fas fa-crown" style="font-size:40px; color:gold;"></i>
-                    <h3>باقة الـ VIP الفضية</h3>
-                    <p>سيارة فريدة + رتبة في الديسكورد</p>
-                    <button onclick="order('Silver VIP')" class="btn btn-main" style="margin-top:15px;">طلب الآن</button>
-                </div>
-                <div class="item-box">
-                    <i class="fas fa-gem" style="font-size:40px; color:cyan;"></i>
-                    <h3>باقة الـ VIP الماسية</h3>
-                    <p>قصر خاص + 3 سيارات نادرة + أولوية دخول</p>
-                    <button onclick="order('Diamond VIP')" class="btn btn-main" style="margin-top:15px;">طلب الآن</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="admin-page" class="page-content">
-        <div class="card" style="border: 2px solid var(--danger);">
-            <h2 style="color:var(--danger); border-bottom: 1px solid rgba(255,71,87,0.2); padding-bottom: 15px;">
-                <i class="fas fa-user-shield"></i> لوحة التحكم العليا
-            </h2>
-            <div class="grid-layout" style="margin-top:25px;">
-                
-                <div class="item-box" style="border-color:var(--primary); background: rgba(162, 70, 240, 0.05);">
-                    <h3 style="margin-bottom: 10px;"><i class="fas fa-toggle-on"></i> التحكم في النظام</h3>
-                    <p style="margin-bottom: 15px;">حالة التقديم الحالية: 
-                        <span id="apply_status_text" style="color:var(--success); font-weight:bold; font-size: 18px;">مفتوح ✅</span>
-                    </p>
-                    <div style="display:flex; gap:10px;">
-                        <button onclick="toggleApply(true)" class="btn btn-success" style="flex:1;">
-                            <i class="fas fa-unlock"></i> فتح التقديم
-                        </button>
-                        <button onclick="toggleApply(false)" class="btn btn-danger" style="flex:1;">
-                            <i class="fas fa-lock"></i> إغلاق التقديم
-                        </button>
-                    </div>
-                </div>
-
-                <div class="item-box" style="border-color:var(--primary);">
-                    <h3 style="margin-bottom: 10px;"><i class="fas fa-bullhorn"></i> نشر إعلان رسمي</h3>
-                    <textarea id="admin_msg" rows="3" placeholder="اكتب نص الإعلان الذي سيظهر في الديسكورد..." style="resize: none;"></textarea>
-                    <button onclick="sendAnnounce()" class="btn btn-main" style="width:100%; margin-top:10px;">
-                        <i class="fas fa-paper-plane"></i> نشر بالديسكورد
-                    </button>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-<script>
-    // --- ⚙️ الإعدادات (Webhooks) ---
-    const CONFIG = {
-        APPLY_WEBHOOK: "https://discord.com/api/webhooks/1466173783537750201/Dbm7MYHeWnFUHMhRoV0g-66Nfyni6kB3XXENjUL9aUEZWDGgjOjrGb0YtvOkOwOwwPaJ",
-        ADMIN_WEBHOOK: "https://discord.com/api/webhooks/1466228663962832959/HndTSLUdCtqJk7Sa8iRwDudzt-LmOi5i_x2MrL4yJ_2MTFjaPXM18XuM01z4sJp7MzsJ",
-        STATUS_WEBHOOK: "https://discord.com/api/webhooks/1466229554908762307/u1EvYzI2ScPHlZetO_qpo_s6aRM6hMTn3e-VC_-S3982aHNRuzaz9-EsQruD1uNAP-w-",
-        GUILD_ID: "1325063245471420498",
-        ADMIN_ROLE: "1354015622182211587"
-    };
-
-    let isApplyOpen = true; // حالة التقديم الافتراضية
-    window.currentUser = null;
-
-    // --- 🚀 تشغيل النظام عند التحميل ---
-    window.onload = async () => {
-        renderStreams();
-        const hash = window.location.hash.substring(1);
-        const params = new URLSearchParams(hash);
-        const token = params.get('access_token');
-
-        if (token) {
-            sessionStorage.setItem('nvx_token', token);
-            window.history.replaceState({}, document.title, window.location.pathname);
-            await loadUser(token);
-        } else if (sessionStorage.getItem('nvx_token')) {
-            await loadUser(sessionStorage.getItem('nvx_token'));
-        }
-    };
-
-    // --- 👤 نظام الهوية والتحقق ---
-    async function loadUser(token) {
-        try {
-            const res = await fetch('https://discord.com/api/users/@me', {
-                headers: { authorization: `Bearer ${token}` }
-            });
-            const user = await res.json();
-            window.currentUser = user;
-
-            document.getElementById('loginBtn').classList.add('hidden');
-            document.getElementById('userInfo').classList.remove('hidden');
-            document.getElementById('userName').innerText = user.username;
-            document.getElementById('userAvatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
-            
-            checkApplyDisplay(); // تحديث واجهة التقديم
-            await checkAdmin(token);
-        } catch (e) { logout(); }
-    }
-
-    async function checkAdmin(token) {
-        try {
-            const res = await fetch(`https://discord.com/api/users/@me/guilds/${CONFIG.GUILD_ID}/member`, {
-                headers: { authorization: `Bearer ${token}` }
-            });
-            const member = await res.json();
-            if (member.roles && member.roles.includes(CONFIG.ADMIN_ROLE)) {
-                window.isAdmin = true;
-                document.getElementById('adminTab').classList.remove('hidden');
-            }
-        } catch (e) {}
-    }
-
-    // --- 📝 نظام التقديم (Apply System) ---
-    // دالة التحكم في فتح وإغلاق التقديم
-
-
-// دالة فحص حالة الواجهة (تُستدعى عند تغيير الحالة أasync function toggleApply(status) {
-    if (!window.currentUser) return alert("سجل دخولك أولاً!");
-    
-    isApplyOpen = status;
-    const statusLabel = document.getElementById('apply_status_text');
-    statusLabel.innerText = status ? "مفتوح ✅" : "مغلق ❌";
-    statusLabel.style.color = status ? "var(--success)" : "var(--danger)";
-
-    // إعداد الـ Embed ليكون مطابق للصورة
-    const payload = {
-        embeds: [{
-            title: status ? "🔓 تم فتح بوابات التقديم" : "🔒 نأسف، تم إغلاق بوابات التقديم",
-            description: status 
-                ? "بإمكانكم الآن البدء بإرسال طلباتكم عبر الموقع الرسمي للمدينة.\nنتمنى لكم التوفيق."
-                : "انتهت فترة استقبال الطلبات حالياً.\nتابعونا لمعرفة موعد الفتح القادم.",
-            color: status ? 0x2ed573 : 0xff4757, // لون أحمر أو أخضر حسب الحالة
-            thumbnail: {
-                url: "https://i.imgur.com/8Q9Z5X9.jpeg" // ضع هنا رابط لوغو السيرفر (NX)
-            },
-            fields: [
-                {
-                    name: "👨‍💻 المسؤول عن التحديث",
-                    value: `**@${window.currentUser.username}**`, // يظهر اسمك بشكل بارز
-                    inline: false
-                },
-                {
-                    name: "⏰ الوقت",
-                    value: `**${new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}**`,
-                    inline: false
-                },
-                {
-                    name: "🔗 رابط الموقع",
-                    value: "[اضغط هنا للدخول](https://virusz111.github.io/NoVaX/)", // رابط موقعك
-                    inline: false
-                }
-            ],
-            footer: {
-                text: "NoVaX Management System • Status",
-                icon_url: "https://i.imgur.com/8Q9Z5X9.jpeg" // أيقونة صغيرة في الأسفل
-            }
-        }]
-    };
-
-    try {
-        await fetch(CONFIG.STATUS_WEBHOOK, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-        checkApplyDisplay();
-        alert(status ? "تم فتح التقديم بنجاح 🟢" : "تم إغلاق التقديم بنجاح 🔴");
-    } catch (e) {
-        alert("فشل في تحديث الحالة");
-    }
-}
-و دخول المستخدم)
-    
-function checkApplyDisplay() {
-    const lock = document.getElementById('lockMessage');
-    const form = document.getElementById('mainApplyForm');
-    
-    if (!window.currentUser) {
-        // إذا لم يسجل دخوله
-        lock.classList.remove('hidden');
-        form.classList.add('hidden');
-    } else if (!isApplyOpen) {
-        // إذا كان التقديم مغلق من الإدارة
-        lock.innerHTML = `
-            <i class="fas fa-clock" style="font-size: 60px; color: var(--primary); margin-bottom: 20px;"></i>
-            <h3 style="color:white;">التقديم مغلق مؤقتاً</h3>
-            <p>نعتذر، التقديم مغلق حالياً بقرار إداري. تابع الديسكورد لمعرفة موعد الفتح.</p>
-        `;
-        lock.classList.remove('hidden');
-        form.classList.add('hidden');
-    } else {
-        // إذا كان مسجل دخول والتقديم مفتوح
-        lock.classList.add('hidden');
-        form.classList.remove('hidden');
-    }
-}
-
-    async function submitApply(e) {
-        e.preventDefault();
-        const data = {
-            embeds: [{
-                title: "📝 طلب تقديم جديد",
-                color: 0x2ed573,
-                fields: [
-                    { name: "المستخدم", value: window.currentUser.username, inline: true },
-                    { name: "الاسم", value: document.getElementById('ap_name').value, inline: true },
-                    { name: "العمر", value: document.getElementById('ap_age').value, inline: true },
-                    { name: "الوظيفة", value: document.getElementById('ap_job').value },
-                    { name: "السبب", value: document.getElementById('ap_reason').value }
-                ],
-                timestamp: new Date()
-            }]
+    <script>
+        const WEBHOOKS = {
+            APPLY: "https://discord.com/api/webhooks/1466173783537750201/Dbm7MYHeWnFUHMhRoV0g-66Nfyni6kB3XXENjUL9aUEZWDGgjOjrGb0YtvOkOwOwwPaJ",
+            ANNOUNCE: "https://discord.com/api/webhooks/1466228663962832959/HndTSLUdCtqJk7Sa8iRwDudzt-LmOi5i_x2MrL4yJ_2MTFjaPXM18XuM01z4sJp7MzsJ",
+            STATUS: "https://discord.com/api/webhooks/1466229554908762307/u1EvYzI2ScPHlZetO_qpo_s6aRM6hMTn3e-VC_-S3982aHNRuzaz9-EsQruD1uNAP-w-",
+            GUILD_ID: "1325063245471420498",
+            ADMIN_ROLE: "1354015622182211587"
         };
-        await fetch(CONFIG.APPLY_WEBHOOK, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
-        alert("✅ تم إرسال طلبك بنجاح!");
-    }
 
-    // --- 📢 نظام الإعلانات ---
-    async function sendAnnounce() {
-        const msg = document.getElementById('admin_msg').value;
-        if (!msg) return alert("اكتب الإعلان أولاً!");
-        await fetch(CONFIG.ADMIN_WEBHOOK, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ embeds: [{ title: "📢 إعلان إداري", description: msg, color: 0xa246f0 }] })
-        });
-        alert("تم النشر بنجاح!");
-        document.getElementById('admin_msg').value = "";
-    }
+        let isSystemOpen = true;
+        window.currentUser = null;
 
-    // --- 🛠️ وظائف عامة ---
-    function switchPage(pageId, btn) {
-        if(pageId === 'admin' && !window.isAdmin) return alert("غير مسموح لك!");
-        document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(pageId + '-page').classList.add('active');
-        if(btn) btn.classList.add('active');
-        window.scrollTo(0,0);
-    }
+        window.onload = async () => {
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            const token = params.get('access_token');
 
-    function renderStreams() {
-        const data = [{n:'ZXM',id:'zxm'},{n:'Nova',id:'nova'}];
-        document.getElementById('kick-streams').innerHTML = data.map(s => `
-            <div class="item-box">
-                <img src="https://ui-avatars.com/api/?name=${s.n}&background=53fc18" style="width:60px; border-radius:50%; margin-bottom:10px;">
-                <h4>${s.n}</h4>
-                <a href="https://kick.com/${s.id}" class="btn btn-main" style="font-size:12px; padding:5px 15px;">Watch</a>
-            </div>
-        `).join('');
-    }
+            if (token) {
+                sessionStorage.setItem('nvx_auth', token);
+                window.history.replaceState({}, document.title, window.location.pathname);
+                await authorize(token);
+            } else if (sessionStorage.getItem('nvx_auth')) {
+                await authorize(sessionStorage.getItem('nvx_auth'));
+            }
+        };
 
-    function order(item) {
-        if(!window.currentUser) return alert("سجل دخولك أولاً!");
-        alert(`تم اختيار ${item}. تواصل مع الإدارة لإكمال الطلب.`);
-    }
+        async function authorize(token) {
+            try {
+                const res = await fetch('https://discord.com/api/users/@me', { headers: { 'Authorization': `Bearer ${token}` } });
+                const user = await res.json();
+                window.currentUser = user;
 
-    function logout() { sessionStorage.removeItem('nvx_token'); location.reload(); }
-</script>
+                document.getElementById('loginBtn').classList.add('hidden');
+                document.getElementById('userInfo').classList.remove('hidden');
+                document.getElementById('userName').innerText = user.username;
+                document.getElementById('userAvatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
 
-<footer>
-    <p>جميع الحقوق محفوظة لمدينة NoVaX RP &copy; 2026</p>
-    <p style="font-size:12px; margin-top:10px; opacity:0.5;">Developed with ❤️ for the community</p>
-</footer>
+                checkApplyView();
+                await checkStaff(token);
+            } catch (e) { logout(); }
+        }
 
+        async function checkStaff(token) {
+            try {
+                const res = await fetch(`https://discord.com/api/users/@me/guilds/${WEBHOOKS.GUILD_ID}/member`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const member = await res.json();
+                if (member.roles && member.roles.includes(WEBHOOKS.ADMIN_ROLE)) {
+                    document.getElementById('adminTab').classList.remove('hidden');
+                    window.isStaff = true;
+                }
+            } catch (e) {}
+        }
+
+        async function updateSystemStatus(status) {
+            isSystemOpen = status;
+            document.getElementById('status_text').innerText = status ? "مفتوح ✅" : "مغلق ❌";
+            document.getElementById('status_text').style.color = status ? "var(--success)" : "var(--danger)";
+
+            // الـ Embed المطابق للصورة
+            const embed = {
+                embeds: [{
+                    title: status ? "🔓 تم فتح بوابات التقديم" : "🔒 نأسف، تم إغلاق بوابات التقديم",
+                    description: status ? "بإمكانكم البدء بإرسال طلباتكم الآن." : "انتهت فترة استقبال الطلبات حالياً.\nتابعونا لمعرفة موعد الفتح القادم.",
+                    color: status ? 0x2ed573 : 0xff4757,
+                    thumbnail: { url: "https://i.imgur.com/8Q9Z5X9.jpeg" },
+                    fields: [
+                        { name: "👨‍💻 المسؤول عن التحديث", value: `**@${window.currentUser.username}**` },
+                        { name: "⏰ الوقت", value: `**${new Date().toLocaleTimeString('ar-EG')}**` },
+                        { name: "🔗 رابط الموقع", value: "[اضغط هنا للدخول](https://virusz111.github.io/NoVaX/)" }
+                    ],
+                    footer: { text: "NoVaX Management System • Status" }
+                }]
+            };
+
+            await fetch(WEBHOOKS.STATUS, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(embed) });
+            checkApplyView();
+            alert("تم تحديث الحالة!");
+        }
+
+        async function handleApply(e) {
+            e.preventDefault();
+            const data = {
+                embeds: [{
+                    title: "📥 طلب Whitelist جديد",
+                    color: 0xa246f0,
+                    fields: [
+                        { name: "المستخدم", value: window.currentUser.username },
+                        { name: "الاسم", value: document.getElementById('ap_name').value },
+                        { name: "العمر", value: document.getElementById('ap_age').value },
+                        { name: "الوظيفة", value: document.getElementById('ap_job').value },
+                        { name: "السبب", value: document.getElementById('ap_reason').value }
+                    ]
+                }]
+            };
+            await fetch(WEBHOOKS.APPLY, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
+            alert("تم إرسال طلبك!");
+        }
+
+        async function sendOfficialAnnounce() {
+            const msg = document.getElementById('announce_msg').value;
+            if(!msg) return alert("اكتب الإعلان!");
+            await fetch(WEBHOOKS.ANNOUNCE, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ embeds: [{ title: "📢 إعلان رسمي", description: msg, color: 0xa246f0, footer: {text: `بواسطة: ${window.currentUser.username}`} }] })
+            });
+            alert("تم النشر!");
+            document.getElementById('announce_msg').value = "";
+        }
+
+        function checkApplyView() {
+            const lock = document.getElementById('lockMessage');
+            const form = document.getElementById('mainApplyForm');
+            if (!window.currentUser) {
+                lock.classList.remove('hidden'); form.classList.add('hidden');
+            } else if (!isSystemOpen) {
+                lock.innerHTML = '<i class="fas fa-clock" style="font-size:60px; color:var(--primary);"></i><h3 style="margin-top:20px;">التقديم مغلق حالياً</h3>';
+                lock.classList.remove('hidden'); form.classList.add('hidden');
+            } else {
+                lock.classList.add('hidden'); form.classList.remove('hidden');
+            }
+        }
+
+        function navigate(id, el) {
+            document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+            document.getElementById(id + '-section').classList.add('active');
+            el.classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        function logout() { sessionStorage.clear(); location.reload(); }
+    </script>
 </body>
 </html>
