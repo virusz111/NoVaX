@@ -370,39 +370,63 @@
     }
 
     // --- 📝 نظام التقديم (Apply System) ---
-    function toggleApply(status) {
-        isApplyOpen = status;
-        const text = document.getElementById('apply_status_text');
-        text.innerText = status ? "مفتوح ✅" : "مغلق ❌";
-        text.style.color = status ? "var(--success)" : "var(--danger)";
-        
-        // إرسال تنبيه للديسكورد عن تغيير الحالة
-        fetch(CONFIG.STATUS_WEBHOOK, {
+    // دالة التحكم في فتح وإغلاق التقديم
+async function toggleApply(status) {
+    isApplyOpen = status; // تغيير الحالة في المتغير البرمجي
+    
+    // 1. تحديث شكل النصوص في لوحة الإدارة
+    const statusText = document.getElementById('apply_status_text');
+    if (status) {
+        statusText.innerText = "مفتوح ✅";
+        statusText.style.color = "var(--success)";
+    } else {
+        statusText.innerText = "مغلق ❌";
+        statusText.style.color = "var(--danger)";
+    }
+
+    // 2. إرسال التحديث إلى ويبهوك "حالة التقديم" في الديسكورد
+    try {
+        await fetch(CONFIG.STATUS_WEBHOOK, {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ content: `🔔 **تنبيه:** تم ${status ? 'فتح' : 'إغلاق'} التقديم بواسطة ${window.currentUser.username}` })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                content: `🛠️ **تحديث النظام**: قام الإداري **${window.currentUser.username}** بـ **${status ? 'فتح' : 'إغلاق'}** نظام التقديم (Whitelist) الآن.`
+            })
         });
-
-        checkApplyDisplay();
-        alert("تم تحديث حالة التقديم بنجاح!");
+    } catch (error) {
+        console.error("خطأ في إرسال الحالة للديسكورد");
     }
 
-    function checkApplyDisplay() {
-        const lock = document.getElementById('lockMessage');
-        const form = document.getElementById('mainApplyForm');
-        
-        if (!window.currentUser) {
-            lock.classList.remove('hidden');
-            form.classList.add('hidden');
-        } else if (!isApplyOpen) {
-            lock.innerHTML = '<i class="fas fa-clock" style="font-size: 60px; color: var(--primary); margin-bottom: 20px;"></i><p>نعتذر، التقديم مغلق حالياً من قبل الإدارة.</p>';
-            lock.classList.remove('hidden');
-            form.classList.add('hidden');
-        } else {
-            lock.classList.add('hidden');
-            form.classList.remove('hidden');
-        }
+    // 3. تحديث واجهة صفحة التقديم للمستخدمين فوراً
+    checkApplyDisplay();
+    
+    alert(status ? "تم فتح التقديم للجميع" : "تم إغلاق التقديم بنجاح");
+}
+
+// دالة فحص حالة الواجهة (تُستدعى عند تغيير الحالة أو دخول المستخدم)
+function checkApplyDisplay() {
+    const lock = document.getElementById('lockMessage');
+    const form = document.getElementById('mainApplyForm');
+    
+    if (!window.currentUser) {
+        // إذا لم يسجل دخوله
+        lock.classList.remove('hidden');
+        form.classList.add('hidden');
+    } else if (!isApplyOpen) {
+        // إذا كان التقديم مغلق من الإدارة
+        lock.innerHTML = `
+            <i class="fas fa-clock" style="font-size: 60px; color: var(--primary); margin-bottom: 20px;"></i>
+            <h3 style="color:white;">التقديم مغلق مؤقتاً</h3>
+            <p>نعتذر، التقديم مغلق حالياً بقرار إداري. تابع الديسكورد لمعرفة موعد الفتح.</p>
+        `;
+        lock.classList.remove('hidden');
+        form.classList.add('hidden');
+    } else {
+        // إذا كان مسجل دخول والتقديم مفتوح
+        lock.classList.add('hidden');
+        form.classList.remove('hidden');
     }
+}
 
     async function submitApply(e) {
         e.preventDefault();
