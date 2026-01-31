@@ -299,7 +299,7 @@
         alert("تم تحديث الحالة بنجاح! 🚀");
     };
 
-    const streamersList = [
+const streamersList = [
     { username: "zxM_1", label: "ZXM" },
     { username: "streamer2", label: "الستريمر الثاني" },
     { username: "streamer3", label: "الستريمر الثالث" }
@@ -313,14 +313,14 @@ function displayHomeStreams() {
     streamersList.forEach(s => {
         const card = document.createElement('div');
         card.className = 'stream-card';
-        // صورة افتراضية فخمة بلون كيك الأخضر
+        // رابط الصورة الرمزية الاحترافية
         const fallbackImg = `https://ui-avatars.com/api/?name=${s.username}&background=53fc18&color=000&bold=true`;
         
         card.innerHTML = `
             <div class="live-badge"><span class="dot"></span> KICK</div>
-            <img src="${fallbackImg}" id="home-img-${s.username}" style="width:60px; height:60px; border-radius:50%; border:2px solid #53fc18;">
-            <h3 style="margin:10px 0 5px 0; font-size:16px; color:white;">${s.label}</h3>
-            <a href="https://kick.com/${s.username}" target="_blank" class="btn-kick" style="background:#53fc18; color:black; text-decoration:none; padding:5px 10px; border-radius:8px; display:block; font-size:12px; font-weight:bold;">مشاهدة الآن</a>
+            <img src="${fallbackImg}" id="home-img-${s.username}" style="width:60px; height:60px; border-radius:50%; border:2px solid #53fc18; margin-bottom:10px;">
+            <h3 style="margin:5px 0; font-size:16px; color:white;">${s.label}</h3>
+            <a href="https://kick.com/${s.username}" target="_blank" class="btn-kick" style="background:#53fc18; color:black; text-decoration:none; padding:8px 10px; border-radius:8px; display:block; font-size:12px; font-weight:bold; margin-top:10px;">مشاهدة الآن</a>
         `;
         container.appendChild(card);
     });
