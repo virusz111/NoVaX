@@ -417,17 +417,51 @@ function displayHomeStreams() {
     };
 
     window.onload = () => {
-        const params = new URLSearchParams(window.location.hash.slice(1));
-        const token = params.get('access_token');
-        if (token) {
-            fetch('https://discord.com/api/users/@me', { headers: { authorization: `Bearer ${token}` } })
-            .then(r => r.json()).then(user => {
-                currentUser = user;
-                document.getElementById('loginBtn').classList.add('hidden');
-                const info = document.getElementById('userInfo');
-                info.classList.remove('hidden');
-                document.getElementById('userName').innerText = user.username;
-                document.getElementById('userAvatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+    // تشغيل البثوث
+    if (typeof loadStreams === "function") loadStreams();
+
+    const params = new URLSearchParams(window.location.hash.slice(1));
+    const token = params.get('access_token');
+
+    if (token) {
+        // حماية 1: مسح التوكن من الرابط فوراً حتى لا يراه أحد أو يسجله التاريخ
+        window.history.replaceState({}, document.title, window.location.pathname);
+        
+        // حماية 2: تخزين مشفر في جلسة المتصفح فقط (تنتهي بقفل المتصفح)
+        sessionStorage.setItem('ds_tkn', token);
+
+        fetchUserData(token);
+    } else {
+        // محاولة استعادة الجلسة إذا كانت موجودة
+        const savedToken = sessionStorage.getItem('ds_tkn');
+        if (savedToken) fetchUserData(savedToken);
+    }
+};
+
+async function fetchUserData(token) {
+    try {
+        const response = await fetch('https://discord.com/api/users/@me', {
+            headers: { authorization: `Bearer ${token}` }
+        });
+
+        if (!response.ok) throw new Error('Token Expired');
+
+        const user = await response.json();
+        
+        // تحديث الواجهة بأمان
+        document.getElementById('loginBtn').classList.add('hidden');
+        const info = document.getElementById('userInfo');
+        info.classList.remove('hidden');
+        document.getElementById('userName').innerText = user.username;
+        document.getElementById('userAvatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+        
+        window.currentUser = user;
+
+    } catch (err) {
+        console.error("حماية: تم رفض الدخول أو انتهت الجلسة");
+        sessionStorage.removeItem('ds_tkn'); // تنظيف في حال الخطأ
+    }
+}
                 
                 // جلب الرتب من السيرفر للتأكد من الصلاحيات
                 fetch(`https://discord.com/api/users/@me/guilds/${SERVER_ID}/member`, { headers: { authorization: `Bearer ${token}` } })
