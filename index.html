@@ -382,39 +382,65 @@
 
     // --- 📝 نظام التقديم (Apply System) ---
     // دالة التحكم في فتح وإغلاق التقديم
-async function toggleApply(status) {
-    isApplyOpen = status; // تغيير الحالة في المتغير البرمجي
-    
-    // 1. تحديث شكل النصوص في لوحة الإدارة
-    const statusText = document.getElementById('apply_status_text');
-    if (status) {
-        statusText.innerText = "مفتوح ✅";
-        statusText.style.color = "var(--success)";
-    } else {
-        statusText.innerText = "مغلق ❌";
-        statusText.style.color = "var(--danger)";
-    }
 
-    // 2. إرسال التحديث إلى ويبهوك "حالة التقديم" في الديسكورد
+
+// دالة فحص حالة الواجهة (تُستدعى عند تغيير الحالة أasync function toggleApply(status) {
+    if (!window.currentUser) return alert("سجل دخولك أولاً!");
+    
+    isApplyOpen = status;
+    const statusLabel = document.getElementById('apply_status_text');
+    statusLabel.innerText = status ? "مفتوح ✅" : "مغلق ❌";
+    statusLabel.style.color = status ? "var(--success)" : "var(--danger)";
+
+    // إعداد الـ Embed ليكون مطابق للصورة
+    const payload = {
+        embeds: [{
+            title: status ? "🔓 تم فتح بوابات التقديم" : "🔒 نأسف، تم إغلاق بوابات التقديم",
+            description: status 
+                ? "بإمكانكم الآن البدء بإرسال طلباتكم عبر الموقع الرسمي للمدينة.\nنتمنى لكم التوفيق."
+                : "انتهت فترة استقبال الطلبات حالياً.\nتابعونا لمعرفة موعد الفتح القادم.",
+            color: status ? 0x2ed573 : 0xff4757, // لون أحمر أو أخضر حسب الحالة
+            thumbnail: {
+                url: "https://i.imgur.com/8Q9Z5X9.jpeg" // ضع هنا رابط لوغو السيرفر (NX)
+            },
+            fields: [
+                {
+                    name: "👨‍💻 المسؤول عن التحديث",
+                    value: `**@${window.currentUser.username}**`, // يظهر اسمك بشكل بارز
+                    inline: false
+                },
+                {
+                    name: "⏰ الوقت",
+                    value: `**${new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}**`,
+                    inline: false
+                },
+                {
+                    name: "🔗 رابط الموقع",
+                    value: "[اضغط هنا للدخول](https://virusz111.github.io/NoVaX/)", // رابط موقعك
+                    inline: false
+                }
+            ],
+            footer: {
+                text: "NoVaX Management System • Status",
+                icon_url: "https://i.imgur.com/8Q9Z5X9.jpeg" // أيقونة صغيرة في الأسفل
+            }
+        }]
+    };
+
     try {
         await fetch(CONFIG.STATUS_WEBHOOK, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                content: `🛠️ **تحديث النظام**: قام الإداري **${window.currentUser.username}** بـ **${status ? 'فتح' : 'إغلاق'}** نظام التقديم (Whitelist) الآن.`
-            })
+            body: JSON.stringify(payload)
         });
-    } catch (error) {
-        console.error("خطأ في إرسال الحالة للديسكورد");
+        checkApplyDisplay();
+        alert(status ? "تم فتح التقديم بنجاح 🟢" : "تم إغلاق التقديم بنجاح 🔴");
+    } catch (e) {
+        alert("فشل في تحديث الحالة");
     }
-
-    // 3. تحديث واجهة صفحة التقديم للمستخدمين فوراً
-    checkApplyDisplay();
-    
-    alert(status ? "تم فتح التقديم للجميع" : "تم إغلاق التقديم بنجاح");
 }
-
-// دالة فحص حالة الواجهة (تُستدعى عند تغيير الحالة أو دخول المستخدم)
+و دخول المستخدم)
+    
 function checkApplyDisplay() {
     const lock = document.getElementById('lockMessage');
     const form = document.getElementById('mainApplyForm');
