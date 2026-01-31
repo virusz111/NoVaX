@@ -373,12 +373,12 @@
         alert("تم تحديث الحالة بنجاح! 🚀");
     };
 
-    // قائمة الستريمرز - فقط عدل الروابط هنا
 const streamersList = [
     { 
-        username: "zxM_1", 
+        username: "zxm-1", 
         label: "ZXM", 
-        image: "https://r2.kick.com/avatars/default-avatar.png" // استبدل برابط صورة حقيقي
+        // حط هنا رابط صورة (من ديسكورد أو أي موقع رفع صور)
+        image: "https://r2.kick.com/avatars/default-avatar.png" 
     },
     { 
         username: "streamer2", 
@@ -395,7 +395,6 @@ const streamersList = [
 function displayHomeStreams() {
     const container = document.getElementById('kick-streams-home');
     if(!container) return;
-    
     container.innerHTML = ""; 
 
     streamersList.forEach(s => {
@@ -403,20 +402,13 @@ function displayHomeStreams() {
         card.className = 'stream-card';
         
         card.innerHTML = `
-            <div class="live-badge"><span class="dot"></span> KICK</div>
-            <img src="${s.image}" alt="${s.label}">
-            <h3 style="margin:5px 0; font-size:15px; color:white;">${s.label}</h3>
+            <div class="live-badge">KICK</div>
+            <img src="${s.image}" onerror="this.src='https://ui-avatars.com/api/?name=${s.username}&background=53fc18&color=000'">
+            <h3>${s.label}</h3>
             <a href="https://kick.com/${s.username}" target="_blank" class="btn-kick">مشاهدة الآن</a>
         `;
         container.appendChild(card);
     });
-}
-
-// تعديل بسيط هنا: نخليه يتأكد من التحميل
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', displayHomeStreams);
-} else {
-    displayHomeStreams();
 }
     
     window.sendAnn = async function() {
