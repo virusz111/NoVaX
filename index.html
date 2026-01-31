@@ -30,6 +30,82 @@
         input, textarea { width: 100%; padding: 15px; margin-top: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 10px; color: white; font-family: 'Cairo'; box-sizing: border-box; }
         .hidden { display: none !important; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* تنسيق قسم البثوث المباشرة */
+.streams-grid {
+    display: grid;
+    /* يترتب تلقائياً: 3 بجانب بعض في الكمبيوتر و1 في الجوال */
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.stream-card {
+    background: rgba(83, 252, 24, 0.05);
+    border: 1px solid rgba(83, 252, 24, 0.2);
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    position: relative;
+    transition: 0.3s ease-in-out;
+}
+
+.stream-card:hover {
+    transform: translateY(-5px);
+    border-color: #53fc18;
+    box-shadow: 0 5px 15px rgba(83, 252, 24, 0.1);
+}
+
+.stream-card img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 2px solid #53fc18;
+    object-fit: cover; /* لضمان عدم تمدد الصورة */
+    margin-bottom: 10px;
+}
+
+.live-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #53fc18;
+    color: black;
+    font-size: 9px;
+    font-weight: 900;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.dot {
+    height: 6px;
+    width: 6px;
+    background-color: #000;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 3px;
+    animation: blink 1s infinite;
+}
+
+.btn-kick {
+    background: #53fc18;
+    color: black !important;
+    text-decoration: none;
+    padding: 8px;
+    border-radius: 8px;
+    font-weight: bold;
+    display: block;
+    font-size: 12px;
+    margin-top: 10px;
+    transition: 0.2s;
+}
+
+.btn-kick:hover {
+    background: #45d614;
+}
+
+@keyframes blink { 0% {opacity: 1;} 50% {opacity: 0.3;} 100% {opacity: 1;} }
     </style>
 </head>
 <body>
@@ -65,14 +141,12 @@
             <a href="https://discord.gg/HZFb5BZ8dZ" class="btn btn-primary" style="width:max-content; margin: 20px auto;">ديسكورد المدينة</a>
         </div>
 
-        <div class="card" style="margin-top: 30px; border-top: 2px solid #53fc18; background: rgba(83, 252, 24, 0.02);">
-            <h2 style="color:#53fc18; display:flex; align-items:center; justify-content:center; gap:10px; font-size: 22px;">
-                <i class="fas fa-broadcast-tower"></i> ستريمرز المدينة على KICK
-            </h2>
-            <div id="kick-streams-home" class="streams-grid">
-                </div>
+        <div class="card" style="margin-top: 30px; border-top: 2px solid #53fc18;">
+    <h2 style="color:#53fc18; display:flex; align-items:center; justify-content:center; gap:10px; font-size: 20px;">
+        <i class="fas fa-broadcast-tower"></i> ستريمرز المدينة على KICK
+    </h2>
+    <div id="kick-streams-home" class="streams-grid">
         </div>
-    </section>
 </div>
 
     <section id="store-page" class="page-content">
@@ -299,32 +373,40 @@
         alert("تم تحديث الحالة بنجاح! 🚀");
     };
 
-    const streamersList = [
-    { username: "zxm-1", label: "ZXM" },
-    { username: "streamer2", label: "الستريمر الثاني" },
-    { username: "streamer3", label: "الستريمر الثالث" }
+    // قائمة الستريمرز - فقط عدل الروابط هنا
+const streamersList = [
+    { 
+        username: "zxM_1", 
+        label: "ZXM", 
+        image: "https://r2.kick.com/avatars/default-avatar.png" // استبدل برابط صورة حقيقي
+    },
+    { 
+        username: "streamer2", 
+        label: "الستريمر الثاني", 
+        image: "https://r2.kick.com/avatars/default-avatar.png" 
+    },
+    { 
+        username: "streamer3", 
+        label: "الستريمر الثالث", 
+        image: "https://r2.kick.com/avatars/default-avatar.png" 
+    }
 ];
 
 function displayHomeStreams() {
     const container = document.getElementById('kick-streams-home');
+    if(!container) return;
     
-    // إذا ما لقى الحاوية (ممكن لأن الصفحة لسه ما تحملت)، يطفي وما يعلق الكود
-    if (!container) return; 
-
     container.innerHTML = ""; 
 
     streamersList.forEach(s => {
         const card = document.createElement('div');
         card.className = 'stream-card';
         
-        // رابط صورة يشتغل 100% (Avatar)
-        const fallbackImg = `https://ui-avatars.com/api/?name=${s.username}&background=53fc18&color=000&bold=true`;
-        
         card.innerHTML = `
             <div class="live-badge"><span class="dot"></span> KICK</div>
-            <img src="${fallbackImg}" style="width:60px; height:60px; border-radius:50%; border:2px solid #53fc18; margin-bottom:10px;">
-            <h3 style="margin:5px 0; font-size:16px; color:white;">${s.label}</h3>
-            <a href="https://kick.com/${s.username}" target="_blank" class="btn-kick" style="background:#53fc18; color:black; text-decoration:none; padding:8px 10px; border-radius:8px; display:block; font-size:12px; font-weight:bold; margin-top:10px; text-align:center;">مشاهدة الآن</a>
+            <img src="${s.image}" alt="${s.label}">
+            <h3 style="margin:5px 0; font-size:15px; color:white;">${s.label}</h3>
+            <a href="https://kick.com/${s.username}" target="_blank" class="btn-kick">مشاهدة الآن</a>
         `;
         container.appendChild(card);
     });
