@@ -287,26 +287,37 @@
 
     <section id="admin-page" class="page-content">
         <div class="card" style="border: 2px solid var(--danger);">
-            <h2 style="color:var(--danger)"><i class="fas fa-user-shield"></i> لوحة التحكم العليا</h2>
+            <h2 style="color:var(--danger); border-bottom: 1px solid rgba(255,71,87,0.2); padding-bottom: 15px;">
+                <i class="fas fa-user-shield"></i> لوحة التحكم العليا
+            </h2>
             <div class="grid-layout" style="margin-top:25px;">
-                <div class="item-box" style="border-color:var(--primary);">
-                    <h3>التحكم في النظام</h3>
-                    <p>الحالة الحالية: <span id="apply_status_text" style="color:var(--success); font-weight:bold;">مفتوح ✅</span></p>
-                    <div style="display:flex; gap:10px; margin-top:15px;">
-                        <button onclick="toggleApply(true)" class="btn btn-success" style="flex:1;">فتح</button>
-                        <button onclick="toggleApply(false)" class="btn btn-danger" style="flex:1;">إغلاق</button>
+                
+                <div class="item-box" style="border-color:var(--primary); background: rgba(162, 70, 240, 0.05);">
+                    <h3 style="margin-bottom: 10px;"><i class="fas fa-toggle-on"></i> التحكم في النظام</h3>
+                    <p style="margin-bottom: 15px;">حالة التقديم الحالية: 
+                        <span id="apply_status_text" style="color:var(--success); font-weight:bold; font-size: 18px;">مفتوح ✅</span>
+                    </p>
+                    <div style="display:flex; gap:10px;">
+                        <button onclick="toggleApply(true)" class="btn btn-success" style="flex:1;">
+                            <i class="fas fa-unlock"></i> فتح التقديم
+                        </button>
+                        <button onclick="toggleApply(false)" class="btn btn-danger" style="flex:1;">
+                            <i class="fas fa-lock"></i> إغلاق التقديم
+                        </button>
                     </div>
                 </div>
+
                 <div class="item-box" style="border-color:var(--primary);">
-                    <h3>نشر إعلان رسمي</h3>
-                    <textarea id="admin_msg" placeholder="اكتب نص الإعلان..."></textarea>
-                    <button onclick="sendAnnounce()" class="btn btn-main" style="width:100%; margin-top:10px;">نشر بالديسكورد</button>
+                    <h3 style="margin-bottom: 10px;"><i class="fas fa-bullhorn"></i> نشر إعلان رسمي</h3>
+                    <textarea id="admin_msg" rows="3" placeholder="اكتب نص الإعلان الذي سيظهر في الديسكورد..." style="resize: none;"></textarea>
+                    <button onclick="sendAnnounce()" class="btn btn-main" style="width:100%; margin-top:10px;">
+                        <i class="fas fa-paper-plane"></i> نشر بالديسكورد
+                    </button>
                 </div>
+
             </div>
         </div>
     </section>
-
-</div>
 
 <script>
     // --- ⚙️ الإعدادات (Webhooks) ---
