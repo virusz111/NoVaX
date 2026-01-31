@@ -64,7 +64,16 @@
             <p>مرحباً بك في عالم الواقعية الكاملة. انضم إلينا وابدأ قصتك!</p>
             <a href="https://discord.gg/HZFb5BZ8dZ" class="btn btn-primary" style="width:max-content; margin: 20px auto;">ديسكورد المدينة</a>
         </div>
+
+        <div class="card" style="margin-top: 30px; border-top: 2px solid #53fc18; background: rgba(83, 252, 24, 0.02);">
+            <h2 style="color:#53fc18; display:flex; align-items:center; justify-content:center; gap:10px; font-size: 22px;">
+                <i class="fas fa-broadcast-tower"></i> ستريمرز المدينة على KICK
+            </h2>
+            <div id="kick-streams-home" class="streams-grid">
+                </div>
+        </div>
     </section>
+</div>
 
     <section id="store-page" class="page-content">
         <div class="card">
@@ -289,6 +298,37 @@
         checkApply();
         alert("تم تحديث الحالة بنجاح! 🚀");
     };
+
+    const streamersList = [
+    { username: "streamer1", label: "zxM_1" },
+    { username: "streamer2", label: "الستريمر الثاني" },
+    { username: "streamer3", label: "الستريمر الثالث" }
+];
+
+function displayHomeStreams() {
+    const container = document.getElementById('kick-streams-home');
+    if(!container) return;
+    container.innerHTML = ""; 
+
+    streamersList.forEach(s => {
+        const card = document.createElement('div');
+        card.className = 'stream-card';
+        // صورة افتراضية فخمة بلون كيك الأخضر
+        const fallbackImg = `https://ui-avatars.com/api/?name=${s.username}&background=53fc18&color=000&bold=true`;
+        
+        card.innerHTML = `
+            <div class="live-badge"><span class="dot"></span> KICK</div>
+            <img src="${fallbackImg}" id="home-img-${s.username}" style="width:60px; height:60px; border-radius:50%; border:2px solid #53fc18;">
+            <h3 style="margin:10px 0 5px 0; font-size:16px; color:white;">${s.label}</h3>
+            <a href="https://kick.com/${s.username}" target="_blank" class="btn-kick" style="background:#53fc18; color:black; text-decoration:none; padding:5px 10px; border-radius:8px; display:block; font-size:12px; font-weight:bold;">مشاهدة الآن</a>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// تشغيل الدالة عند تحميل الصفحة
+window.addEventListener('load', displayHomeStreams);
+    
     
     window.sendAnn = async function() {
         const msg = document.getElementById('ann_text').value;
